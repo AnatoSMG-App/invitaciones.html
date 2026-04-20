@@ -115,10 +115,13 @@
     <script>
         function arrancarTodo() {
             const audio = document.getElementById('snd-cuarto');
-            
+            const urlParams = new URLSearchParams(window.location.search);
+const p = urlParams.get('p');
+const f = urlParams.get('f');
             // Bypass de audio: Avanza aunque el audio falle
             audio.play().catch(e => console.log("Audio omitido para evitar bloqueo"));
-
+if(p) document.getElementById('res-pre').innerText = p + " USD";
+if(f) document.getElementById('res-citas').innerHTML = "<li>" + f + "</li>";
             document.getElementById('pantalla-play').classList.remove('active');
             document.getElementById('fase-cuarto').classList.add('active');
 
