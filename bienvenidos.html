@@ -42,12 +42,33 @@
     <div class="container">
         <h1>¡BIENVENIDO AL GRUPO VIP!</h1>
         
-        <img src="logo.png" alt="S.M.G." class="logo">
-        
-        <p>Tu Próximo Mantenimiento <strong>QUEDÓ ANCLADO</strong> a:</p>
-        <p class="precio-anclado" id="precio-final">($)</p>
-        <p>Por este año 2026.</p>
-        
+     <img src="logo.png" alt="S.M.G." class="logo">
+
+<p>Tu Próximo Mantenimiento <strong>QUEDÓ ANCLADO</strong> a:</p>
+<p class="precio-anclado" id="precio-final">($)</p>
+<p id="fecha-final">Por este año 2026.</p>
+  <script>
+  // 1. Buscamos los datos en la dirección de la página
+  const urlParams = new URLSearchParams(window.location.search);
+  const p = urlParams.get('p'); // Esto agarra el Precio (ej: 5)
+  const c = urlParams.get('c'); // Esto agarra la Cita (ej: 20 de agosto)
+
+  // 2. Si hay precio, lo escribe en la línea 48
+  if (p) {
+    const cuadroPrecio = document.getElementById('precio-final');
+    if (cuadroPrecio) {
+      cuadroPrecio.innerText = p + " USD";
+    }
+  }
+
+  // 3. Si hay cita, la escribe en la línea 49
+  if (c) {
+    const cuadroFecha = document.getElementById('fecha-final');
+    if (cuadroFecha) {
+      cuadroFecha.innerText = "Cita: " + decodeURIComponent(c);
+    }
+  }
+</script>      
         <p>Tomaste la <strong>MEJOR DECISIÓN</strong>.</p>
         <script>
   // Este es el cable que conecta el link con la línea 48
