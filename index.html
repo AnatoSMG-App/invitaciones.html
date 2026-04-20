@@ -6,51 +6,60 @@
     <title>Anato S.M.G. VIP</title>
     <style>
         :root { --vip: #00f2ff; --riesgo: #ff3131; }
-        body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; overflow: hidden; color: white; height: 100%; width: 100%; }
+        body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; overflow-x: hidden; color: white; height: 100%; width: 100%; }
         
-        .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
+        .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center; background: #000; }
         .active { display: flex; }
 
-        /* PANTALLA INICIAL - ESCUDO GRANDE */
-        #pantalla-play { z-index: 5000; background: #000; }
-        #escudo-main { width: 95%; max-width: 650px; margin-bottom: 20px; animation: latido 2s infinite; }
+        /* PANTALLA INICIAL - LOGO CENTRADO */
+        #pantalla-play { z-index: 5000; }
+        #escudo-main { 
+            width: 85%; 
+            max-width: 500px; 
+            margin-bottom: 30px; 
+            animation: latido 2s infinite; 
+            filter: drop-shadow(0 0 15px var(--vip));
+        }
         @keyframes latido { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         
         #btn-iniciar { 
-            background: var(--vip); color: #000; padding: 22px 45px; 
-            border-radius: 50px; border: none; font-weight: bold; font-size: 1.4rem; 
-            cursor: pointer; box-shadow: 0 0 25px var(--vip);
+            background: var(--vip); color: #000; padding: 18px 40px; 
+            border-radius: 50px; border: none; font-weight: bold; font-size: 1.2rem; 
+            cursor: pointer; box-shadow: 0 0 20px var(--vip);
+            text-transform: uppercase;
         }
-/* CONTROL SOLO PARA IMÁGENES DE LA PRESENTACIÓN */
-.layer > img {
-    max-width: 75% !important;   
-    max-height: 45vh !important; 
-    width: auto !important;
-    height: auto !important;
-    object-fit: contain !important;
-    margin: auto;
-    display: block;
-}
-}
-        /* FASE: COMPARATIVA (EL CUARTO) */
-        #fase-cuarto { background: #000; z-index: 1000; }
-        #img-cuarto { width: 100%; height: 100%; object-fit: contain; }
+
+        /* CONTROL DE IMÁGENES DE PRESENTACIÓN */
+        .layer > img {
+            max-width: 85% !important;   
+            max-height: 50vh !important; 
+            object-fit: contain !important;
+            margin: 20px auto;
+        }
+
+        /* FASE: COMPARATIVA */
+        #fase-cuarto { z-index: 1000; }
+        #img-cuarto { width: 90%; height: auto; border: 2px solid var(--vip); border-radius: 10px; }
 
         /* FASE: PANEL FINAL */
-        #fase-panel { z-index: 500; overflow-y: auto; background: #000; }
-        .split { display: flex; width: 100%; height: 70vh; }
-        .panel { flex: 1; padding: 10px; border: 1px solid #222; }
+        #fase-panel { z-index: 500; overflow-y: auto; display: none; padding-top: 20px; }
+        #fase-panel.active { display: block; }
+        
+        .split { display: flex; flex-wrap: wrap; width: 100%; min-height: 60vh; }
+        .panel { flex: 1; min-width: 300px; padding: 15px; border: 1px solid #222; }
         .temp { font-size: 1.8rem; font-weight: bold; margin-bottom: 15px; }
         
-        .item { display: flex; align-items: center; margin-bottom: 12px; opacity: 0; transform: scale(0.8); transition: 0.5s; font-size: 0.8rem; }
+        .item { display: flex; align-items: center; margin-bottom: 15px; opacity: 0; transform: scale(0.8); transition: 0.5s; font-size: 0.9rem; text-align: left; }
         .item.show { opacity: 1; transform: scale(1); }
-        .item img { width: 25px; height: 25px; border-radius: 5px; margin-right: 8px; border: 1px solid var(--vip); }
+        .item img { width: 35px; height: 35px; border-radius: 5px; margin-right: 10px; border: 1px solid var(--vip); }
 
-        #pop-img { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 85%; z-index: 2000; border: 4px solid var(--vip); border-radius: 20px; transition: 0.4s; }
+        #pop-img { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 80%; max-width: 400px; z-index: 2000; border: 4px solid var(--vip); border-radius: 20px; transition: 0.3s; background: #000; }
         
-        .footer { width: 100%; padding: 15px; display: flex; gap: 10px; position: sticky; bottom: 0; background: #000; }
-        .btn-v { flex: 1; padding: 18px; background: #39ff14; color: #000; border-radius: 10px; border: none; font-weight: bold; }
-        .btn-r { flex: 1; padding: 18px; background: #ff3131; color: #fff; border-radius: 10px; border: none; font-weight: bold; }
+        .footer { width: 100%; padding: 20px; display: flex; gap: 10px; background: #000; position: relative; }
+        .btn-v { flex: 1; padding: 20px; background: #39ff14; color: #000; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        .btn-r { flex: 1; padding: 20px; background: #ff3131; color: #fff; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+
+        @keyframes titilar { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -59,7 +68,7 @@
     <audio id="snd-ok" src="aceptacion.mp3" preload="auto"></audio>
 
     <div id="pantalla-play" class="layer active">
-        <img src="logo.png" id="escudo-main">
+        <img src="logo.png" id="escudo-main" alt="Logo">
         <button id="btn-iniciar" onclick="arrancarTodo()">INICIAR PRESENTACIÓN</button>
     </div>
 
@@ -68,11 +77,11 @@
     </div>
 
     <div id="fase-panel" class="layer">
-        <h3 style="color:var(--vip); margin: 10px 0;">MULTISERVICIOS ANATO S.M.G.</h3>
+        <h2 style="color:var(--vip); margin: 20px 0;">MULTISERVICIOS ANATO S.M.G.</h2>
         <div class="split">
             <div class="panel">
                 <div class="temp" style="color:var(--vip)">16°C ❄️</div>
-<h3 style="color: var(--vip); text-align: center; margin-bottom: 30px;">💎 TUS BENEFICIOS V.I.P.</h4>
+                <h3 style="color: var(--vip); margin-bottom: 20px;">💎 BENEFICIOS V.I.P.</h3>
                 <div id="lista-vip">
                     <div class="item" data-img="chequeo.jpg">Tecnología y Vanguardia</div>
                     <div class="item" data-img="emergencia.jpg">Atención 24/7</div>
@@ -84,9 +93,9 @@
             </div>
             <div class="panel">
                 <div class="temp" style="color:var(--riesgo)">38°C 🔥</div>
-<div style="color: #ff9100; font-size: 0.9rem; font-weight: bold; animation: titilar 0.8s infinite; margin-top: 15px; text-align: center; border: 1px dashed #ff9100; padding: 5px;">
-    ⚠️ BAJO SU PROPIA RESPONSABILIDAD ⚠️
-</div>
+                <div style="color: #ff9100; font-size: 0.8rem; font-weight: bold; animation: titilar 0.8s infinite; margin-bottom: 15px; border: 1px dashed #ff9100; padding: 5px;">
+                    ⚠️ BAJO SU PROPIA RESPONSABILIDAD ⚠️
+                </div>
                 <div id="lista-riesgo">
                     <div class="item" data-img="fuga.jpg">Fugas de Gas</div>
                     <div class="item" data-img="oxidado.jpg">Oxidación</div>
@@ -97,7 +106,7 @@
         </div>
         <div class="footer">
             <button class="btn-v" onclick="window.location.href='bienvenidos.html'">ACEPTO SER V.I.P</button>
-            <button class="btn-r" onclick="var audioR = new Audio('Rechazo.mp3'); audioR.play(); setTimeout(function(){ window.open('', '_self', ''); window.close(); }, 3500);">EN OTRO MOMENTO</button>
+            <button class="btn-r" onclick="ejecutarRechazo()">EN OTRO MOMENTO</button>
         </div>
     </div>
 
@@ -107,23 +116,18 @@
         function arrancarTodo() {
             const audio = document.getElementById('snd-cuarto');
             
-            // INTENTO DE REPRODUCCIÓN FORZOSA
-            audio.currentTime = 0;
-            audio.play().then(() => {
-                // Si el audio arranca, cambiamos de fase
-                document.getElementById('pantalla-play').classList.remove('active');
-                document.getElementById('fase-cuarto').classList.add('active');
+            // Bypass de audio: Avanza aunque el audio falle
+            audio.play().catch(e => console.log("Audio omitido para evitar bloqueo"));
 
-                // Tiempo de espera para pasar al panel (1:17 min = 77000ms)
-                setTimeout(() => {
-                    document.getElementById('fase-cuarto').classList.remove('active');
-                    document.getElementById('fase-panel').classList.add('active');
-                    ejecutarDanza();
-                }, 77000); 
-            }).catch(error => {
-                alert("Error de Audio: Por favor, asegúrate de que el archivo rechazo.mp3 esté en la carpeta.");
-                console.log(error);
-            });
+            document.getElementById('pantalla-play').classList.remove('active');
+            document.getElementById('fase-cuarto').classList.add('active');
+
+            // Tiempo de espera para pasar al panel (7.7 segundos para prueba rápida, ajusta si prefieres los 77)
+            setTimeout(() => {
+                document.getElementById('fase-cuarto').classList.remove('active');
+                document.getElementById('fase-panel').classList.add('active');
+                ejecutarDanza();
+            }, 7000); 
         }
 
         async function ejecutarDanza() {
@@ -134,13 +138,23 @@
                 if(imgPath) {
                     pop.src = imgPath;
                     pop.style.transform = "translate(-50%, -50%) scale(1)";
-                    await new Promise(r => setTimeout(r, 1300));
+                    await new Promise(r => setTimeout(r, 1200));
                     pop.style.transform = "translate(-50%, -50%) scale(0)";
                     it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
                 }
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
+        }
+
+        function ejecutarRechazo() {
+            // Se usa el nombre en minúscula para coincidir con GitHub
+            var audioR = new Audio('rechazo.mp3'); 
+            audioR.play().catch(e => console.log("Sonido de rechazo no encontrado"));
+            setTimeout(function(){ 
+                alert("Gracias por su tiempo. Invitación finalizada.");
+                window.location.href = "about:blank"; 
+            }, 3000);
         }
     </script>
 </body>
