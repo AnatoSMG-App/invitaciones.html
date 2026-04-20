@@ -49,12 +49,21 @@
         <p>Por este año 2026.</p>
         
         <p>Tomaste la <strong>MEJOR DECISIÓN</strong>.</p>
-        
+        <script>
+  // Este es el cable que conecta el link con la línea 48
+  const urlParams = new URLSearchParams(window.location.search);
+  const precioDolares = urlParams.get('p');
+
+  if (precioDolares) {
+    // Aquí es donde sucede la magia en la línea 48
+    document.getElementById('precio-final').innerText = precioDolares + " USD";
+  }
+</script>
         <div class="alerta-capture">
             📸 POR FAVOR, TOME CAPTURA DE PANTALLA PARA QUE NO PIERDA SUS FECHAS DE MANTENIMIENTO NI SU PRECIO ANCLADO.
         </div>
 
-        <button onclick="window.close();" class="btn-salir">FINALIZAR</button>
+        <button onclick="location.href='index.html'" class="btn-salir">FINALIZAR</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
