@@ -144,12 +144,12 @@
         const precioParaLink = enviarBs ? `${pre}$ (Bs. ${montoBs})` : `${pre}$`;
         
         document.getElementById('res-nom').innerText = nom;
-        document.getElementById('res-pre').innerText = precioParaLink;
+        document.getElementById('res-pre').innerText = document.getElementById('precio').value + " USD";
         
         let citas = [];
         const listaUI = document.getElementById('res-citas');
         listaUI.innerHTML = "";
-
+listaUI.innerHTML = "<li>" + manualDateValue + "</li>";
         // Lógica de Fecha
         let fechaBase = manualCheck && manualDateValue ? new Date(manualDateValue + "T12:00:00") : new Date();
 
