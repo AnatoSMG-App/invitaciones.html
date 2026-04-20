@@ -49,6 +49,16 @@
         .panel { flex: 1; min-width: 300px; padding: 15px; border: 1px solid #222; }
         .temp { font-size: 1.8rem; font-weight: bold; margin-bottom: 15px; }
         
+        /* CUADRO DE RESUMEN DE PRECIO Y FECHA */
+        .resumen-vip {
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid var(--vip);
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
         .item { display: flex; align-items: center; margin-bottom: 15px; opacity: 0; transform: scale(0.8); transition: 0.5s; font-size: 0.9rem; text-align: left; }
         .item.show { opacity: 1; transform: scale(1); }
         .item img { width: 35px; height: 35px; border-radius: 5px; margin-right: 10px; border: 1px solid var(--vip); }
@@ -78,6 +88,12 @@
 
     <div id="fase-panel" class="layer">
         <h2 style="color:var(--vip); margin: 20px 0;">MULTISERVICIOS ANATO S.M.G.</h2>
+        
+        <div class="resumen-vip">
+            <div style="color:var(--vip); font-weight:bold;">PRESUPUESTO ESTIMADO: <span id="res-pre">-- USD</span></div>
+            <div style="font-size:0.8rem;">Cita programada para: <span id="res-citas">No definida</span></div>
+        </div>
+
         <div class="split">
             <div class="panel">
                 <div class="temp" style="color:var(--vip)">16°C ❄️</div>
@@ -114,18 +130,26 @@
 
     <script>
         function arrancarTodo() {
-            const audio = document.getElementById('snd-cuarto');
+            // 1. CAPTURAR DATOS DEL LINK PRIMERO
             const urlParams = new URLSearchParams(window.location.search);
-const p = urlParams.get('p');
-const f = urlParams.get('f');
-            // Bypass de audio: Avanza aunque el audio falle
-            audio.play().catch(e => console.log("Audio omitido para evitar bloqueo"));
-if(p) document.getElementById('res-pre').innerText = p + " USD";
-if(f) document.getElementById('res-citas').innerHTML = "<li>" + f + "</li>";
+            const p = urlParams.get('p');
+            const f = urlParams.get('f');
+
+            // Escribir los datos en pantalla si existen
+            if(p) document.getElementById('res-pre').innerText = p + " USD";
+            if(f) document.getElementById('res-citas').innerText = f;
+
+            // 2. LOGÍSTICA DE ARRANQUE
+            const audio = document.getElementById('snd-cuarto');
+            
+            // Quitar pantalla de inicio de inmediato
             document.getElementById('pantalla-play').classList.remove('active');
             document.getElementById('fase-cuarto').classList.add('active');
 
-            // Tiempo de espera para pasar al panel (7.7 segundos para prueba rápida, ajusta si prefieres los 77)
+            // Intentar sonido (si falla no importa, la presentación sigue)
+            audio.play().catch(e => console.log("Audio en espera"));
+
+            // 3. TIEMPO DE ESPERA (77 segundos para la comparativa)
             setTimeout(() => {
                 document.getElementById('fase-cuarto').classList.remove('active');
                 document.getElementById('fase-panel').classList.add('active');
@@ -151,12 +175,11 @@ if(f) document.getElementById('res-citas').innerHTML = "<li>" + f + "</li>";
         }
 
         function ejecutarRechazo() {
-            // Se usa el nombre en minúscula para coincidir con GitHub
             var audioR = new Audio('rechazo.mp3'); 
             audioR.play().catch(e => console.log("Sonido de rechazo no encontrado"));
             setTimeout(function(){ 
                 alert("Gracias por su tiempo. Invitación finalizada.");
-               window.close();
+                window.close();
             }, 3000);
         }
     </script>
