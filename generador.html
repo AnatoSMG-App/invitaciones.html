@@ -3,152 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiservicios Anato S.M.G. 2026</title>
+    <title>S.M.G. - Gestor VIP 2026</title>
     <style>
-        :root { 
-            --aurora-dark: #000428; 
-            --aurora-blue: #004e92; 
-            --accent: #00f2fe; 
-            --text: #ffffff; 
-            --success: #25d366; 
-            --neon-green: #39FF14;
-        }
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: linear-gradient(135deg, var(--aurora-dark), var(--aurora-blue)); 
-            color: var(--text); padding: 20px; display: flex; justify-content: center; 
-        }
-        .container { 
-            background: rgba(0, 0, 0, 0.85); padding: 25px; border-radius: 20px; 
-            border: 2px solid var(--accent); width: 100%; max-width: 420px;
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3); backdrop-filter: blur(10px);
-        }
-        h2 { color: var(--accent); text-align: center; font-size: 1.2rem; border-bottom: 1px solid var(--accent); padding-bottom: 10px; }
-        
+        :root { --primary: #003366; --accent: #00f2fe; --text: #ffffff; --success: #25d366; }
+        body { font-family: 'Arial', sans-serif; background: #050505; color: var(--text); padding: 20px; display: flex; justify-content: center; }
+        .container { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--primary); width: 100%; max-width: 450px; }
+        h2 { color: var(--accent); text-align: center; font-size: 1.3rem; text-transform: uppercase; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
         .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.75rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
-        
-        /* CORRECCIÓN DE VISIBILIDAD EN NÚMEROS Y SELECT */
-        input, select { 
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--accent); 
-            background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; 
-        }
-        select option { background: #1a1a1a; color: white; } /* Para que no salgan en blanco */
-
-        .bcv-status { background: rgba(0, 242, 254, 0.1); padding: 8px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px ridge var(--accent); }
-        .row-flex { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; }
-        
-        .btn-generar { 
-            width: 100%; padding: 15px; background: var(--accent); border: none; border-radius: 12px; 
-            color: #000; font-weight: bold; cursor: pointer; text-transform: uppercase;
-        }
-
-        /* CORRECCIÓN DE LA PANTALLITA DE RESULTADOS */
-        #resultado { 
-            display: none; margin-top: 20px; background: rgba(0, 51, 102, 0.9); 
-            color: white; padding: 20px; border-radius: 15px; border: 2px solid var(--accent); 
-        }
-        #resultado p { margin: 8px 0; border-bottom: 1px solid rgba(0, 242, 254, 0.2); padding-bottom: 4px; }
-        .val { color: var(--accent); font-weight: bold; }
-        .monto-vip { color: var(--neon-green); font-size: 1.2rem; font-weight: bold; }
-
+        label { display: block; font-size: 0.8rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; }
+        select option { background: #111; color: white; }
+        .bcv-status { background: rgba(0,170,255,0.1); padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 15px; border: 1px solid var(--primary); font-weight: bold; }
+        .row-flex { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 10px; border-radius: 10px; }
+        .bs-info { flex-grow: 1; font-size: 0.9rem; color: #aaa; text-align: right; }
+        .checkbox-group { display: flex; align-items: center; gap: 5px; font-size: 0.75rem; color: var(--accent); cursor: pointer; }
+        .btn-generar { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        #resultado { display: none; margin-top: 25px; background: #fff; color: #000; padding: 20px; border-radius: 15px; border: 4px solid var(--primary); }
         .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>ANATO S.M.G. 2026</h2>
-    <div class="bcv-status" id="bcv-box">🔄 Conectando...</div>
+    <h2>MULTISERVICIOS ANATO S.M.G. 2026</h2>
+    <div class="bcv-status" id="bcv-box">🔄 Conectando al BCV...</div>
 
     <div class="input-group">
-        <label>CLIENTE Y LUGAR</label>
+        <label>CLIENTE</label>
         <input type="text" id="nombre" placeholder="Nombre del Cliente">
-        <input type="text" id="ubicacion" placeholder="Lugar (Ej: Los Guayos)" style="margin-top:8px;">
+        <label style="margin-top:10px;">UBICACIÓN</label>
+        <input type="text" id="ubicacion" placeholder="Lugar del Servicio">
     </div>
 
     <div class="input-group">
         <label>TELÉFONO</label>
         <div style="display:flex; gap:5px;">
             <select id="op" style="width:110px;">
-                <option value="58412">0412</option>
-                <option value="58414">0414</option>
-                <option value="58424">0424</option>
-                <option value="58416">0416</option>
-                <option value="58426">0426</option>
+                <option value="58412">0412</option><option value="58414">0414</option>
+                <option value="58424">0424</option><option value="58416">0416</option>
+                <option value="58426">0426</option><option value="1">🇺🇸 +1</option>
+                <option value="57">🇨🇴 +57</option><option value="51">🇵🇪 +51</option>
+                <option value="507">🇵🇦 +507</option><option value="56">🇨🇱 +56</option>
+                <option value="34">🇪🇸 +34</option>
             </select>
             <input type="number" id="tel" placeholder="Número">
         </div>
     </div>
 
     <div class="input-group">
-        <label>DÓLAR Y PRECIO</label>
+        <label>MONTO DEL SERVICIO</label>
         <div class="row-flex">
-            <input type="number" id="precio" placeholder="00" oninput="actualizarBs()" style="width:80px; text-align:center;">
-            <span style="color:var(--neon-green); font-weight:bold;">$</span>
-            <div id="bs-calc" style="flex-grow:1; text-align:right; font-size:0.8rem;">Bs. 0.00</div>
+            <input type="number" id="precio" placeholder="30" oninput="actualizarBs()" style="width:80px; text-align:center;">
+            <span style="color:var(--accent); font-weight:bold;">$</span>
+            <div class="bs-info">
+                <div id="bs-calc" style="font-weight:bold; color:var(--accent);">Bs. 0,00</div>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="mostrarBs"> ¿Enviar Bs. a Bienvenida?
+                </label>
+            </div>
         </div>
     </div>
 
     <div class="input-group">
-        <label>MANTENIMIENTOS Y FECHA</label>
-        <select id="cupos">
-            <option value="2">2 Servicios</option>
-            <option value="1">1 Servicio</option>
-        </select>
-        <input type="date" id="fechaManualInput" style="margin-top:8px;">
+        <label>FECHA</label>
+        <div class="row-flex">
+            <div id="fechaTexto" style="flex-grow:1; font-size:0.8rem;">Fecha: Automática (Hoy)</div>
+            <label class="checkbox-group">
+                <input type="checkbox" id="activarFechaManual" onchange="toggleFecha()"> ¿Manual?
+            </label>
+        </div>
+        <input type="date" id="fechaInput" style="display:none; margin-top:10px;">
     </div>
 
-    <button class="btn-generar" onclick="prepararInvitacion()">Generar Pase VIP</button>
+    <div class="input-group">
+        <label>MANTENIMIENTOS</label>
+        <select id="cupos">
+            <option value="2">2 Servicios restantes</option>
+            <option value="1">1 Servicio restante</option>
+            <option value="0">Cierre de Ciclo</option>
+        </select>
+    </div>
+
+    <button class="btn-generar" onclick="prepararInvitacion()">GENERAR PASE VIP</button>
 
     <div id="resultado">
-        <h3 style="text-align:center; color:var(--accent); margin-top:0;">RESUMEN VIP</h3>
-        <p>Cliente: <span id="res-nom" class="val"></span></p>
-        <p>Lugar: <span id="res-ubi" class="val"></span></p>
-        <p>Fecha: <span id="res-fec" class="val"></span></p>
-        <p>Monto: <span class="monto-vip">$</span> <span id="res-pre" class="monto-vip"></span></p>
-        <p>Mantenimientos: <span id="res-cup" class="val"></span></p>
+        <h3 style="text-align:center; border-bottom:2px solid #003366; padding-bottom:5px;">RESUMEN VIP</h3>
+        <p><strong>Titular:</strong> <span id="res-nom"></span></p>
+        <p><strong>Lugar:</strong> <span id="res-ubi"></span></p>
+        <p><strong>Fecha:</strong> <span id="res-fec"></span></p>
+        <p><strong>Monto:</strong> <span style="color:green; font-weight:bold; font-size:1.5rem;">$</span> <span id="res-pre" style="color:green; font-weight:bold; font-size:1.5rem;"></span></p>
+        <p id="res-bs-box" style="display:none; font-size:0.9rem; color:#444;">(Bs. <span id="res-bs"></span>)</p>
         <div id="wa-btn-container"></div>
     </div>
 </div>
 
 <script>
     let tasa = 0;
+    const formatVez = (n) => new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(n);
+
     async function obtenerTasa() {
         try {
             const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
             const d = await r.json();
             tasa = d.promedio;
-            document.getElementById('bcv-box').innerText = `Tasa BCV: Bs. ${tasa.toFixed(2)}`;
-        } catch(e) { tasa = 60; document.getElementById('bcv-box').innerText = `Tasa: Bs. ${tasa}`; }
+            document.getElementById('bcv-box').innerText = `Tasa BCV: Bs. ${formatVez(tasa)}`;
+        } catch(e) { tasa = 60; document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${formatVez(tasa)}`; }
+    }
+
+    function toggleFecha() {
+        const check = document.getElementById('activarFechaManual').checked;
+        document.getElementById('fechaInput').style.display = check ? "block" : "none";
     }
 
     function actualizarBs() {
         const p = document.getElementById('precio').value;
-        document.getElementById('bs-calc').innerText = `Bs. ${(p * tasa).toFixed(2)}`;
+        document.getElementById('bs-calc').innerText = `Bs. ${formatVez(p * tasa)}`;
     }
 
     function prepararInvitacion() {
         const nom = document.getElementById('nombre').value;
         const ubi = document.getElementById('ubicacion').value;
         const pre = document.getElementById('precio').value;
-        const cupo = document.getElementById('cupos').value;
-        const fec = document.getElementById('fechaManualInput').value || "Hoy";
+        const sendBs = document.getElementById('mostrarBs').checked;
+        const manual = document.getElementById('activarFechaManual').checked;
+        const fManual = document.getElementById('fechaInput').value;
+        
+        let fFinal = manual && fManual ? fManual : new Date().toLocaleDateString('es-VE');
+        let bsMonto = formatVez(pre * tasa);
 
-        // Mostrar en la pantallita
         document.getElementById('res-nom').innerText = nom;
         document.getElementById('res-ubi').innerText = ubi;
-        document.getElementById('res-fec').innerText = fec;
+        document.getElementById('res-fec').innerText = fFinal;
         document.getElementById('res-pre').innerText = pre;
-        document.getElementById('res-cup').innerText = cupo;
+        document.getElementById('res-bs').innerText = bsMonto;
+        document.getElementById('res-bs-box').style.display = sendBs ? "block" : "none";
         document.getElementById('resultado').style.display = "block";
 
-        const telFull = document.getElementById('op').value + document.getElementById('tel').value;
-        const link = `https://anatosmg-app.github.io/invitaciones.html/?n=${nom}&p=${pre}&u=${ubi}&f=${fec}`;
+        const pLink = sendBs ? `${pre}$ (Bs. ${bsMonto})` : `${pre}$`;
+        const link = `https://anatosmg-app.github.io/invitaciones.html/?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(pLink)}&u=${encodeURIComponent(ubi)}&f=${encodeURIComponent(fFinal)}`;
         
+        const telFull = document.getElementById('op').value + document.getElementById('tel').value;
         document.getElementById('wa-btn-container').innerHTML = `
             <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=Tu Pase VIP: ${link}')">
-                ENVIAR WHATSAPP 🚀
+                ENVIAR POR WHATSAPP 🚀
             </button>`;
     }
     obtenerTasa();
