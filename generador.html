@@ -7,19 +7,21 @@
     <style>
         :root { --primary: #003366; --accent: #00f2fe; --text: #ffffff; --success: #25d366; }
         body { font-family: 'Arial', sans-serif; background: #050505; color: var(--text); padding: 20px; display: flex; justify-content: center; }
-        .container { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--primary); width: 100%; max-width: 450px; }
-        h2 { color: var(--accent); text-align: center; font-size: 1.3rem; text-transform: uppercase; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        .container { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--primary); width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: var(--accent); text-align: center; font-size: 1.3rem; text-transform: uppercase; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; }
         .input-group { margin-bottom: 15px; }
         label { display: block; font-size: 0.8rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
         input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; }
         select option { background: #111; color: white; }
         .bcv-status { background: rgba(0,170,255,0.1); padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 15px; border: 1px solid var(--primary); font-weight: bold; }
-        .row-flex { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 10px; border-radius: 10px; }
-        .bs-info { flex-grow: 1; font-size: 0.9rem; color: #aaa; text-align: right; }
+        .row-flex { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 10px; border-radius: 10px; border: 1px solid #333; }
+        .bs-info { flex-grow: 1; font-size: 0.85rem; color: #aaa; text-align: right; }
         .checkbox-group { display: flex; align-items: center; gap: 5px; font-size: 0.75rem; color: var(--accent); cursor: pointer; }
-        .btn-generar { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-generar { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-generar:hover { background: var(--accent); color: #000; }
         #resultado { display: none; margin-top: 25px; background: #fff; color: #000; padding: 20px; border-radius: 15px; border: 4px solid var(--primary); }
-        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        .header-vip { text-align: center; font-weight: bold; border-bottom: 2px solid #003366; margin-bottom: 10px; text-transform: uppercase; }
+        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -38,12 +40,17 @@
     <div class="input-group">
         <label>TELÉFONO</label>
         <div style="display:flex; gap:5px;">
-            <select id="op" style="width:110px;">
-                <option value="58412">0412</option><option value="58414">0414</option>
-                <option value="58424">0424</option><option value="58416">0416</option>
-                <option value="58426">0426</option><option value="1">🇺🇸 +1</option>
-                <option value="57">🇨🇴 +57</option><option value="51">🇵🇪 +51</option>
-                <option value="507">🇵🇦 +507</option><option value="56">🇨🇱 +56</option>
+            <select id="op" style="width:115px;">
+                <option value="58412">0412</option>
+                <option value="58414">0414</option>
+                <option value="58424">0424</option>
+                <option value="58416">0416</option>
+                <option value="58426">0426</option>
+                <option value="1">🇺🇸 +1</option>
+                <option value="57">🇨🇴 +57</option>
+                <option value="51">🇵🇪 +51</option>
+                <option value="507">🇵🇦 +507</option>
+                <option value="56">🇨🇱 +56</option>
                 <option value="34">🇪🇸 +34</option>
             </select>
             <input type="number" id="tel" placeholder="Número">
@@ -53,10 +60,10 @@
     <div class="input-group">
         <label>MONTO DEL SERVICIO</label>
         <div class="row-flex">
-            <input type="number" id="precio" placeholder="30" oninput="actualizarBs()" style="width:80px; text-align:center;">
-            <span style="color:var(--accent); font-weight:bold;">$</span>
+            <input type="number" id="precio" placeholder="30" oninput="actualizarBs()" style="width:85px; text-align:center;">
+            <span style="color:var(--accent); font-weight:bold; font-size: 1.2rem;">$</span>
             <div class="bs-info">
-                <div id="bs-calc" style="font-weight:bold; color:var(--accent);">Bs. 0,00</div>
+                <div id="bs-calc" style="font-weight:bold; color:var(--accent); margin-bottom: 5px;">Bs. 0,00</div>
                 <label class="checkbox-group">
                     <input type="checkbox" id="mostrarBs"> ¿Enviar Bs. a Bienvenida?
                 </label>
@@ -78,27 +85,28 @@
     <div class="input-group">
         <label>MANTENIMIENTOS</label>
         <select id="cupos">
-            <option value="2">2 Servicios restantes</option>
-            <option value="1">1 Servicio restante</option>
-            <option value="0">Cierre de Ciclo</option>
+            <option value="2">Quedan 2 servicios</option>
+            <option value="1">Queda 1 servicio</option>
+            <option value="0">Cierre de Ciclo / 2027</option>
         </select>
     </div>
 
     <button class="btn-generar" onclick="prepararInvitacion()">GENERAR PASE VIP</button>
 
     <div id="resultado">
-        <h3 style="text-align:center; border-bottom:2px solid #003366; padding-bottom:5px;">RESUMEN VIP</h3>
+        <div class="header-vip">S.M.G. - RESUMEN VIP</div>
         <p><strong>Titular:</strong> <span id="res-nom"></span></p>
         <p><strong>Lugar:</strong> <span id="res-ubi"></span></p>
         <p><strong>Fecha:</strong> <span id="res-fec"></span></p>
         <p><strong>Monto:</strong> <span style="color:green; font-weight:bold; font-size:1.5rem;">$</span> <span id="res-pre" style="color:green; font-weight:bold; font-size:1.5rem;"></span></p>
-        <p id="res-bs-box" style="display:none; font-size:0.9rem; color:#444;">(Bs. <span id="res-bs"></span>)</p>
+        <p id="res-bs-box" style="display:none; font-size:0.9rem; color:#444; font-weight: bold;">(Bs. <span id="res-bs"></span>)</p>
         <div id="wa-btn-container"></div>
     </div>
 </div>
 
 <script>
     let tasa = 0;
+    // Formato de moneda venezolano 1.000,00
     const formatVez = (n) => new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(n);
 
     async function obtenerTasa() {
@@ -107,12 +115,17 @@
             const d = await r.json();
             tasa = d.promedio;
             document.getElementById('bcv-box').innerText = `Tasa BCV: Bs. ${formatVez(tasa)}`;
-        } catch(e) { tasa = 60; document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${formatVez(tasa)}`; }
+        } catch(e) { 
+            tasa = 60.00; // Valor de respaldo
+            document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${formatVez(tasa)}`; 
+        }
     }
 
     function toggleFecha() {
         const check = document.getElementById('activarFechaManual').checked;
-        document.getElementById('fechaInput').style.display = check ? "block" : "none";
+        const input = document.getElementById('fechaInput');
+        document.getElementById('fechaTexto').innerText = check ? "Seleccione día:" : "Fecha: Automática (Hoy)";
+        input.style.display = check ? "block" : "none";
     }
 
     function actualizarBs() {
@@ -128,9 +141,10 @@
         const manual = document.getElementById('activarFechaManual').checked;
         const fManual = document.getElementById('fechaInput').value;
         
-        let fFinal = manual && fManual ? fManual : new Date().toLocaleDateString('es-VE');
+        let fFinal = (manual && fManual) ? fManual : new Date().toLocaleDateString('es-VE');
         let bsMonto = formatVez(pre * tasa);
 
+        // Actualizar vista previa para el Amo
         document.getElementById('res-nom').innerText = nom;
         document.getElementById('res-ubi').innerText = ubi;
         document.getElementById('res-fec').innerText = fFinal;
@@ -139,12 +153,16 @@
         document.getElementById('res-bs-box').style.display = sendBs ? "block" : "none";
         document.getElementById('resultado').style.display = "block";
 
+        // CONSTRUCCIÓN DEL LINK (NERVIO CRÍTICO n5)
         const pLink = sendBs ? `${pre}$ (Bs. ${bsMonto})` : `${pre}$`;
-        const link = `https://anatosmg-app.github.io/invitaciones.html/?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(pLink)}&u=${encodeURIComponent(ubi)}&f=${encodeURIComponent(fFinal)}`;
+        const baseLink = "https://anatosmg-app.github.io/invitaciones.html"; 
+        const link = `${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(pLink)}&u=${encodeURIComponent(ubi)}&f=${encodeURIComponent(fFinal)}`;
         
         const telFull = document.getElementById('op').value + document.getElementById('tel').value;
+        const msjWa = `¡Hola! Tu Pase VIP de Multiservicios Anato S.M.G. está listo. Puedes verlo aquí: ${link}`;
+
         document.getElementById('wa-btn-container').innerHTML = `
-            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=Tu Pase VIP: ${link}')">
+            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
                 ENVIAR POR WHATSAPP 🚀
             </button>`;
     }
