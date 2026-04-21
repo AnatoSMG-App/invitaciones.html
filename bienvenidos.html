@@ -47,6 +47,7 @@
 <p>Tu Próximo Mantenimiento <strong>QUEDÓ ANCLADO</strong> a:</p>
 <p class="precio-anclado" id="precio-final">-- USD</p>
         <p id="fecha-final">Calculando fecha...</p>
+        <button onclick="window.location.href='https://www.google.com'" class="btn-final">ACEPTAR</button>
   <script>
  // 1. Buscamos el precio y la cita en el link
   const urlParams = new URLSearchParams(window.location.search);
@@ -60,8 +61,9 @@
 
   // 3. Si hay cita, la inyectamos en el terminal 'fecha-final'
   if (c) {
-    document.getElementById('fecha-final').innerText = "Cita: " + decodeURIComponent(c);
+    document.getElementById('fecha-final').innerText = c;
   }
+      window.onload = function() { document.getElementById('aplausos').play(); };
     </script>
 </body>
 </html>
