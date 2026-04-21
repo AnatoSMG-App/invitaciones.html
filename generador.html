@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiservicios Anato S.M.G. 2026 - Generador VIP</title>
+    <title>Multiservicios Anato S.M.G. 2026</title>
     <style>
         :root { 
             --aurora-dark: #000428; 
@@ -14,81 +14,61 @@
             --neon-green: #39FF14;
         }
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Segoe UI', sans-serif; 
             background: linear-gradient(135deg, var(--aurora-dark), var(--aurora-blue)); 
-            color: var(--text); 
-            min-height: 100vh;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            margin: 0;
+            color: var(--text); padding: 20px; display: flex; justify-content: center; 
         }
         .container { 
-            background: rgba(0, 0, 0, 0.8); 
-            padding: 25px; 
-            border-radius: 20px; 
-            border: 2px solid var(--accent); 
-            width: 100%; 
-            max-width: 420px; 
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.85); padding: 25px; border-radius: 20px; 
+            border: 2px solid var(--accent); width: 100%; max-width: 420px;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3); backdrop-filter: blur(10px);
         }
-        h2 { 
-            color: var(--accent); 
-            text-align: center; 
-            font-size: 1.2rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            margin-bottom: 20px; 
-            border-bottom: 1px solid var(--accent); 
-            padding-bottom: 10px; 
-        }
+        h2 { color: var(--accent); text-align: center; font-size: 1.2rem; border-bottom: 1px solid var(--accent); padding-bottom: 10px; }
+        
         .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.75rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
+        label { display: block; font-size: 0.75rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
+        
+        /* CORRECCIÓN DE VISIBILIDAD EN NÚMEROS Y SELECT */
         input, select { 
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; 
-            background: rgba(255,255,255,0.05); color: white; box-sizing: border-box; font-size: 1rem; 
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--accent); 
+            background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; 
         }
-        .bcv-status { 
-            background: rgba(0, 242, 254, 0.1); padding: 8px; border-radius: 8px; 
-            text-align: center; margin-bottom: 15px; font-size: 0.9rem; border: 1px ridge var(--accent); 
-        }
+        select option { background: #1a1a1a; color: white; } /* Para que no salgan en blanco */
+
+        .bcv-status { background: rgba(0, 242, 254, 0.1); padding: 8px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px ridge var(--accent); }
         .row-flex { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; }
-        .bs-info { flex-grow: 1; font-size: 0.8rem; color: #00f2fe; text-align: right; }
-        .checkbox-group { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; cursor: pointer; }
         
         .btn-generar { 
             width: 100%; padding: 15px; background: var(--accent); border: none; border-radius: 12px; 
-            color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s; 
-            text-transform: uppercase; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
+            color: #000; font-weight: bold; cursor: pointer; text-transform: uppercase;
         }
-        .btn-generar:hover { transform: scale(1.02); background: #fff; }
-        
+
+        /* CORRECCIÓN DE LA PANTALLITA DE RESULTADOS */
         #resultado { 
-            display: none; margin-top: 20px; background: #fff; color: #000; padding: 15px; 
-            border-radius: 12px; border: 3px solid var(--aurora-blue); 
+            display: none; margin-top: 20px; background: rgba(0, 51, 102, 0.9); 
+            color: white; padding: 20px; border-radius: 15px; border: 2px solid var(--accent); 
         }
-        .btn-whatsapp { 
-            width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; 
-            color: white; font-weight: bold; cursor: pointer; margin-top: 15px; font-size: 1rem;
-        }
+        #resultado p { margin: 8px 0; border-bottom: 1px solid rgba(0, 242, 254, 0.2); padding-bottom: 4px; }
+        .val { color: var(--accent); font-weight: bold; }
+        .monto-vip { color: var(--neon-green); font-size: 1.2rem; font-weight: bold; }
+
+        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>ANATO S.M.G. 2026</h2>
-    
-    <div class="bcv-status" id="bcv-box">🔄 Sincronizando BCV...</div>
+    <div class="bcv-status" id="bcv-box">🔄 Conectando...</div>
 
     <div class="input-group">
-        <label>Identificación del Cliente</label>
-        <input type="text" id="nombre" placeholder="Nombre completo">
-        <input type="text" id="ubicacion" placeholder="Ubicación del Servicio" style="margin-top:8px;">
+        <label>CLIENTE Y LUGAR</label>
+        <input type="text" id="nombre" placeholder="Nombre del Cliente">
+        <input type="text" id="ubicacion" placeholder="Lugar (Ej: Los Guayos)" style="margin-top:8px;">
     </div>
 
     <div class="input-group">
-        <label>WhatsApp Destino</label>
+        <label>TELÉFONO</label>
         <div style="display:flex; gap:5px;">
             <select id="op" style="width:110px;">
                 <option value="58412">0412</option>
@@ -96,133 +76,82 @@
                 <option value="58424">0424</option>
                 <option value="58416">0416</option>
                 <option value="58426">0426</option>
-                <option value="57">🇨🇴 +57</option>
-                <option value="1">🇺🇸 +1</option>
             </select>
             <input type="number" id="tel" placeholder="Número">
         </div>
     </div>
 
     <div class="input-group">
-        <label>Monto del Servicio</label>
+        <label>DÓLAR Y PRECIO</label>
         <div class="row-flex">
-            <input type="number" id="precio" placeholder="00" oninput="actualizarBs()" style="width:80px; text-align:center; color: var(--neon-green); font-weight: bold;">
-            <span style="color:var(--neon-green); font-weight:bold; font-size: 1.2rem;">$</span>
-            <div class="bs-info">
-                <div id="bs-calc">Bs. 0.00</div>
-                <label class="checkbox-group">
-                    <input type="checkbox" id="mostrarBs" style="width:14px; height:14px;"> Incluir Bs.
-                </label>
-            </div>
+            <input type="number" id="precio" placeholder="00" oninput="actualizarBs()" style="width:80px; text-align:center;">
+            <span style="color:var(--neon-green); font-weight:bold;">$</span>
+            <div id="bs-calc" style="flex-grow:1; text-align:right; font-size:0.8rem;">Bs. 0.00</div>
         </div>
     </div>
 
     <div class="input-group">
-        <label>Programación</label>
-        <div class="row-flex">
-            <div style="flex-grow:1; font-size:0.75rem;" id="fechaTexto">Fecha: Automática</div>
-            <label class="checkbox-group">
-                <input type="checkbox" id="activarFechaManual" onchange="toggleFechaManual()"> Manual
-            </label>
-        </div>
-        <input type="date" id="fechaManualInput" style="display:none; margin-top:8px;">
-    </div>
-
-    <div class="input-group">
-        <label>Ciclo de Mantenimiento</label>
+        <label>MANTENIMIENTOS Y FECHA</label>
         <select id="cupos">
-            <option value="2">2 Servicios restantes</option>
-            <option value="1">1 Servicio restante</option>
-            <option value="0">Cierre de Ciclo 2026</option>
+            <option value="2">2 Servicios</option>
+            <option value="1">1 Servicio</option>
         </select>
+        <input type="date" id="fechaManualInput" style="margin-top:8px;">
     </div>
 
     <button class="btn-generar" onclick="prepararInvitacion()">Generar Pase VIP</button>
 
     <div id="resultado">
-        <div style="text-align:center; font-weight:bold; color:var(--aurora-blue); border-bottom:1px solid #ccc; margin-bottom:10px;">VISTA PREVIA DE DATOS</div>
-        <p style="font-size:0.9rem;"><strong>Titular:</strong> <span id="res-nom"></span></p>
-        <p style="font-size:0.9rem;"><strong>Monto:</strong> <span id="res-pre" style="color:green; font-weight:bold;"></span></p>
-        <div style="background:#fff3cd; padding:8px; border-radius:5px; text-align:center; font-size:0.7rem; font-weight:bold;">
-            ⚠️ LOS DATOS SE HAN ENLAZADO A "BIENVENIDA"
-        </div>
+        <h3 style="text-align:center; color:var(--accent); margin-top:0;">RESUMEN VIP</h3>
+        <p>Cliente: <span id="res-nom" class="val"></span></p>
+        <p>Lugar: <span id="res-ubi" class="val"></span></p>
+        <p>Fecha: <span id="res-fec" class="val"></span></p>
+        <p>Monto: <span class="monto-vip">$</span> <span id="res-pre" class="monto-vip"></span></p>
+        <p>Mantenimientos: <span id="res-cup" class="val"></span></p>
+        <div id="wa-btn-container"></div>
     </div>
-    
-    <div id="wa-btn-container"></div>
 </div>
 
 <script>
     let tasa = 0;
-
     async function obtenerTasa() {
         try {
             const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
             const d = await r.json();
             tasa = d.promedio;
             document.getElementById('bcv-box').innerText = `Tasa BCV: Bs. ${tasa.toFixed(2)}`;
-        } catch(e) {
-            tasa = prompt("Error BCV. Ingrese tasa manual:");
-            document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${tasa}`;
-        }
-    }
-
-    function toggleFechaManual() {
-        const check = document.getElementById('activarFechaManual').checked;
-        const input = document.getElementById('fechaManualInput');
-        input.style.display = check ? "block" : "none";
+        } catch(e) { tasa = 60; document.getElementById('bcv-box').innerText = `Tasa: Bs. ${tasa}`; }
     }
 
     function actualizarBs() {
         const p = document.getElementById('precio').value;
-        const total = (p * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
-        document.getElementById('bs-calc').innerText = `Bs. ${total}`;
+        document.getElementById('bs-calc').innerText = `Bs. ${(p * tasa).toFixed(2)}`;
     }
 
     function prepararInvitacion() {
         const nom = document.getElementById('nombre').value;
         const ubi = document.getElementById('ubicacion').value;
         const pre = document.getElementById('precio').value;
-        const cupo = parseInt(document.getElementById('cupos').value);
-        const enviarBs = document.getElementById('mostrarBs').checked;
-        const manualCheck = document.getElementById('activarFechaManual').checked;
-        const manualDate = document.getElementById('fechaManualInput').value;
-        
-        const montoBs = (pre * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
-        const precioParaLink = enviarBs ? `${pre} (Bs. ${montoBs})` : `${pre}`;
-        
+        const cupo = document.getElementById('cupos').value;
+        const fec = document.getElementById('fechaManualInput').value || "Hoy";
+
+        // Mostrar en la pantallita
         document.getElementById('res-nom').innerText = nom;
-        document.getElementById('res-pre').innerText = precioParaLink + " USD";
-        
-        let citas = [];
-        let fechaBase = manualCheck && manualDate ? new Date(manualDate + "T12:00:00") : new Date();
-        let fechaFormateada = fechaBase.toLocaleDateString('es-VE', {day:'2-digit', month:'long', year:'numeric'});
-
-        if(cupo > 0) {
-            for(let i=1; i<=cupo; i++) {
-                let f = new Date(fechaBase);
-                f.setMonth(f.getMonth() + (i * 4));
-                citas.push(f.toLocaleDateString('es-VE', {day:'2-digit', month:'long'}));
-            }
-        } else { citas.push("Ciclo Cerrado"); }
-
+        document.getElementById('res-ubi').innerText = ubi;
+        document.getElementById('res-fec').innerText = fec;
+        document.getElementById('res-pre').innerText = pre;
+        document.getElementById('res-cup').innerText = cupo;
         document.getElementById('resultado').style.display = "block";
-        
-        // ANCLAJE n5: Conexión a la pantalla de BIENVENIDA con todas las rutas
-        const baseLink = "https://anatosmg-app.github.io/invitaciones.html/"; 
-        const linkFinal = `${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(pre)}&u=${encodeURIComponent(ubi)}&f=${encodeURIComponent(fechaFormateada)}&c=${encodeURIComponent(citas.join(", "))}`;
-        
+
         const telFull = document.getElementById('op').value + document.getElementById('tel').value;
-        const msjWa = `¡Hola! Tu Pase VIP de Multiservicios Anato S.M.G. está listo. Ver aquí: ${linkFinal}`;
+        const link = `https://anatosmg-app.github.io/invitaciones.html/?n=${nom}&p=${pre}&u=${ubi}&f=${fec}`;
         
         document.getElementById('wa-btn-container').innerHTML = `
-            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
-                ENVIAR PASE VIP 🚀
-            </button>
-        `;
+            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=Tu Pase VIP: ${link}')">
+                ENVIAR WHATSAPP 🚀
+            </button>`;
     }
-
     obtenerTasa();
 </script>
-
 </body>
 </html>
