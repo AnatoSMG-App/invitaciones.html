@@ -3,197 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.M.G. - Gestor VIP Elite 2026</title>
+    <title>S.M.G. - Generador de Enlaces</title>
     <style>
-        :root { --primary: #003366; --accent: #00aaff; --text: #ffffff; --success: #25d366; --admin: #6c5ce7; }
-        body { font-family: 'Arial', sans-serif; background: #050505; color: var(--text); padding: 20px; display: flex; justify-content: center; }
-        .container { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--primary); width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { color: var(--accent); text-align: center; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.8rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
-        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; }
-        .bcv-status { background: rgba(0,170,255,0.1); padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 15px; font-weight: bold; border: 1px solid var(--primary); }
-        .row-flex { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 10px; border-radius: 10px; border: 1px solid #333; }
-        .bs-info { flex-grow: 1; font-size: 0.8rem; color: #aaa; text-align: right; }
-        .checkbox-group { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: var(--accent); cursor: pointer; }
-        .btn-generar { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .btn-generar:hover { background: var(--accent); transform: translateY(-2px); }
-        
-        #resultado { display: none; margin-top: 25px; background: #fff; color: #000; padding: 20px; border-radius: 15px; border: 4px solid var(--primary); }
-        .header-vip { text-align: center; font-weight: bold; border-bottom: 2px solid #003366; margin-bottom: 10px; text-transform: uppercase; }
-        
-        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 10px rgba(37,211,102,0.3); }
-        .btn-admin { width: 100%; padding: 10px; background: var(--admin); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 0.8rem; opacity: 0.9; }
-        
-        #fechaManualContainer { display: none; margin-top: 5px; }
+        body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .box { background: #111; padding: 25px; border-radius: 20px; border: 2px solid #00f2ff; box-shadow: 0 0 20px #00f2ff55; width: 90%; max-width: 420px; }
+        h2 { color: #00f2ff; text-align: center; font-size: 1.1rem; text-transform: uppercase; }
+        .label { font-size: 0.7rem; color: #00f2ff; margin-bottom: 5px; display: block; }
+        select, input { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #222; color: #fff; box-sizing: border-box; }
+        .ops { display: flex; gap: 5px; margin-bottom: 15px; }
+        .op-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; opacity: 0.4; font-size: 0.65rem; transition: 0.3s; }
+        .op-btn.active { opacity: 1; transform: scale(1.05); border: 1px solid #fff; }
+        .digitel { background: #0055ff; color: #fff; }
+        .movistar { background: #00ff00; color: #000; }
+        .movilnet { background: #ff6600; color: #fff; }
+        .btn-gen { width: 100%; padding: 18px; border-radius: 12px; border: none; background: #00f2ff; color: #000; font-weight: bold; cursor: pointer; font-size: 1rem; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h2>S.M.G. ELITE 2026</h2>
-    
-    <div class="bcv-status" id="bcv-box">🔄 Sincronizando BCV...</div>
-
-    <div class="input-group">
-        <label>CLIENTE Y UBICACIÓN</label>
-        <input type="text" id="nombre" placeholder="Nombre">
-        <input type="text" id="ubicacion" placeholder="Ubicación (Ej: Sector 3)" style="margin-top:5px;">
-    </div>
-
-    <div class="input-group">
-        <label>WHATSAPP</label>
-        <div style="display:flex; gap:5px;">
-            <select id="op" style="width:105px;">
-                <option value="58412">0412</option>
-                <option value="58414">0414</option>
-                <option value="58424">0424</option>
-                <option value="58416">0416</option>
-                <option value="58426">0426</option>
-                <option value="1">🇺🇸 +1</option>
-            </select>
-            <input type="number" id="tel" placeholder="Número">
-        </div>
-    </div>
-
-    <div class="input-group">
-        <label>PRECIO</label>
-        <div class="row-flex">
-            <input type="number" id="precio" placeholder="0" oninput="actualizarBs()" style="width:80px; text-align:center;">
-            <span style="color:var(--accent); font-weight:bold;">$</span>
-            <div class="bs-info">
-                <div id="bs-calc">Bs. 0.00</div>
-                <label class="checkbox-group">
-                    <input type="checkbox" id="mostrarBs" style="width:15px; height:15px;"> ¿Bs. en Link?
-                </label>
-            </div>
-        </div>
-    </div>
-
-    <div class="input-group">
-        <label>FECHA INICIO</label>
-        <div class="row-flex">
-            <div style="flex-grow:1; font-size:0.8rem;" id="fechaTexto">Fecha: Hoy (Auto)</div>
-            <label class="checkbox-group">
-                <input type="checkbox" id="activarFechaManual" onchange="toggleFechaManual()" style="width:15px; height:15px;"> Manual
-            </label>
-        </div>
-        <div id="fechaManualContainer">
-            <input type="date" id="fechaManualInput">
-        </div>
-    </div>
-
-    <div class="input-group">
-        <label>SERVICIOS</label>
-        <select id="cupos">
-            <option value="2">2 Mantenimientos</option>
-            <option value="1">1 Mantenimiento</option>
-            <option value="0">Cierre de Ciclo</option>
+    <div class="box">
+        <h2>🚀 GENERADOR S.M.G. ELITE</h2>
+        
+        <span class="label">País:</span>
+        <select id="cod-pais">
+            <option value="58">🇻🇪 Venezuela (+58)</option>
+            <option value="1">🇺🇸 USA (+1)</option>
+            <option value="51">🇵🇪 Perú (+51)</option>
+            <option value="57">🇨🇴 Colombia (+57)</option>
         </select>
-    </div>
 
-    <button class="btn-generar" onclick="prepararInvitacion()">PROCESAR DATOS</button>
-
-    <div id="resultado">
-        <div class="header-vip">S.M.G. - VISTA PREVIA</div>
-        <p><strong>Titular:</strong> <span id="res-nom"></span></p>
-        <p><strong>Ubicación:</strong> <span id="res-ubi" style="color:#003366; font-weight:bold;"></span></p>
-        <p><strong>Precio:</strong> <span id="res-pre"></span></p>
-        <p><strong>Citas:</strong></p>
-        <ul id="res-citas" style="font-weight: bold; color: #003366; font-size: 0.9rem;"></ul>
-        <div style="background:#ffcc00; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border: 2px dashed #000; font-size: 0.8rem;">
-            📸 TOME CAPTURA
+        <span class="label">Operadora (Venezuela):</span>
+        <div class="ops">
+            <button class="op-btn digitel" onclick="setOp('0412', this)">0412</button>
+            <button class="op-btn movistar" onclick="setOp('0414/0424', this)">0414/24</button>
+            <button class="op-btn movilnet" onclick="setOp('0416/0426', this)">0416/26</button>
         </div>
+
+        <input type="text" id="nombre" placeholder="Nombre del Cliente">
+        <input type="text" id="ubicacion" placeholder="Ubicación">
+        <input type="text" id="precio" placeholder="Monto (USD)">
+        <input type="text" id="citas" placeholder="Fechas de Mantenimiento">
+        
+        <button class="btn-gen" onclick="generarLink()">🚀 ENVIAR PRESENTACIÓN</button>
     </div>
-    
-    <div id="wa-btn-container"></div>
-</div>
 
-<script>
-    let tasa = 0;
-
-    async function obtenerTasa() {
-        try {
-            const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
-            const d = await r.json();
-            tasa = d.promedio;
-            document.getElementById('bcv-box').innerText = `Tasa Oficial: Bs. ${tasa.toFixed(2)}`;
-        } catch(e) {
-            tasa = prompt("Error BCV. Ingrese tasa:");
-            document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${tasa}`;
-        }
-    }
-
-    function toggleFechaManual() {
-        const check = document.getElementById('activarFechaManual').checked;
-        document.getElementById('fechaManualContainer').style.display = check ? "block" : "none";
-        document.getElementById('fechaTexto').innerText = check ? "Seleccione:" : "Fecha: Hoy (Auto)";
-    }
-
-    function actualizarBs() {
-        const p = document.getElementById('precio').value;
-        const total = (p * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
-        document.getElementById('bs-calc').innerText = `Bs. ${total}`;
-    }
-
-    function prepararInvitacion() {
-        const nom = document.getElementById('nombre').value;
-        const ubi = document.getElementById('ubicacion').value;
-        const pre = document.getElementById('precio').value;
-        const cupo = parseInt(document.getElementById('cupos').value);
-        const enviarBs = document.getElementById('mostrarBs').checked;
-        const manualCheck = document.getElementById('activarFechaManual').checked;
-        const manualDateValue = document.getElementById('fechaManualInput').value;
-        
-        if(!nom || !pre) { alert("Amo, faltan datos!"); return; }
-
-        const montoBs = (pre * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
-        const precioParaLink = enviarBs ? `${pre}$ (Bs. ${montoBs})` : `${pre}$`;
-        
-        document.getElementById('res-nom').innerText = nom;
-        document.getElementById('res-ubi').innerText = ubi || "No indicada";
-        document.getElementById('res-pre').innerText = pre + " USD";
-        
-        let citas = [];
-        const listaUI = document.getElementById('res-citas');
-        listaUI.innerHTML = "";
-
-        let fechaBase = manualCheck && manualDateValue ? new Date(manualDateValue + "T12:00:00") : new Date();
-
-        if(cupo === 0) {
-            listaUI.innerHTML = "<li>Ciclo completo.</li>";
-            citas.push("Ciclo Completo");
-        } else {
-            for(let i=1; i<=cupo; i++) {
-                let f = new Date(fechaBase);
-                f.setMonth(f.getMonth() + (i * 4));
-                let txt = f.toLocaleDateString('es-VE', {day:'2-digit', month:'long', year:'numeric'});
-                listaUI.innerHTML += `<li>${txt}</li>`;
-                citas.push(txt);
-            }
+    <script>
+        let operadoraSel = "N/A";
+        function setOp(op, btn) {
+            operadoraSel = op;
+            document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
 
-        document.getElementById('resultado').style.display = "block";
-        
-        const baseLink = "https://anatosmg-app.github.io/invitaciones.html/"; 
-        const params = `n=${encodeURIComponent(nom)}&u=${encodeURIComponent(ubi)}&p=${encodeURIComponent(precioParaLink)}&c=${encodeURIComponent(citas.join(", "))}`;
-        
-        const linkCliente = `${baseLink}?${params}`;
-        const linkAdmin = `${baseLink}?${params}&admin=true`;
-        
-        const telFull = document.getElementById('op').value + document.getElementById('tel').value;
-        const msjWa = `¡Saludos! Soy de Multiservicios Anato S.M.G. Invitación VIP: ${linkCliente}`;
-        
-        document.getElementById('wa-btn-container').innerHTML = `
-            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
-                ✉️ ENVIAR AL CLIENTE
-            </button>
-            <button class="btn-admin" onclick="window.open('${linkAdmin}')">
-                🛠️ PROBAR YO (Modo Maestro)
-            </button>
-        `;
-    }
-    obtenerTasa();
-</script>
+        function generarLink() {
+            const pais = document.getElementById('cod-pais').value;
+            const n = encodeURIComponent(document.getElementById('nombre').value);
+            const u = encodeURIComponent(document.getElementById('ubicacion').value);
+            const p = encodeURIComponent(document.getElementById('precio').value);
+            const c = encodeURIComponent(document.getElementById('citas').value);
+            
+            if(!n || !p) { alert("Amo, complete los datos."); return; }
+
+            // CORRECCIÓN CLAVE: El link ahora apunta a presentacion.html
+            // Asegúrese de que el archivo se llame exactamente presentacion.html en su servidor
+            const urlBase = window.location.href.replace('generador.html', 'presentacion.html');
+            const finalLink = `${urlBase}?n=${n}&u=${u}&p=${p}&c=${c}&op=${operadoraSel}&pref=${pais}`;
+            
+            const mensaje = `💎 *S.M.G. VIP* 💎\n\nHola, hemos procesado tu presupuesto Elite. Mira los detalles aquí:\n${finalLink}`;
+            const wa = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+            
+            window.open(wa, '_blank');
+        }
+    </script>
 </body>
 </html>
