@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.M.G. - Gestor VIP Elite 2026</title>
     <style>
-        :root { --primary: #003366; --accent: #00aaff; --text: #ffffff; --success: #25d366; }
+        :root { --primary: #003366; --accent: #00aaff; --text: #ffffff; --success: #25d366; --admin: #6c5ce7; }
         body { font-family: 'Arial', sans-serif; background: #050505; color: var(--text); padding: 20px; display: flex; justify-content: center; }
         .container { background: #111; padding: 25px; border-radius: 20px; border: 1px solid var(--primary); width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { color: var(--accent); text-align: center; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        h2 { color: var(--accent); text-align: center; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
         .input-group { margin-bottom: 15px; }
         label { display: block; font-size: 0.8rem; color: var(--accent); margin-bottom: 5px; font-weight: bold; }
         input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: white; box-sizing: border-box; font-size: 1rem; }
@@ -18,30 +18,33 @@
         .checkbox-group { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: var(--accent); cursor: pointer; }
         .btn-generar { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px; }
         .btn-generar:hover { background: var(--accent); transform: translateY(-2px); }
+        
         #resultado { display: none; margin-top: 25px; background: #fff; color: #000; padding: 20px; border-radius: 15px; border: 4px solid var(--primary); }
         .header-vip { text-align: center; font-weight: bold; border-bottom: 2px solid #003366; margin-bottom: 10px; text-transform: uppercase; }
-        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        .btn-admin { width: 100%; padding: 10px; background: #555; border: none; border-radius: 12px; color: white; font-size: 0.8rem; cursor: pointer; margin-top: 5px; opacity: 0.7; }
+        
+        .btn-whatsapp { width: 100%; padding: 15px; background: var(--success); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 10px rgba(37,211,102,0.3); }
+        .btn-admin { width: 100%; padding: 10px; background: var(--admin); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 0.8rem; opacity: 0.9; }
+        
         #fechaManualContainer { display: none; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>S.M.G. - PROYECTO MURACHI</h2>
+    <h2>S.M.G. ELITE 2026</h2>
     
-    <div class="bcv-status" id="bcv-box">🔄 Conectando al BCV...</div>
+    <div class="bcv-status" id="bcv-box">🔄 Sincronizando BCV...</div>
 
     <div class="input-group">
         <label>CLIENTE Y UBICACIÓN</label>
-        <input type="text" id="nombre" placeholder="Nombre del Cliente">
-        <input type="text" id="ubicacion" placeholder="Ubicación (Ej: Sector 3, Los Guayos)" style="margin-top:5px;">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="text" id="ubicacion" placeholder="Ubicación (Ej: Sector 3)" style="margin-top:5px;">
     </div>
 
     <div class="input-group">
-        <label>TELÉFONO WHATSAPP</label>
+        <label>WHATSAPP</label>
         <div style="display:flex; gap:5px;">
-            <select id="op" style="width:100px;">
+            <select id="op" style="width:105px;">
                 <option value="58412">0412</option>
                 <option value="58414">0414</option>
                 <option value="58424">0424</option>
@@ -49,30 +52,30 @@
                 <option value="58426">0426</option>
                 <option value="1">🇺🇸 +1</option>
             </select>
-            <input type="number" id="tel" placeholder="7654321">
+            <input type="number" id="tel" placeholder="Número">
         </div>
     </div>
 
     <div class="input-group">
-        <label>PRECIO Y CONVERSIÓN</label>
+        <label>PRECIO</label>
         <div class="row-flex">
-            <input type="number" id="precio" placeholder="30" oninput="actualizarBs()" style="width:80px; text-align:center;">
+            <input type="number" id="precio" placeholder="0" oninput="actualizarBs()" style="width:80px; text-align:center;">
             <span style="color:var(--accent); font-weight:bold;">$</span>
             <div class="bs-info">
                 <div id="bs-calc">Bs. 0.00</div>
                 <label class="checkbox-group">
-                    <input type="checkbox" id="mostrarBs" style="width:15px; height:15px;"> ¿Enviar Bs.?
+                    <input type="checkbox" id="mostrarBs" style="width:15px; height:15px;"> ¿Bs. en Link?
                 </label>
             </div>
         </div>
     </div>
 
     <div class="input-group">
-        <label>FECHA DE INICIO</label>
+        <label>FECHA INICIO</label>
         <div class="row-flex">
             <div style="flex-grow:1; font-size:0.8rem;" id="fechaTexto">Fecha: Hoy (Auto)</div>
             <label class="checkbox-group">
-                <input type="checkbox" id="activarFechaManual" onchange="toggleFechaManual()" style="width:15px; height:15px;"> ¿Fecha Manual?
+                <input type="checkbox" id="activarFechaManual" onchange="toggleFechaManual()" style="width:15px; height:15px;"> Manual
             </label>
         </div>
         <div id="fechaManualContainer">
@@ -81,25 +84,25 @@
     </div>
 
     <div class="input-group">
-        <label>MANTENIMIENTOS RESTANTES</label>
+        <label>SERVICIOS</label>
         <select id="cupos">
-            <option value="2">Quedan 2 servicios</option>
-            <option value="1">Queda 1 servicio</option>
-            <option value="0">CIERRE DE CICLO / 2027</option>
+            <option value="2">2 Mantenimientos</option>
+            <option value="1">1 Mantenimiento</option>
+            <option value="0">Cierre de Ciclo</option>
         </select>
     </div>
 
-    <button class="btn-generar" onclick="prepararInvitacion()">GENERAR PASE VIP</button>
+    <button class="btn-generar" onclick="prepararInvitacion()">PROCESAR DATOS</button>
 
     <div id="resultado">
-        <div class="header-vip">S.M.G. - PASE VIP</div>
+        <div class="header-vip">S.M.G. - VISTA PREVIA</div>
         <p><strong>Titular:</strong> <span id="res-nom"></span></p>
-        <p><strong>Ubicación:</strong> <span id="res-ubi" style="color: #003366; font-weight: bold;"></span></p>
-        <p><strong>Precio Protegido:</strong> <span id="res-pre"></span></p>
-        <p><strong>Próximas Citas:</strong></p>
-        <ul id="res-citas" style="font-weight: bold; color: #003366;"></ul>
-        <div style="background:#ffcc00; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border: 2px dashed #000;">
-            📸 TOMA CAPTURA DE PANTALLA
+        <p><strong>Ubicación:</strong> <span id="res-ubi" style="color:#003366; font-weight:bold;"></span></p>
+        <p><strong>Precio:</strong> <span id="res-pre"></span></p>
+        <p><strong>Citas:</strong></p>
+        <ul id="res-citas" style="font-weight: bold; color: #003366; font-size: 0.9rem;"></ul>
+        <div style="background:#ffcc00; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border: 2px dashed #000; font-size: 0.8rem;">
+            📸 TOME CAPTURA
         </div>
     </div>
     
@@ -114,19 +117,17 @@
             const r = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
             const d = await r.json();
             tasa = d.promedio;
-            document.getElementById('bcv-box').innerText = `Tasa BCV: Bs. ${tasa.toFixed(2)}`;
+            document.getElementById('bcv-box').innerText = `Tasa Oficial: Bs. ${tasa.toFixed(2)}`;
         } catch(e) {
-            tasa = prompt("No pude conectar al BCV. ¿A cuánto está el dólar hoy?");
+            tasa = prompt("Error BCV. Ingrese tasa:");
             document.getElementById('bcv-box').innerText = `Tasa Manual: Bs. ${tasa}`;
         }
     }
 
     function toggleFechaManual() {
         const check = document.getElementById('activarFechaManual').checked;
-        const container = document.getElementById('fechaManualContainer');
-        const txt = document.getElementById('fechaTexto');
-        container.style.display = check ? "block" : "none";
-        txt.innerText = check ? "Seleccione día:" : "Fecha: Hoy (Auto)";
+        document.getElementById('fechaManualContainer').style.display = check ? "block" : "none";
+        document.getElementById('fechaTexto').innerText = check ? "Seleccione:" : "Fecha: Hoy (Auto)";
     }
 
     function actualizarBs() {
@@ -144,12 +145,13 @@
         const manualCheck = document.getElementById('activarFechaManual').checked;
         const manualDateValue = document.getElementById('fechaManualInput').value;
         
+        if(!nom || !pre) { alert("Amo, faltan datos!"); return; }
+
         const montoBs = (pre * tasa).toLocaleString('es-VE', {minimumFractionDigits: 2});
         const precioParaLink = enviarBs ? `${pre}$ (Bs. ${montoBs})` : `${pre}$`;
         
-        // --- LLENADO DEL PASE VISUAL ---
         document.getElementById('res-nom').innerText = nom;
-        document.getElementById('res-ubi').innerText = ubi || "No especificada";
+        document.getElementById('res-ubi').innerText = ubi || "No indicada";
         document.getElementById('res-pre').innerText = pre + " USD";
         
         let citas = [];
@@ -159,8 +161,8 @@
         let fechaBase = manualCheck && manualDateValue ? new Date(manualDateValue + "T12:00:00") : new Date();
 
         if(cupo === 0) {
-            listaUI.innerHTML = "<li>Ciclo 2026 completo. Próxima: Abril 2027</li>";
-            citas.push("Ciclo 2026 Completo");
+            listaUI.innerHTML = "<li>Ciclo completo.</li>";
+            citas.push("Ciclo Completo");
         } else {
             for(let i=1; i<=cupo; i++) {
                 let f = new Date(fechaBase);
@@ -173,28 +175,25 @@
 
         document.getElementById('resultado').style.display = "block";
         
-        // --- GENERACIÓN DE LINKS (PROYECTO MURACHI) ---
         const baseLink = "https://anatosmg-app.github.io/invitaciones.html/"; 
-        const params = `n=${encodeURIComponent(nom)}&p=${encodeURIComponent(precioParaLink)}&u=${encodeURIComponent(ubi)}&c=${encodeURIComponent(citas.join(", "))}`;
+        const params = `n=${encodeURIComponent(nom)}&u=${encodeURIComponent(ubi)}&p=${encodeURIComponent(precioParaLink)}&c=${encodeURIComponent(citas.join(", "))}`;
         
         const linkCliente = `${baseLink}?${params}`;
-        const linkMaestro = `${baseLink}?${params}&admin=true`; // La llave para el amo
+        const linkAdmin = `${baseLink}?${params}&admin=true`;
         
         const telFull = document.getElementById('op').value + document.getElementById('tel').value;
-        const msjWa = `¡Hola! Somos de Multiservicios Anato S.M.G. invitándote a ser V.I.P: ${linkCliente}`;
+        const msjWa = `¡Saludos! Soy de Multiservicios Anato S.M.G. Invitación VIP: ${linkCliente}`;
         
         document.getElementById('wa-btn-container').innerHTML = `
             <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
-                🚀 ENVIAR AL CLIENTE (WHATSAPP)
+                ✉️ ENVIAR AL CLIENTE
             </button>
-            <button class="btn-admin" onclick="window.open('${linkMaestro}')">
-                🛠️ PREVISUALIZAR (MODO MAESTRO)
+            <button class="btn-admin" onclick="window.open('${linkAdmin}')">
+                🛠️ PROBAR YO (Modo Maestro)
             </button>
         `;
     }
-
     obtenerTasa();
 </script>
-
 </body>
 </html>
