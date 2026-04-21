@@ -45,84 +45,23 @@
      <img src="logo.png" alt="S.M.G." class="logo">
 
 <p>Tu Próximo Mantenimiento <strong>QUEDÓ ANCLADO</strong> a:</p>
-<p class="precio-anclado" id="precio-final">($)</p>
-<p id="fecha-final">Por este año 2026.</p>
+<p class="precio-anclado" id="precio-final">-- USD</p>
+        <p id="fecha-final">Calculando fecha...</p>
   <script>
-  // 1. Buscamos los datos en la dirección de la página
+ // 1. Buscamos el precio y la cita en el link
   const urlParams = new URLSearchParams(window.location.search);
-  const p = urlParams.get('p'); // Esto agarra el Precio (ej: 5)
-  const c = urlParams.get('c'); // Esto agarra la Cita (ej: 20 de agosto)
+  const p = urlParams.get('p'); 
+  const c = urlParams.get('c'); 
 
-  // 2. Si hay precio, lo escribe en la línea 48
+  // 2. Si hay precio, lo inyectamos en el terminal 'precio-final'
   if (p) {
-    const cuadroPrecio = document.getElementById('precio-final');
-    if (cuadroPrecio) {
-      cuadroPrecio.innerText = p + " USD";
-    }
+    document.getElementById('precio-final').innerText = p + " USD";
   }
 
-  // 3. Si hay cita, la escribe en la línea 49
+  // 3. Si hay cita, la inyectamos en el terminal 'fecha-final'
   if (c) {
-    const cuadroFecha = document.getElementById('fecha-final');
-    if (cuadroFecha) {
-      cuadroFecha.innerText = "Cita: " + decodeURIComponent(c);
-    }
+    document.getElementById('fecha-final').innerText = "Cita: " + decodeURIComponent(c);
   }
-</script>      
-        <p>Tomaste la <strong>MEJOR DECISIÓN</strong>.</p>
-        <script>
-  // Este es el cable que conecta el link con la línea 48
-  const urlParams = new URLSearchParams(window.location.search);
-  const precioDolares = urlParams.get('p');
-
-  if (precioDolares) {
-    // Aquí es donde sucede la magia en la línea 48
-    document.getElementById('precio-final').innerText = precioDolares + " USD";
-  }
-</script>
-        <div class="alerta-capture">
-            📸 POR FAVOR, TOME CAPTURA DE PANTALLA PARA QUE NO PIERDA SUS FECHAS DE MANTENIMIENTO NI SU PRECIO ANCLADO.
-        </div>
-
-        <button onclick="location.href='index.html'" class="btn-salir">FINALIZAR</button>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-    <script>
-        window.onload = function() {
-            // 1. LEER PRECIO DEL GENERADOR
-            const urlParams = new URLSearchParams(window.location.search);
-            const precioUrl = urlParams.get('p');
-            if(precioUrl) {
-                document.getElementById('precio-final').innerText = `(${precioUrl}$)`;
-            }
-
-            // 2. ARRANCAR AUDIO
-            var sonido = document.getElementById('aplausos');
-            if (sonido) {
-                sonido.play().catch(e => console.log("Audio esperando clic"));
-            }
-
-            // 3. EFECTO NIEVE (7 segundos)
-            var endNieve = Date.now() + (7 * 1000);
-            (function frame() {
-                confetti({
-                    particleCount: 2,
-                    startVelocity: 0,
-                    ticks: 200,
-                    origin: { x: Math.random(), y: Math.random() - 0.2 },
-                    colors: ['#ffffff', '#e0f7fa'],
-                    shapes: ['star'],
-                    gravity: 0.5,
-                    scalar: 0.8,
-                    drift: 0.5
-                });
-                if (Date.now() < endNieve) { requestAnimationFrame(frame); }
-            }());
-
-            // 4. ELIMINAMOS EL CIERRE AUTOMÁTICO PARA QUE EL CLIENTE TENGA TIEMPO DE TOMAR LA CAPTURA
-        };
     </script>
 </body>
 </html>
