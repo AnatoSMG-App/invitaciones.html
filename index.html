@@ -3,187 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anato S.M.G. VIP</title>
+    <title>S.M.G. - Panel de Control Murachi</title>
     <style>
-        :root { --vip: #00f2ff; --riesgo: #ff3131; }
-        body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; overflow-x: hidden; color: white; height: 100%; width: 100%; }
-        
-        .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center; background: #000; }
-        .active { display: flex; }
-
-        /* PANTALLA INICIAL - LOGO CENTRADO */
-        #pantalla-play { z-index: 5000; }
-        #escudo-main { 
-            width: 85%; 
-            max-width: 500px; 
-            margin-bottom: 30px; 
-            animation: latido 2s infinite; 
-            filter: drop-shadow(0 0 15px var(--vip));
-        }
-        @keyframes latido { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        
-        #btn-iniciar { 
-            background: var(--vip); color: #000; padding: 18px 40px; 
-            border-radius: 50px; border: none; font-weight: bold; font-size: 1.2rem; 
-            cursor: pointer; box-shadow: 0 0 20px var(--vip);
-            text-transform: uppercase;
-        }
-
-        /* CONTROL DE IMÁGENES DE PRESENTACIÓN */
-        .layer > img {
-            max-width: 85% !important;   
-            max-height: 50vh !important; 
-            object-fit: contain !important;
-            margin: 20px auto;
-        }
-
-        /* FASE: COMPARATIVA */
-        #fase-cuarto { z-index: 1000; }
-        #img-cuarto { width: 90%; height: auto; border: 2px solid var(--vip); border-radius: 10px; }
-
-        /* FASE: PANEL FINAL */
-        #fase-panel { z-index: 500; overflow-y: auto; display: none; padding-top: 20px; }
-        #fase-panel.active { display: block; }
-        
-        .split { display: flex; flex-wrap: wrap; width: 100%; min-height: 60vh; }
-        .panel { flex: 1; min-width: 300px; padding: 15px; border: 1px solid #222; }
-        .temp { font-size: 1.8rem; font-weight: bold; margin-bottom: 15px; }
-        
-        /* CUADRO DE RESUMEN DE PRECIO Y FECHA */
-        .resumen-vip {
-            background: rgba(0, 242, 255, 0.1);
-            border: 1px solid var(--vip);
-            margin: 10px;
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .item { display: flex; align-items: center; margin-bottom: 15px; opacity: 0; transform: scale(0.8); transition: 0.5s; font-size: 0.9rem; text-align: left; }
-        .item.show { opacity: 1; transform: scale(1); }
-        .item img { width: 35px; height: 35px; border-radius: 5px; margin-right: 10px; border: 1px solid var(--vip); }
-
-        #pop-img { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 80%; max-width: 400px; z-index: 2000; border: 4px solid var(--vip); border-radius: 20px; transition: 0.3s; background: #000; }
-        
-        .footer { width: 100%; padding: 20px; display: flex; gap: 10px; background: #000; position: relative; }
-        .btn-v { flex: 1; padding: 20px; background: #39ff14; color: #000; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-        .btn-r { flex: 1; padding: 20px; background: #ff3131; color: #fff; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-
-        @keyframes titilar { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        body { background: #050505; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .box { background: #111; padding: 30px; border-radius: 20px; border: 2px solid #00f2ff; box-shadow: 0 0 20px #00f2ff55; width: 90%; max-width: 400px; }
+        h2 { color: #00f2ff; text-align: center; margin-top: 0; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: #222; color: #fff; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border-radius: 10px; border: none; background: #00f2ff; color: #000; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        #link-box { margin-top: 20px; word-break: break-all; background: #000; padding: 10px; border-radius: 10px; font-size: 0.8rem; display: none; border: 1px dashed #555; }
     </style>
 </head>
 <body>
-
-    <audio id="snd-cuarto" src="audio_vip.mp3" preload="auto"></audio>
-    <audio id="snd-ok" src="aceptacion.mp3" preload="auto"></audio>
-
-    <div id="pantalla-play" class="layer active">
-        <img src="logo.png" id="escudo-main" alt="Logo">
-        <button id="btn-iniciar" onclick="arrancarTodo()">INICIAR PRESENTACIÓN</button>
+    <div class="box">
+        <h2>PROYECTO MURACHI</h2>
+        <input type="text" id="nombre" placeholder="Nombre del Cliente">
+        <input type="text" id="ubicacion" placeholder="Sector / Ubicación">
+        <input type="text" id="precio" placeholder="Precio (Ej: 40)">
+        <input type="text" id="citas" placeholder="Fechas (Ej: 20 May, 20 Sep)">
+        <button onclick="generarLink()">GENERAR ENLACE VIP</button>
+        <div id="link-box"></div>
     </div>
-
-    <div id="fase-cuarto" class="layer">
-        <img src="comparativa.jpg" id="img-cuarto">
-    </div>
-
-    <div id="fase-panel" class="layer">
-        <h2 style="color:var(--vip); margin: 20px 0;">MULTISERVICIOS ANATO S.M.G.</h2>
-        
-        <div class="resumen-vip">
-            <div style="color:var(--vip); font-weight:bold;">PRESUPUESTO ESTIMADO: <span id="res-pre">-- USD</span></div>
-            <div style="font-size:0.8rem;">Cita programada para: <span id="res-citas">No definida</span></div>
-        </div>
-
-        <div class="split">
-            <div class="panel">
-                <div class="temp" style="color:var(--vip)">16°C ❄️</div>
-                <h3 style="color: var(--vip); margin-bottom: 20px;">💎 BENEFICIOS V.I.P.</h3>
-                <div id="lista-vip">
-                    <div class="item" data-img="chequeo.jpg">Tecnología y Vanguardia</div>
-                    <div class="item" data-img="emergencia.jpg">Atención 24/7</div>
-                    <div class="item" data-img="logistica.jpg">Logística y Transporte</div>
-                    <div class="item" data-img="mantenimiento.png">Mantenimiento Preventivo</div>
-                    <div class="item" data-img="candado.jpg">Presupuesto Anclado</div>
-                    <div class="item" data-img="informe.jpg">Informe Digital</div>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="temp" style="color:var(--riesgo)">38°C 🔥</div>
-                <div style="color: #ff9100; font-size: 0.8rem; font-weight: bold; animation: titilar 0.8s infinite; margin-bottom: 15px; border: 1px dashed #ff9100; padding: 5px;">
-                    ⚠️ BAJO SU PROPIA RESPONSABILIDAD ⚠️
-                </div>
-                <div id="lista-riesgo">
-                    <div class="item" data-img="fuga.jpg">Fugas de Gas</div>
-                    <div class="item" data-img="oxidado.jpg">Oxidación</div>
-                    <div class="item" data-img="quemado.jpg">Cortocircuitos</div>
-                    <div class="item" data-img="sucio.jpg">Suciedad</div>
-                </div>
-            </div>
-        </div>
-        <div class="footer">
-           <a href="bienvenidos.html" id="btn-aceptar" class="btn-green">ACEPTAR VIP</a>
-            <button class="btn-r" onclick="ejecutarRechazo()">EN OTRO MOMENTO</button>
-        </div>
-    </div>
-
-    <img id="pop-img" src="">
 
     <script>
-        function arrancarTodo() {
-            // 1. CAPTURAR DATOS DEL LINK PRIMERO
-            const urlParams = new URLSearchParams(window.location.search);
-            const p = urlParams.get('p');
-            const f = urlParams.get('f');
-
-            // Escribir los datos en pantalla si existen
-            if(p) document.getElementById('res-pre').innerText = p + " USD";
-            if(f) document.getElementById('res-citas').innerText = f;
-document.getElementById('btn-aceptar').onclick = function(e) {
-    e.preventDefault();
-    window.location.href = "bienvenidos.html" + window.location.search;
-};
-            // 2. LOGÍSTICA DE ARRANQUE
-            const audio = document.getElementById('snd-cuarto');
+        function generarLink() {
+            const n = encodeURIComponent(document.getElementById('nombre').value);
+            const u = encodeURIComponent(document.getElementById('ubicacion').value);
+            const p = encodeURIComponent(document.getElementById('precio').value);
+            const c = encodeURIComponent(document.getElementById('citas').value);
             
-            // Quitar pantalla de inicio de inmediato
-            document.getElementById('pantalla-play').classList.remove('active');
-            document.getElementById('fase-cuarto').classList.add('active');
+            if(!n || !p) { alert("Amo, complete los datos básicos"); return; }
 
-            // Intentar sonido (si falla no importa, la presentación sigue)
-            audio.play().catch(e => console.log("Audio en espera"));
-
-            // 3. TIEMPO DE ESPERA (77 segundos para la comparativa)
-            setTimeout(() => {
-                document.getElementById('fase-cuarto').classList.remove('active');
-                document.getElementById('fase-panel').classList.add('active');
-                ejecutarDanza();
-            }, 77000); 
-        }
-
-        async function ejecutarDanza() {
-            const pop = document.getElementById('pop-img');
-            const items = document.querySelectorAll('.item');
-            for(let it of items) {
-                let imgPath = it.getAttribute('data-img');
-                if(imgPath) {
-                    pop.src = imgPath;
-                    pop.style.transform = "translate(-50%, -50%) scale(1)";
-                    await new Promise(r => setTimeout(r, 1200));
-                    pop.style.transform = "translate(-50%, -50%) scale(0)";
-                    it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
-                }
-                it.classList.add('show');
-                await new Promise(r => setTimeout(r, 400));
-            }
-        }
-
-        function ejecutarRechazo() {
-            var audioR = new Audio('rechazo.mp3'); 
-            audioR.play().catch(e => console.log("Sonido de rechazo no encontrado"));
-            setTimeout(function(){ 
-                alert("Gracias por su tiempo. Invitación finalizada.");
-                window.close();
-            }, 3000);
+            // IMPORTANTE: Cambie 'tuweb.com' por su dirección real
+            const urlBase = "https://tuweb.com/presentacion.html";
+            const finalLink = `${urlBase}?n=${n}&u=${u}&p=${p}&c=${c}`;
+            
+            const wa = `https://wa.me/?text=${encodeURIComponent("💎 ¡Bienvenido a la Experiencia VIP de S.M.G.! Toque el enlace para ver su presupuesto anclado: " + finalLink)}`;
+            
+            const box = document.getElementById('link-box');
+            box.style.display = "block";
+            box.innerHTML = `<a href="${wa}" style="color:#00f2ff; text-decoration:none;">🚀 ENVIAR POR WHATSAPP</a>`;
+            window.open(wa, '_blank');
         }
     </script>
 </body>
