@@ -183,11 +183,11 @@ listaUI.innerHTML = "<li>" + manualDateValue + "</li>";
 
         document.getElementById('resultado').style.display = "block";
         
-        const baseLink = "https://anatosmg-app.github.io/invitaciones.html/"; 
-        const linkIndex = `${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(precioParaLink)}&c=${encodeURIComponent(citas.join(", "))}`;
-        
+        const baseLink = let ubi = document.getElementById('ubicacion').value;
+let ubiLink = &u=${encodeURIComponent(ubi)};
+const linkIndex = ${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(precioParaLink)}&c=${encodeURIComponent(citas.join(','))}${ubiLink};        
         const telFull = document.getElementById('op').value + document.getElementById('tel').value;
-        const msjWa = `¡Hola! Somos de Multiservicios Anato S.M.G. invitandote a ser V.I.P: ${linkIndex}`;
+        const msjWa = `¡Hola! Somos de Multiservicios Anato S.M.G. te invitamos  a ser V.I.P: ${linkIndex}`;
         
         document.getElementById('wa-btn-container').innerHTML = `
             <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
