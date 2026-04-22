@@ -164,7 +164,6 @@
             }
         }
 
-        // --- AJUSTES DE DIBUJO CANVAS ---
         const canvas = document.getElementById('tarjetaVip');
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = "#003366";
@@ -178,40 +177,6 @@
         ctx.font = "bold 22px Arial";
         ctx.fillText("PASE V.I.P.", 40, 90);
         
-        // Coordenadas con margen izquierdo de 40px y espacio de 30px
         ctx.fillStyle = "#000000";
-        ctx.font = "bold 30px Arial"; // TAMAÑO 20px BOLD
+        ctx.font = "bold 30px Arial"; 
         ctx.fillText("TITULAR: " + nom.toUpperCase(), 50, 235);
-        
-        ctx.font = "bold 30px Arial"; // TAMAÑO 20px BOLD
-        ctx.fillText("UBICACIÓN: " + ubi.toUpperCase(), 50, 265); // Espacio +30px
-        
-        ctx.fillStyle = "#003366";
-        ctx.font = "bold 30px Arial"; // TAMAÑO 20px BOLD
-        ctx.fillText("CITAS: " + citas.join(" | "), 50, 295); // Espacio +30px
-
-        ctx.fillStyle = "#39ff14";
-        ctx.font = "bold 35px Arial";
-        ctx.fillText(pre + "$", 480, 150);
-
-        document.getElementById('resultado').style.display = "block";
-        
-        // --- VERIFICACIÓN DE ENVÍO FINAL ---
-        const baseLink = "https://anatosmg-app.github.io/invitaciones.html"; 
-        const linkIndex = `${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(precioParaLink)}&u=${encodeURIComponent(ubi)}&c=${encodeURIComponent(citas.join(", "))}`;
-        
-        const telFull = document.getElementById('op').value + document.getElementById('tel').value;
-        const msjWa = `¡Hola! Somos de Multiservicios Anato S.M.G. invitándote a ser V.I.P: ${linkIndex}`;
-        
-        document.getElementById('wa-btn-container').innerHTML = `
-            <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
-                ENVIAR POR WHATSAPP
-            </button>
-        `;
-    }
-
-    obtenerTasa();
-</script>
-
-</body>
-</html>
