@@ -42,26 +42,26 @@
         <input type="text" id="ubicacion" placeholder="Ubicación (Ej: Sector 3, Los Guayos)" style="margin-top:5px;">
     </div>
 
-   <div class="input-group">
-    <label>TELÉFONO WHATSAPP</label>
-    <div style="display:flex; gap:5px;">
-        <select id="op" style="width:140px;">
-            <optgroup label="🇻🇪 Venezuela">
-                <option value="58412">0412</option>
-                <option value="58414">0414</option>
-                <option value="58424">0424</option>
-                <option value="58416">0416</option>
-                <option value="58426">0426</option>
-            </optgroup>
-            <optgroup label="Internacional">
-                <option value="1">🇺🇸 USA (+1)</option>
-                <option value="57">🇨🇴 Colombia (+57)</option>
-                <option value="51">🇵🇪 Perú (+51)</option>
-            </optgroup>
-        </select>
-        <input type="number" id="tel" placeholder="Ej: 1234567" style="flex-grow: 1;">
+    <div class="input-group">
+        <label>TELÉFONO WHATSAPP</label>
+        <div style="display:flex; gap:5px;">
+            <select id="op" style="width:100px;">
+    <option value="58412">0412</option>
+    <option value="58414">0414</option>
+    <option value="58424">0424</option>
+    <option value="58416">0416</option>
+    <option value="58426">0426</option>
+    <option value="1">🇺🇸 +1</option>
+    <option value="57">🇨🇴 +57</option>
+    <option value="51">🇵🇪 +51</option>
+    <option value="507">🇵🇦 +507</option>
+    <option value="56">🇨🇱 +56</option>
+    <option value="34">🇪🇸 +34</option>
+</select>
+<input type="number" id="tel" placeholder="7654321">
+        </div>
     </div>
-</div>
+
     <div class="input-group">
         <label>PRECIO Y CONVERSIÓN</label>
         <div class="row-flex">
@@ -156,12 +156,12 @@
         const precioParaLink = enviarBs ? `${pre}$ (Bs. ${montoBs})` : `${pre}$`;
         
         document.getElementById('res-nom').innerText = nom;
-        document.getElementById('res-pre').innerText = precioParaLink;
+        document.getElementById('res-pre').innerText = document.getElementById('precio').value + " USD";
         
         let citas = [];
         const listaUI = document.getElementById('res-citas');
         listaUI.innerHTML = "";
-
+listaUI.innerHTML = "<li>" + manualDateValue + "</li>";
         // Lógica de Fecha
         let fechaBase = manualCheck && manualDateValue ? new Date(manualDateValue + "T12:00:00") : new Date();
 
@@ -181,11 +181,11 @@
 
         document.getElementById('resultado').style.display = "block";
         
-        const baseLink = "https://multiserviciosanato.github.io/Aplicacion-AnatoSMG/"; 
+        const baseLink = "https://anatosmg-app.github.io/invitaciones.html/"; 
         const linkIndex = `${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(precioParaLink)}&c=${encodeURIComponent(citas.join(", "))}`;
         
         const telFull = document.getElementById('op').value + document.getElementById('tel').value;
-        const msjWa = `¡Hola! Soy de S.M.G. Refrigeración. Aquí tienes tu Pase VIP: ${linkIndex}`;
+        const msjWa = `¡Hola! Somos de Multiservicios Anato S.M.G. invitandote a ser V.I.P: ${linkIndex}`;
         
         document.getElementById('wa-btn-container').innerHTML = `
             <button class="btn-whatsapp" onclick="window.open('https://wa.me/${telFull}?text=${encodeURIComponent(msjWa)}')">
