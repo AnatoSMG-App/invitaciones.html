@@ -2,183 +2,109 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S.M.G. - Invitación VIP Elite 2026</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>Bienvenida VIP - S.M.G.</title>
     <style>
-        :root { --primary: #003366; --accent: #00aaff; --gold: #ffcc00; --bg: #000; }
+        body { background-color: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; overflow: hidden; }
+        .container { padding: 30px; border: 5px solid #00ff00; border-radius: 30px; background: rgba(0, 255, 0, 0.05); box-shadow: 0 0 30px #00ff0066; z-index: 10; width: 85%; max-width: 600px; }
+        .logo { max-width: 320px; height: auto; margin: 15px auto; display: block; filter: drop-shadow(0 0 10px #00ff00); }
+        h1 { color: #00ff00; font-size: 24px; text-transform: uppercase; margin-bottom: 5px; }
+        .cliente-vip { color: #00f2ff; font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+        p { font-size: 18px; line-height: 1.4; margin: 8px 0; }
+        .precio-anclado { color: #ffff00; font-size: 32px; font-weight: bold; text-shadow: 0 0 15px rgba(255,255,0,0.6); }
         
-        body { 
-            background-color: var(--bg); 
-            color: #fff; 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            text-align: center; 
-            overflow: hidden; 
-        }
-
-        /* Lluvia de Nieve */
-        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-        .snowflake { position: absolute; top: -10px; color: rgba(255,255,255,0.7); font-size: 1.2rem; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
-
-        .container { 
-            padding: 30px; 
-            border: 5px solid var(--primary); 
-            border-radius: 30px; 
-            background: rgba(255, 255, 255, 0.95); 
-            color: #111;
-            box-shadow: 0 0 40px rgba(0, 170, 255, 0.6); 
-            z-index: 10; 
-            width: 90%; 
-            max-width: 420px; 
-            position: relative;
-        }
-
-        .logo { max-width: 220px; height: auto; margin: 0 auto 15px; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-        
-        h1 { color: var(--primary); font-size: 24px; text-transform: uppercase; margin: 0; font-weight: 900; }
-        .sub-t { color: var(--accent); font-weight: bold; font-size: 14px; letter-spacing: 1px; margin-bottom: 20px; display: block; }
-
-        .data-card { background: #f0f7ff; padding: 15px; border-radius: 15px; margin-bottom: 15px; border-left: 6px solid var(--primary); text-align: left; }
-        .data-card label { display: block; font-size: 11px; color: #666; font-weight: bold; }
-        .data-card span { font-size: 18px; color: var(--primary); font-weight: bold; }
-
-        .precio-tag { 
-            background: var(--primary); 
-            color: #fff; 
-            padding: 15px; 
-            border-radius: 50px; 
-            font-size: 26px; 
-            font-weight: bold; 
-            display: inline-block; 
-            margin: 10px 0;
-            border: 3px solid var(--accent);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .citas-box { text-align: left; margin-top: 15px; }
-        .citas-list { list-style: none; padding: 0; margin: 0; }
-        .citas-list li { 
-            background: #fff; 
-            color: var(--primary); 
-            margin-bottom: 5px; 
-            padding: 8px 12px; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            border: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-        }
-        .citas-list li::before { content: "❄️"; margin-right: 10px; }
-
-        .alerta-capture {  
-            background: var(--gold); 
+        .alerta-capture { 
+            background: #ffcc00; 
             color: #000; 
             padding: 12px; 
             font-weight: bold; 
             border-radius: 15px; 
-            margin-top: 20px; 
+            margin-top: 15px; 
             font-size: 14px; 
-            border: 2px dashed #000;
-            animation: parpadeo 1.5s infinite;
+            border: 3px dashed #000;
+            animation: parpadeo 1s infinite;
         }
 
         @keyframes parpadeo {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(0.97); }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        .btn-final { margin-top: 15px; padding: 12px 30px; font-size: 18px; font-weight: bold; color: #fff; background: var(--primary); border: none; border-radius: 12px; cursor: pointer; width: 100%; transition: 0.3s; }
-        .btn-final:hover { background: var(--accent); }
+        .btn-salir { margin-top: 20px; padding: 15px 50px; font-size: 20px; font-weight: bold; color: #fff; background-color: #39ff14; color: #000; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 0 15px #39ff14; transition: 0.3s; }
+        .btn-salir:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
 
-    <audio id="aplausos">
-        <source src="aceptacion.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="snow-container" id="snow-box"></div>
+    <audio id="aplausos" src="aceptacion.mp3" preload="auto"></audio>
+    <audio id="cash-register" src="caja.mp3" preload="auto"></audio>
 
     <div class="container">
-        <h1>¡BIENVENIDO VIP!</h1>
-        <span class="sub-t">MULTISERVICIOS ANATO S.M.G.</span>
+        <h1>¡SISTEMA VIP ACTIVADO!</h1>
+        <div id="nombre-cliente" class="cliente-vip">Cargando...</div>
         
         <img src="logo.png" alt="S.M.G." class="logo">
-
-        <div class="data-card">
-            <label>TITULAR Y UBICACIÓN:</label>
-            <span id="res-nombre">--</span><br>
-            <small id="res-ubi" style="color:var(--accent); font-weight:bold;"></small>
-        </div>
-
-        <p style="color:#555; font-size: 14px; margin: 5px 0;">Tu servicio quedó <strong>ANCLADO</strong> a:</p>
-        <div class="precio-tag" id="precio-final">-- USD</div>
-
-        <div class="citas-box">
-            <label style="font-size: 11px; font-weight: bold; color: var(--primary);">PROGRAMACIÓN DE CITAS:</label>
-            <ul class="citas-list" id="lista-citas"></ul>
-        </div>
-
+        
+        <p>Su Próximo Mantenimiento en <br><span id="ubicacion-cliente" style="color:#00f2ff">...</span></p>
+        <p><strong>HA QUEDADO ANCLADO</strong> en:</p>
+        <p class="precio-anclado" id="precio-final">$00</p>
+        <p>Por este año 2026.</p>
+        
         <div class="alerta-capture">
-            📸 TOMA UNA CAPTURA DE PANTALLA
+            📸 POR FAVOR, TOME CAPTURA DE PANTALLA PARA RESPALDAR SU PRECIO Y SU FECHA DE MANTENIMIENTO.
         </div>
 
-        <button onclick="window.location.href='https://www.google.com'" class="btn-final">ACEPTAR SERVICIO</button>
+        <button onclick="finalizarProceso()" class="btn-salir">FINALIZAR</button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
     <script>
-        // 1. ANALIZAR URL (REVISIÓN 100K)
-        const urlParams = new URLSearchParams(window.location.search);
-        const n = urlParams.get('n') || "Cliente VIP";
-        const u = urlParams.get('u') || "Sector No Registrado";
-        const p = urlParams.get('p') || "--"; 
-        const c = urlParams.get('c') || ""; 
-
-        // 2. INYECTAR DATOS
-        document.getElementById('res-nombre').innerText = n;
-        document.getElementById('res-ubi').innerText = "📍 " + u;
-        document.getElementById('precio-final').innerText = p;
-
-        const lista = document.getElementById('lista-citas');
-        if (c) {
-            c.split(', ').forEach(fecha => {
-                const li = document.createElement('li');
-                li.innerText = fecha;
-                lista.appendChild(li);
-            });
-        } else {
-            lista.innerHTML = "<li>Cierre de ciclo / Consultar fecha</li>";
-        }
-
-        // 3. LLUVIA DE NIEVE S.M.G.
-        const snowBox = document.getElementById('snow-box');
-        for (let i = 0; i < 40; i++) {
-            const flake = document.createElement('div');
-            flake.className = 'snowflake';
-            flake.innerText = '❄';
-            flake.style.left = Math.random() * 100 + 'vw';
-            flake.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            flake.style.opacity = Math.random();
-            snowBox.appendChild(flake);
-        }
-
-        // 4. SONIDO Y CONFETI (COLORES SMG)
         window.onload = function() {
-            document.getElementById('aplausos').play().catch(e => console.log("Audio bloqueado"));
+            const urlParams = new URLSearchParams(window.location.search);
             
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#003366', '#00aaff', '#ffffff', '#ffcc00']
-            });
+            // 1. MAPEAR DATOS DEL GENERADOR
+            const nombre = urlParams.get('n') || "CLIENTE EXCLUSIVO";
+            const precio = urlParams.get('p') || "30";
+            const ubicacion = urlParams.get('u') || "SU SECTOR";
+
+            document.getElementById('nombre-cliente').innerText = `BIENVENIDO: ${nombre.toUpperCase()}`;
+            document.getElementById('precio-final').innerText = `$${precio}`;
+            document.getElementById('ubicacion-cliente').innerText = ubicacion.toUpperCase();
+
+            // 2. SONIDO INICIAL (OPCIONAL SEGÚN NAVEGADOR)
+            var sonido = document.getElementById('aplausos');
+            sonido.play().catch(e => console.log("Esperando interacción"));
+
+            // 3. EFECTO NIEVE VIP (7 segundos)
+            var endNieve = Date.now() + (7 * 1000);
+            (function frame() {
+                confetti({
+                    particleCount: 2,
+                    startVelocity: 0,
+                    ticks: 200,
+                    origin: { x: Math.random(), y: Math.random() - 0.2 },
+                    colors: ['#ffffff', '#00f2ff', '#ffff00'],
+                    shapes: ['star'],
+                    gravity: 0.5,
+                    scalar: 0.8,
+                    drift: 0.5
+                });
+                if (Date.now() < endNieve) { requestAnimationFrame(frame); }
+            }());
         };
+
+        // FUNCIÓN DEL BOTÓN ROJO CLONADA AL ÉXITO
+        function finalizarProceso() {
+            const cash = document.getElementById('cash-register');
+            cash.play(); // SONIDO DE CAJA REGISTRADORA 💰
+            
+            setTimeout(function(){ 
+                window.close();
+                // Backup por si el navegador bloquea el cierre directo
+                setTimeout(() => { window.location.href = "https://www.google.com"; }, 500);
+            }, 2500);
+        }
     </script>
 </body>
 </html>
