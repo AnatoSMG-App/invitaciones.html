@@ -193,70 +193,7 @@
 // --- SISTEMA DE CONTROL: ASISTENTE MATZZOMI (RECARGADO) ---
 } 
 
-const audioPresentacion = new Audio('audio_vip.mp3'); 
-const overlay = document.getElementById('overlay');
 
-// 1. ARRANCADOR DEL BOTÓN AZUL
-function iniciarPresentacionVip() {
-    console.log("Iniciando flujo...");
-    
-    // Ocultar pantalla de inicio
-    const pantallaInicio = document.getElementById('pantalla-inicio') || document.querySelector('.btn-inicio');
-    if (pantallaInicio) pantallaInicio.style.display = 'none';
-
-    // Mostrar la zona de la imagen fija de beneficios
-    const zonaBeneficios = document.getElementById('seccionVip') || document.querySelector('.zona-audio');
-    if (zonaBeneficios) {
-        zonaBeneficios.style.display = 'block';
-    }
-
-    // Arrancar el audio de 1:17
-    audioPresentacion.play().catch(e => console.log("Permiso de audio denegado"));
-
-    // PROGRAMAR LA SALIDA DE LOS BOTONES (77 seg)
-    setTimeout(() => {
-        if (overlay) {
-            // Forzamos la visibilidad máxima
-            overlay.style.cssText = "display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important;";
-        }
-    }, 77000);
-}
-
-// 2. DETECTOR DE CLIC EN "INICIAR"
-document.addEventListener('click', function(e) {
-    if (e.target.innerText.includes('INICIAR') || e.target.id === 'btn-arranque') {
-        iniciarPresentacionVip();
-    }
-});
-
-// 3. ENVÍO AL EXCEL Y REDIRECCIÓN
-async function enviarDatosVip(decision) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const nombre = urlParams.get('n') || "Cliente";
-    const ubicacion = urlParams.get('u') || "Valencia";
-    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-
-    const datos = new URLSearchParams();
-    datos.append('nombre', nombre);
-    datos.append('decision', (decision === 'Aceptó') ? "SI VIP" : "NO VIP");
-
-    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-
-    if (decision === 'Aceptó') {
-        window.location.href = "bienvenidos.html";
-    } else {
-        alert("Entendido. ¡Muchas gracias!");
-    }
-}
-
-// 4. CONTROL DE BOTONES 16°C Y 26°C
-document.addEventListener('click', function(e) {
-    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
-    if (e.target.closest('.btn-calor')) { 
-        new Audio('rechazo.mp3').play().catch(() => {});
-        enviarDatosVip('Rechazó'); 
-    }
-});
 </script>
 </body>
 </html>
