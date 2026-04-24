@@ -190,57 +190,70 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-// --- MODO DIAGNÓSTICO: ASISTENTE MATZZOMI ---
+// --- SISTEMA DE RECONSTRUCCIÓN TOTAL: ASISTENTE MATZZOMI ---
 } 
 
 const audioVip = new Audio('audio_vip.mp3'); 
 
 function iniciarPresentacionVip() {
-    console.log("Iniciando...");
-    
-    // 1. Ocultar el botón azul
+    // 1. Escondemos la pantalla de inicio
     const btnInicie = document.querySelector('.btn-inicio') || document.querySelector('button');
-    if (btnInicie) btnInicie.style.display = 'none';
+    if (btnInicie) btnInicie.parentElement.style.display = 'none';
 
-    // 2. Play al audio
-    audioVip.play().catch(e => alert("Error: El audio no encontró el archivo o falta permiso"));
+    // 2. Arrancamos el audio de beneficios
+    audioVip.play().catch(e => console.log("Esperando clic"));
 
-    // 3. EL RELOJ (Bajado a 5 segundos solo para PROBAR rápido)
-    // --- CAMBIE EL 5000 POR 77000 CUANDO YA VEA QUE FUNCIONA ---
+    // 3. EL RELOJ (77 segundos exactos)
     setTimeout(() => {
-        alert("¡RELOJ CUMPLIDO! Intentando mostrar botones...");
+        let cartel = document.getElementById('overlay');
         
-        const cartel = document.getElementById('overlay');
-        if (cartel) {
-            cartel.setAttribute('style', 'display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important;');
-        } else {
-            alert("ERROR CRÍTICO: No existe el elemento con id='overlay' en el HTML");
+        // SI EL CARTEL ORIGINAL SE BORRÓ, AQUÍ LO FABRICAMOS DE NUEVO
+        if (!cartel) {
+            console.log("Reconstruyendo botones VIP...");
+            cartel = document.createElement('div');
+            cartel.id = 'overlay';
+            cartel.innerHTML = `
+                <div style="background:#0b0f19; padding:30px; border-radius:20px; text-align:center; border:2px solid #00f2ff; box-shadow: 0 0 20px #00f2ff; max-width: 90%;">
+                    <h2 style="color:white; margin-bottom:20px; font-family: sans-serif;">¿Desea Protección Total?</h2>
+                    <button onclick="enviarDatosVip('Aceptó')" style="background: linear-gradient(45deg, #00c6ff, #0072ff); color:white; padding:15px 30px; border:none; border-radius:10px; font-weight:bold; margin:10px; cursor:pointer; width: 80%;">16°C - ACEPTAR VIP</button>
+                    <br>
+                    <button onclick="enviarDatosVip('Rechazó')" style="background: transparent; color:#ff4b2b; padding:10px 20px; border:1px solid #ff4b2b; border-radius:10px; margin:10px; cursor:pointer;">26°C - RECHAZAR</button>
+                </div>
+            `;
+            document.body.appendChild(cartel);
         }
-    }, 5000); // <--- LO PUSE EN 5 SEGUNDOS PARA QUE NO ESPERE TANTO PROBANDO
+
+        // ESTILO PARA QUE SE VEA POR ENCIMA DE TODO
+        cartel.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:flex !important; align-items:center; justify-content:center; z-index:99999; visibility:visible !important; opacity:1 !important;";
+        
+    }, 77000); 
 }
 
-// Escuchador de clics
+// Escuchador para el botón azul de INICIAR
 document.addEventListener('click', function(e) {
     if (e.target.innerText.includes('INICIAR')) {
         iniciarPresentacionVip();
     }
-    
-    // Botones de respuesta
-    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
-    if (e.target.closest('.btn-calor')) { enviarDatosVip('Rechazó'); }
 });
 
+// FUNCIÓN DE ENVÍO (Mantiene tu conexión al Excel)
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
     const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+    
     const datos = new URLSearchParams();
     datos.append('nombre', nombre);
-    datos.append('decision', decision);
-    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+    datos.append('decision', (decision === 'Aceptó' ? "SI VIP" : "NO VIP"));
     
-    if (decision === 'Aceptó') { window.location.href = "bienvenidos.html"; }
-    else { alert("Gracias"); }
+    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+
+    if (decision === 'Aceptó') {
+        window.location.href = "bienvenidos.html";
+    } else {
+        alert("Gracias por su respuesta.");
+        location.reload(); // Reinicia para el siguiente cliente
+    }
 }
 </script>
 </body>
