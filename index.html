@@ -200,56 +200,8 @@
         function ejecutarRechazo() {
             new Audio('rechazo.mp3').play().catch(e => {});
             setTimeout(() => { window.location.href = "about:blank"; }, 3000);
-            
-    // Función para enviar datos al Excel
-async function enviarDatos(decision, precio) {
-    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-    
-    // Capturamos el nombre desde su input "nombreInput"
-    const campoNombre = document.getElementById("nombreInput");
-    const nombreCliente = campoNombre ? campoNombre.value : "Cliente Sin Nombre";
-
-    const datos = {
-        nombre: nombreCliente,
-        decision: decision,
-        precio: precio,
-        ubicacion: "Valencia, Carabobo"
-    };
-
-    try {
-        // Envío silencioso al Excel
-        fetch(urlScript, {
-            method: "POST",
-            mode: "no-cors",
-            body: JSON.stringify(datos)
-        });
         
-        if(decision === "Aceptó") {
-            window.location.href = "bienvenido.html"; 
-        } else {
-            // Ejecuta su función de sonido/animación de rechazo
-            if (typeof ejecutarRechazo === "function") {
-                ejecutarRechazo();
-            } else {
-                alert("Registro completado. Gracias.");
-            }
-        }
-    } catch (error) {
-        console.log("Error en la conexión", error);
-    }
 }
-
-// CONEXIÓN DE LOS BOTONES (Usando btn-frio y btn-calor)
-const boton16 = document.querySelector('.btn-frio');
-if(boton16) {
-    boton16.onclick = () => enviarDatos("Aceptó", "30$");
-}
-
-const boton24 = document.querySelector('.btn-calor');
-if(boton24) {
-    boton24.onclick = () => enviarDatos("Rechazó", "0$");
-}
-
 </script>
 </body>
 </html>
