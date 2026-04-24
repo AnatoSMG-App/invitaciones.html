@@ -191,31 +191,28 @@
                 await new Promise(r => setTimeout(r, 400));
             }
 
-            // 4. Mostrar Bloque Final de Cierre
-            const footer = document.getElementById('bloque-cierre');
-            footer.style.display = "flex";
-            setTimeout(() => { footer.style.opacity = "1"; }, 100);
-        }
+            // --- SISTEMA DE CONTROL DE BOTONES Y ENVÍO AL EXCEL ---
 
-        function ejecutarRechazo() {
-            new Audio('rechazo.mp3').play().catch(e => {});
-            setTimeout(() => { window.location.href = "about:blank"; }, 3000);
+// 1. Función para el botón de rechazo (26°C)
+function ejecutarRechazo() {
+    // Intentar reproducir sonido de rechazo si existe
+    new Audio('rechazo.mp3').play().catch(e => console.log("Audio no listo"));
+    // Mandamos el reporte al Excel como "NO"
+    enviarDatosVip('Rechazó');
+}
 
-    }
-
- // --- BLOQUE DE CONTROL VIP: PROTOCOLO DE PESCA Y ENVÍO ---
-// Este bloque captura los datos de la URL y los manda al Excel
-
+// 2. Función Maestra: Captura datos de URL y reporta al Excel
 async function enviarDatosVip(decision) {
-    // 1. "Pescamos" los datos que vienen del link de WhatsApp
+    // Pescamos los datos que vienen del link de WhatsApp
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
     const ubicacion = urlParams.get('u') || "Valencia, Carabobo";
     const precio = urlParams.get('p') || "0";
 
+    // Su URL de Google Apps Script
     const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
 
-    // 2. Preparamos el reporte para Google Sheets
+    // Preparamos el paquete de datos
     const datos = new URLSearchParams();
     datos.append('nombre', nombre);
     datos.append('decision', (decision === 'Aceptó') ? "SI Aceptó ser VIP" : "NO Aceptó ser VIP");
@@ -223,7 +220,7 @@ async function enviarDatosVip(decision) {
     datos.append('ubicacion', ubicacion);
 
     try {
-        // 3. Envío de datos al Excel (Sin bloqueo de pantalla)
+        // Enviamos la señal al Excel
         fetch(urlScript, {
             method: "POST",
             mode: "no-cors",
@@ -231,28 +228,34 @@ async function enviarDatosVip(decision) {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
 
-        // 4. Salto a la página de bienvenida (con la 's' corregida)
+        // Lógica de salida según la decisión
         if (decision === 'Aceptó') {
-            window.location.href = "bienvenidos.html";
+            // Sonido de éxito y salto a la página de bienvenida con "s"
+            new Audio('aceptacion.mp3').play().catch(e => {});
+            setTimeout(() => { 
+                window.location.href = "bienvenidos.html"; 
+            }, 1000);
         } else {
-            alert("Entendido. Su respuesta ha sido registrada. ¡Gracias!");
+            alert("Respuesta registrada. ¡Muchas gracias!");
         }
     } catch (e) {
-        console.error("Falla en la transmisión");
+        console.error("Falla en la comunicación con el servidor");
     }
 }
 
-// --- ACTIVACIÓN DE BOTONES (16°C y 26°C) ---
+// 3. Conexión de los eventos de clic (El interruptor)
 document.addEventListener('click', function(e) {
+    // Si toca el botón de 16°C
     if (e.target.closest('.btn-frio')) { 
         enviarDatosVip('Aceptó'); 
     }
+    // Si toca el botón de 26°C
     if (e.target.closest('.btn-calor')) { 
-        enviarDatosVip('Rechazó'); 
+        ejecutarRechazo(); 
     }
 });
 
-// --- SELLOS FINALES DE SEGURIDAD (PROTOCOLO R5) ---
+// --- SELLOS FINALES DE SEGURIDAD ---
 </script>
 </body>
 </html>
