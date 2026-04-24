@@ -190,75 +190,58 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-// --- RESTAURACIÓN TÉCNICA: SOLO AUDIO Y BOTONES ---
+// --- MODO DIAGNÓSTICO: ASISTENTE MATZZOMI ---
 } 
 
 const audioVip = new Audio('audio_vip.mp3'); 
-const overlay = document.getElementById('overlay');
 
-// 1. FUNCIÓN DE ARRANQUE (Al tocar INICIAR)
-function reproducirPresentacion() {
-    // Buscamos el botón de inicio para que se quite al empezar
-    const btnInicio = document.querySelector('.btn-inicio') || document.querySelector('button');
-    if (btnInicio) btnInicio.style.display = 'none';
+function iniciarPresentacionVip() {
+    console.log("Iniciando...");
+    
+    // 1. Ocultar el botón azul
+    const btnInicie = document.querySelector('.btn-inicio') || document.querySelector('button');
+    if (btnInicie) btnInicie.style.display = 'none';
 
-    // Play al audio de su voz
-    audioVip.play().catch(e => console.log("Se requiere clic manual"));
+    // 2. Play al audio
+    audioVip.play().catch(e => alert("Error: El audio no encontró el archivo o falta permiso"));
 
-    // EL RELOJ MAESTRO (77 segundos exactos)
+    // 3. EL RELOJ (Bajado a 5 segundos solo para PROBAR rápido)
+    // --- CAMBIE EL 5000 POR 77000 CUANDO YA VEA QUE FUNCIONA ---
     setTimeout(() => {
-        if (overlay) {
-            // Mandamos la señal para que el cuadro de botones aparezca
-            overlay.style.display = 'flex';
-            overlay.style.opacity = '1';
-            overlay.style.visibility = 'visible';
+        alert("¡RELOJ CUMPLIDO! Intentando mostrar botones...");
+        
+        const cartel = document.getElementById('overlay');
+        if (cartel) {
+            cartel.setAttribute('style', 'display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important;');
+        } else {
+            alert("ERROR CRÍTICO: No existe el elemento con id='overlay' en el HTML");
         }
-    }, 77000); 
+    }, 5000); // <--- LO PUSE EN 5 SEGUNDOS PARA QUE NO ESPERE TANTO PROBANDO
 }
 
-// 2. ENVÍO DE DATOS AL EXCEL
+// Escuchador de clics
+document.addEventListener('click', function(e) {
+    if (e.target.innerText.includes('INICIAR')) {
+        iniciarPresentacionVip();
+    }
+    
+    // Botones de respuesta
+    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
+    if (e.target.closest('.btn-calor')) { enviarDatosVip('Rechazó'); }
+});
+
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
-    const ubicacion = urlParams.get('u') || "Valencia";
-    const precio = urlParams.get('p') || "0";
-    
     const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-
     const datos = new URLSearchParams();
     datos.append('nombre', nombre);
     datos.append('decision', decision);
-    datos.append('precio', precio + "$");
-    datos.append('ubicacion', ubicacion);
-
-    try {
-        fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-        
-        if (decision === 'Aceptó') {
-            window.location.href = "bienvenidos.html";
-        } else {
-            alert("Gracias por su respuesta");
-        }
-    } catch (e) {
-        console.error("Error de conexión");
-    }
+    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+    
+    if (decision === 'Aceptó') { window.location.href = "bienvenidos.html"; }
+    else { alert("Gracias"); }
 }
-
-// 3. EVENTOS DE CLIC (Lo que hace que los botones funcionen)
-document.addEventListener('click', function(e) {
-    // Si toca el botón de INICIAR PRESENTACIÓN
-    if (e.target.innerText.includes('INICIAR')) {
-        reproducirPresentacion();
-    }
-
-    // Botones de temperatura finales
-    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
-    if (e.target.closest('.btn-calor')) { 
-        new Audio('rechazo.mp3').play().catch(() => {});
-        enviarDatosVip('Rechazó'); 
-    }
-});
-
 </script>
 </body>
 </html>
