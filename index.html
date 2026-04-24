@@ -202,52 +202,45 @@
             setTimeout(() => { window.location.href = "about:blank"; }, 3000);
 
     }
-        // --- BLOQUE DE ENVÍO SEGURO ---
-async function enviarDatosAlExcel(decision, precio) {
+
+        // --- BLOQUE DE ENVÍO SEGURO (Línea 205) ---
+async function enviarDatosAlExcel(decision, precio) { // <--- AQUÍ ESTÁ LA LLAVE QUE FALTABA
     try {
         const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
         
-        // Buscamos el nombre sin que tranque el código si no existe
         const inputNombre = document.getElementById("nombreInput");
-        const valorNombre = inputNombre ? inputNombre.value : "Cliente Sin Nombre";
+        const valorNombre = inputNombre ? inputNombre.value : "Cliente";
 
-        const paqueteDatos = {
+        const paquete = {
             nombre: valorNombre,
             decision: decision,
             precio: precio,
             ubicacion: "Valencia, Carabobo"
         };
 
-        // Envío al servidor de Google
         fetch(urlScript, {
             method: "POST",
             mode: "no-cors",
-            body: JSON.stringify(paqueteDatos)
+            body: JSON.stringify(paquete)
         });
 
-        // Solo si acepta, saltamos de página
         if (decision === "Aceptó") {
             window.location.href = "bienvenido.html";
-        } else {
-            // Si tiene la función de rechazo, la usamos
-            if (typeof ejecutarRechazo === 'function') ejecutarRechazo();
+        } else if (typeof ejecutarRechazo === "function") {
+            ejecutarRechazo();
         }
-    } catch (error) {
-        console.log("Error controlado:", error);
-    }
-}
 
-// CONEXIÓN MANUAL PARA NO INTERFERIR CON OTROS SCRIPTS
-document.addEventListener('click', function(event) {
-    if (event.target.closest('.btn-frio')) {
+    } catch (error) {
+        console.log("Falla controlada");
+    }
+} // <--- Esta cierra la función
+
+// CONEXIÓN DE BOTONES
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-frio')) {
         enviarDatosAlExcel("Aceptó", "30$");
     }
-    if (event.target.closest('.btn-calor')) {
+    if (e.target.closest('.btn-calor')) {
         enviarDatosAlExcel("Rechazó", "0$");
     }
 });
-});
-}
-</script>
-</body>
-</html>
