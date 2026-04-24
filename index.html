@@ -211,7 +211,7 @@ async function enviarDatosAlExcel(decision, precio) {
         const inputNombre = document.getElementById("nombreInput");
         const valorNombre = inputNombre ? inputNombre.value : "Cliente";
 
-        // Reporte detallado para su Excel
+        // Reporte para su Excel
         const reporte = {
             nombre: valorNombre,
             decision: (decision === "Aceptó") ? "SI Aceptó ser VIP" : "NO Aceptó ser VIP",
@@ -219,16 +219,16 @@ async function enviarDatosAlExcel(decision, precio) {
             ubicacion: "Valencia, Carabobo"
         };
 
-        // Envío de datos al Excel en tiempo real
+        // Envío de la señal al Excel
         fetch(urlScript, {
             method: "POST",
             mode: "no-cors",
             body: JSON.stringify(reporte)
         });
 
-        // Salida para el cliente
+        // SALIDA DEFINITIVA: Conectando con su nueva página
         if (decision === "Aceptó") {
-            window.location.href = "https://www.google.com"; // Cambiado a Google para evitar el error 404
+            window.location.href = "bienvenidos.html"; // Aquí ya tiene la 's' de su archivo
         } else {
             alert("Entendido. Su respuesta ha sido registrada. ¡Gracias!");
         }
@@ -248,7 +248,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// --- SELLOS FINALES: LAS TAPAS QUE FALTABAN ---
+// SELLOS FINALES
 </script>
 </body>
 </html>
