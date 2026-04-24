@@ -184,7 +184,7 @@ listaUI.innerHTML = "<li>" + manualDateValue + "</li>";
         document.getElementById('resultado').style.display = "block";
         
         const baseLink = "https://anatosmg-app.github.io/invitaciones.html/"; 
-        const linkIndex = `${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(precioFinal)}&u=${encodeURIComponent(ubiFinal)}&c=${encodeURIComponent(citasFinal)}`;
+        const linkIndex = `${baseLink}?n=${encodeURIComponent(nom)}&p=${encodeURIComponent(pre)}&u=${encodeURIComponent(ubi)}&c=${encodeURIComponent(citas.join(', '))}`;
         
         const telFull = document.getElementById('op').value + document.getElementById('tel').value;
         const msjWa = `¡Hola! Somos de Multiservicios Anato S.M.G. invitandote a ser V.I.P: ${linkIndex}`;
