@@ -201,22 +201,24 @@
             new Audio('rechazo.mp3').play().catch(e => {});
             setTimeout(() => { window.location.href = "about:blank"; }, 3000);
             
-           async function enviarADatos(decision, precio) {
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+    // Función para enviar datos al Excel
+async function enviarDatos(decision, precio) {
+    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
     
-    // Capturamos el nombre usando el ID "nombre"
-    const nombreCliente = document.getElementById("nombre").value || "Cliente Sin Nombre";
-    const ubicacion = "Valencia, Carabobo"; 
+    // Capturamos el nombre desde su input "nombreInput"
+    const campoNombre = document.getElementById("nombreInput");
+    const nombreCliente = campoNombre ? campoNombre.value : "Cliente Sin Nombre";
 
     const datos = {
         nombre: nombreCliente,
         decision: decision,
         precio: precio,
-        ubicacion: ubicacion
+        ubicacion: "Valencia, Carabobo"
     };
 
     try {
-        fetch(URL_SCRIPT, {
+        // Envío silencioso al Excel
+        fetch(urlScript, {
             method: "POST",
             mode: "no-cors",
             body: JSON.stringify(datos)
@@ -225,16 +227,29 @@
         if(decision === "Aceptó") {
             window.location.href = "bienvenido.html"; 
         } else {
-            alert("Registro de rechazo completado. Gracias.");
+            // Ejecuta su función de sonido/animación de rechazo
+            if (typeof ejecutarRechazo === "function") {
+                ejecutarRechazo();
+            } else {
+                alert("Registro completado. Gracias.");
+            }
         }
     } catch (error) {
-        console.log("Error de conexión", error);
+        console.log("Error en la conexión", error);
     }
 }
 
-// AQUÍ ESTÁ EL ARREGLO: Buscamos "btn" en lugar de "boton"
-const btnFrio = document.querySelector('.btn-frio');
-if(btnFrio) btnFrio.onclick = () => enviarADatos("Aceptó", "30$");
+// CONEXIÓN DE LOS BOTONES (Usando btn-frio y btn-calor)
+const boton16 = document.querySelector('.btn-frio');
+if(boton16) {
+    boton16.onclick = () => enviarDatos("Aceptó", "30$");
+}
 
-const btnCalor = document.querySelector('.btn-calor');
-if(btnCalor) btnCalor.onclick = () => enviarADatos("Rechazó", "0$");
+const boton24 = document.querySelector('.btn-calor');
+if(boton24) {
+    boton24.onclick = () => enviarDatos("Rechazó", "0$");
+}
+
+</script>
+</body>
+</html>
