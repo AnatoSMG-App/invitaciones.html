@@ -190,44 +190,28 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-// --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP (CON RELOJ DE SEGURIDAD) ---
-
-// 1. Cierre de las calculadoras superiores
+// --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP ---
 } 
 
-// 2. Configuración
 const audioPresentacion = new Audio('audio_vip.mp3'); 
 const overlay = document.getElementById('overlay');
 
-// 3. Lógica de reproducción
 window.addEventListener('load', () => {
-    audioPresentacion.play().catch(e => console.log("Toque para sonar"));
+    audioPresentacion.play().catch(e => console.log("Clic para sonar"));
 
-    // --- EL PUENTE DIRECTO ---
-    // Opción A: Cuando el audio termine naturalmente
-    audioPresentacion.onended = () => { mostrarBotones(); };
-
-    // Opción B: Temporizador de respaldo (Ajuste los 15000 por los milisegundos que dure su audio)
-    // Ejemplo: si dura 15 segundos, son 15000. Si dura 20, son 20000.
+    // EL RELOJ (Cuenta 77 seg desde que abre la página)
     setTimeout(() => {
-        mostrarBotones();
-    }, 77000); // Lo puse en 18 segundos por ahora
+        if (overlay) {
+            overlay.style.cssText = "display: flex !important; visibility: visible !important; opacity: 1 !important;";
+        }
+    }, 77000); 
 });
 
-function mostrarBotones() {
-    if (overlay.style.display !== 'flex') {
-        console.log("Activando botones VIP...");
-        overlay.style.setProperty('display', 'flex', 'important');
-    }
-}
-
-// 4. Función de envío al Excel
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
     const ubicacion = urlParams.get('u') || "Valencia";
     const precio = urlParams.get('p') || "0";
-
     const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
 
     const datos = new URLSearchParams();
@@ -236,17 +220,11 @@ async function enviarDatosVip(decision) {
     datos.append('precio', precio + "$");
     datos.append('ubicacion', ubicacion);
 
-    try {
-        fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-        if (decision === 'Aceptó') {
-            window.location.href = "bienvenidos.html";
-        } else {
-            alert("Respuesta guardada. ¡Gracias!");
-        }
-    } catch (e) { console.log("Error"); }
+    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+    if (decision === 'Aceptó') { window.location.href = "bienvenidos.html"; }
+    else { alert("Gracias por su respuesta"); }
 }
 
-// 5. Los botones
 document.addEventListener('click', function(e) {
     if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
     if (e.target.closest('.btn-calor')) { 
@@ -254,7 +232,6 @@ document.addEventListener('click', function(e) {
         enviarDatosVip('Rechazó'); 
     }
 });
-
 </script>
 </body>
 </html>
