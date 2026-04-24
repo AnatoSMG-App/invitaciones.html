@@ -8,7 +8,7 @@
         :root { --frio: #00f2ff; --calor: #ff4500; --riesgo: #ff3131; }
         body, html { margin: 0; padding: 0; background: #000; font-family: sans-serif; overflow-x: hidden; color: white; height: 100%; width: 100%; }
         
-        .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center; background: #000; transition: opacity 0.8s ease-in-out; }
+        .layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; flex-direction: column; text-align: center; background: #000; }
         .active { display: flex; }
 
         /* PANTALLA INICIAL - LOGO MANTENIDO */
@@ -34,59 +34,62 @@
         #fase-cuarto { z-index: 1000; }
         #img-cuarto { width: 90%; height: auto; border: 2px solid var(--frio); border-radius: 10px; }
 
-        /* FASE: PANEL FINAL AJUSTADO PARA SECUENCIA */
+        /* FASE: PANEL FINAL (SIN BLOQUE DE PRESUPUESTO) */
         #fase-panel { z-index: 500; overflow-y: auto; display: none; padding-top: 20px; }
         #fase-panel.active { display: block; }
         
-        .panel-container { width: 100%; transition: opacity 0.8s ease-in-out; }
-        .temp { font-size: 2.2rem; font-weight: bold; margin-bottom: 15px; }
+        .split { display: flex; flex-wrap: wrap; width: 100%; min-height: 60vh; }
+        .panel { flex: 1; min-width: 300px; padding: 15px; border: 1px solid #222; }
+        .temp { font-size: 1.8rem; font-weight: bold; margin-bottom: 15px; }
         
-        .item { display: flex; align-items: center; justify-content: center; margin-bottom: 15px; opacity: 0; transform: scale(0.8); transition: 0.5s; font-size: 1.1rem; text-align: left; width: 80%; margin-left: 10%; }
+        .item { display: flex; align-items: center; margin-bottom: 15px; opacity: 0; transform: scale(0.8); transition: 0.5s; font-size: 0.9rem; text-align: left; }
         .item.show { opacity: 1; transform: scale(1); }
-        .item img { width: 45px; height: 45px; border-radius: 8px; margin-right: 15px; border: 1px solid var(--frio); }
+        .item img { width: 35px; height: 35px; border-radius: 5px; margin-right: 10px; border: 1px solid var(--frio); }
 
-        #pop-img { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 85%; max-width: 450px; z-index: 2000; border: 4px solid var(--frio); border-radius: 20px; transition: 0.3s; background: #000; image-rendering: high-quality; }
+        #pop-img { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); width: 80%; max-width: 400px; z-index: 2000; border: 4px solid var(--frio); border-radius: 20px; transition: 0.3s; background: #000; }
         
-        /* FOOTER CON FONDOS TEMATIZADOS HD */
-        .footer { 
-            width: 100%; padding: 20px; display: none; gap: 15px; 
-            background: #000; box-sizing: border-box; justify-content: center; 
-            opacity: 0; transition: opacity 1s;
-        }
+        /* FOOTER SIMÉTRICO ESTANDARIZADO */
+        .footer { width: 100%; padding: 20px; display: flex; gap: 15px; background: #000; position: relative; box-sizing: border-box; justify-content: center; }
         
         .btn-base { 
-            flex: 1; height: 90px; border-radius: 15px; border: 2px solid; font-weight: bold; 
-            cursor: pointer; text-transform: uppercase; font-size: 0.9rem;
+            flex: 1; height: 75px; border-radius: 12px; border: none; font-weight: bold; 
+            cursor: pointer; text-transform: uppercase; font-size: 0.85rem;
             display: flex; align-items: center; justify-content: center;
-            transition: 0.3s; text-decoration: none; background-size: cover; background-position: center;
-            text-shadow: 2px 2px 4px #000;
+            transition: 0.3s; position: relative; overflow: hidden;
+            text-decoration: none;
         }
 
-        /* BOTÓN FRÍO 16C */
+        /* BOTÓN FRÍO (IZQUIERDA) */
         .btn-frio { 
-            border-color: var(--frio); color: #fff;
-            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('split16.jpg');
-            box-shadow: 0 0 15px var(--frio);
-            animation: palpitacionFrio 2s infinite;
+            background: #001a1d; color: var(--frio); border: 2px solid var(--frio);
+            box-shadow: 0 0 10px var(--frio);
+            animation: palpitacionFrio 2s infinite ease-in-out;
+        }
+        @keyframes palpitacionFrio { 
+            0%, 100% { filter: brightness(1); box-shadow: 0 0 5px var(--frio); } 
+            50% { filter: brightness(1.4); box-shadow: 0 0 25px var(--frio); } 
         }
 
-        /* BOTÓN CALOR 35C */
+        /* BOTÓN CALOR (DERECHA) */
         .btn-calor { 
-            border-color: var(--calor); color: #fff;
-            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('split35.jpg');
-            box-shadow: 0 0 15px var(--calor);
+            background: #1a0800; color: #ff9100; border: 2px solid var(--calor);
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
             animation: espejismoCalor 1.5s infinite alternate;
         }
-
-        @keyframes palpitacionFrio { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.3); } }
-        @keyframes espejismoCalor { 0% { transform: skewX(0deg); filter: blur(0px); } 100% { transform: skewX(1deg); filter: blur(0.5px); } }
+        @keyframes espejismoCalor {
+            0% { transform: skewX(0deg); filter: blur(0px); opacity: 1; }
+            50% { transform: skewX(1.5deg); filter: blur(0.5px); opacity: 0.8; }
+            100% { transform: skewX(-1.5deg); }
+        }
 
         .btn-base:active { transform: scale(0.95); }
+        @keyframes titilar { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <audio id="snd-cuarto" src="audio_vip.mp3" preload="auto"></audio>
+    <audio id="snd-ok" src="aceptacion.mp3" preload="auto"></audio>
 
     <div id="pantalla-play" class="layer active">
         <img src="logo.png" id="escudo-main" alt="Logo">
@@ -98,35 +101,38 @@
     </div>
 
     <div id="fase-panel" class="layer">
-        <h2 style="color:var(--frio); margin-top: 20px;">MULTISERVICIOS ANATO S.M.G.</h2>
+        <h2 style="color:var(--frio); margin: 20px 0;">MULTISERVICIOS ANATO S.M.G.</h2>
         
-        <div id="seccion-beneficios" class="panel-container">
-            <div class="temp" style="color:var(--frio)">16°C ❄️</div>
-            <h3 style="color: var(--frio); margin-bottom: 20px;">💎 BENEFICIOS V.I.P.</h3>
-            <div id="lista-vip">
-                <div class="item" data-img="chequeo.jpg">Tecnología y Vanguardia</div>
-                <div class="item" data-img="emergencia.jpg">Atención 24/7</div>
-                <div class="item" data-img="logistica.jpg">Logística y Transporte</div>
-                <div class="item" data-img="mantenimiento.png">Mantenimiento Preventivo</div>
-                <div class="item" data-img="candado.jpg">Tarifa VIP Protegida</div>
-                <div class="item" data-img="informe.jpg">Informe Digital</div>
+        <div class="split">
+            <div class="panel">
+                <div class="temp" style="color:var(--frio)">16°C ❄️</div>
+                <h3 style="color: var(--frio); margin-bottom: 20px;">💎 BENEFICIOS V.I.P.</h3>
+                <div id="lista-vip">
+                    <div class="item" data-img="chequeo.jpg">Tecnología y Vanguardia</div>
+                    <div class="item" data-img="emergencia.jpg">Atención 24/7</div>
+                    <div class="item" data-img="logistica.jpg">Logística y Transporte</div>
+                    <div class="item" data-img="mantenimiento.png">Mantenimiento Preventivo</div>
+                    <div class="item" data-img="candado.jpg">Tarifa VIP Protegida</div>
+                    <div class="item" data-img="informe.jpg">Informe Digital</div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="temp" style="color:var(--riesgo)">38°C 🔥</div>
+                <div style="color: #ff9100; font-size: 0.8rem; font-weight: bold; animation: titilar 0.8s infinite; margin-bottom: 15px; border: 1px dashed #ff9100; padding: 5px;">
+                    ⚠️ BAJO SU PROPIA RESPONSABILIDAD ⚠️
+                </div>
+                <div id="lista-riesgo">
+                    <div class="item" data-img="fuga.jpg">Fugas de Gas</div>
+                    <div class="item" data-img="oxidado.jpg">Oxidación</div>
+                    <div class="item" data-img="quemado.jpg">Cortocircuitos</div>
+                    <div class="item" data-img="sucio.jpg">Suciedad</div>
+                </div>
             </div>
         </div>
-
-        <div id="seccion-riesgos" class="panel-container" style="display: none; opacity: 0;">
-            <div class="temp" style="color:var(--riesgo)">38°C 🔥</div>
-            <h3 style="color: var(--riesgo); margin-bottom: 15px;">⚠️ BAJO SU RESPONSABILIDAD</h3>
-            <div id="lista-riesgo">
-                <div class="item" data-img="fuga.jpg">Fugas de Gas</div>
-                <div class="item" data-img="oxidado.jpg">Oxidación</div>
-                <div class="item" data-img="quemado.jpg">Cortocircuitos</div>
-                <div class="item" data-img="sucio.jpg">Suciedad</div>
-            </div>
-        </div>
         
-        <div class="footer" id="bloque-cierre">
-            <a href="bienvenidos.html" id="btn-aceptar" class="btn-base btn-frio">❄️ ACEPTAR V.I.P (16°C)</a>
-            <button class="btn-base btn-calor" onclick="ejecutarRechazo()">♨️ OTRO MOMENTO (35°C)</button>
+        <div class="footer">
+            <a href="bienvenidos.html" id="btn-aceptar" class="btn-base btn-frio">❄️ ACEPTAR SER V.I.P</a>
+            <button class="btn-base btn-calor" onclick="ejecutarRechazo()">♨️ EN OTRO MOMENTO</button>
         </div>
     </div>
 
@@ -134,6 +140,9 @@
 
     <script>
         function arrancarTodo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // ELIMINAR CUALQUIER REFERENCIA VISUAL DE DATOS PERO MANTENER EL PUENTE
             document.getElementById('btn-aceptar').onclick = function(e) {
                 e.preventDefault();
                 window.location.href = "bienvenidos.html" + window.location.search;
@@ -142,129 +151,40 @@
             const audio = document.getElementById('snd-cuarto');
             document.getElementById('pantalla-play').classList.remove('active');
             document.getElementById('fase-cuarto').classList.add('active');
-            audio.play();
+
+            audio.play().catch(e => console.log("Audio activo"));
 
             setTimeout(() => {
                 document.getElementById('fase-cuarto').classList.remove('active');
                 document.getElementById('fase-panel').classList.add('active');
-                iniciarSecuenciaMaestra();
+                ejecutarDanza();
             }, 77000); 
         }
 
-        async function iniciarSecuenciaMaestra() {
-            // 1. Mostrar Beneficios VIP uno a uno
-            const vipItems = document.querySelectorAll('#lista-vip .item');
+        async function ejecutarDanza() {
             const pop = document.getElementById('pop-img');
-            
-            for(let it of vipItems) {
-                pop.src = it.getAttribute('data-img');
-                pop.style.transform = "translate(-50%, -50%) scale(1)";
-                await new Promise(r => setTimeout(r, 1300));
-                pop.style.transform = "translate(-50%, -50%) scale(0)";
-                it.innerHTML = `<img src="${pop.src}"> ` + it.innerHTML + " ✅";
+            const items = document.querySelectorAll('.item');
+            for(let it of items) {
+                let imgPath = it.getAttribute('data-img');
+                if(imgPath) {
+                    pop.src = imgPath;
+                    pop.style.transform = "translate(-50%, -50%) scale(1)";
+                    await new Promise(r => setTimeout(r, 1200));
+                    pop.style.transform = "translate(-50%, -50%) scale(0)";
+                    it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
+                }
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-
-            await new Promise(r => setTimeout(r, 3000)); // Espera tras ver beneficios
-
-            // 2. Transición Suave de Beneficios a Riesgos
-            const secBen = document.getElementById('seccion-beneficios');
-            const secRie = document.getElementById('seccion-riesgos');
-            
-            secBen.style.opacity = "0";
-            await new Promise(r => setTimeout(r, 800));
-            secBen.style.display = "none";
-            
-            secRie.style.display = "block";
-            setTimeout(() => { secRie.style.opacity = "1"; }, 50);
-
-            // 3. Mostrar Riesgos uno a uno
-            const rieItems = document.querySelectorAll('#lista-riesgo .item');
-            for(let it of rieItems) {
-                pop.src = it.getAttribute('data-img');
-                pop.style.transform = "translate(-50%, -50%) scale(1.1)";
-                await new Promise(r => setTimeout(r, 1500));
-                pop.style.transform = "translate(-50%, -50%) scale(0)";
-                it.innerHTML = `<img src="${pop.src}"> ` + it.innerHTML + " ❌";
-                it.classList.add('show');
-                await new Promise(r => setTimeout(r, 400));
-            }
-// --- SISTEMA DE RECONSTRUCCIÓN TOTAL: ASISTENTE MATZZOMI ---
-// --- RESTAURACIÓN TOTAL: VERSIÓN PERFECTA MATZZOMI ---
-} 
-
-const audioVip = new Audio('audio_vip.mp3'); 
-const overlay = document.getElementById('overlay');
-
-// 1. CAPTURA DE DATOS (Lo que ya estaba afinado)
-const urlParams = new URLSearchParams(window.location.search);
-const nCli = urlParams.get('n') || "Cliente";
-const uCli = urlParams.get('u') || "Valencia";
-const pCli = urlParams.get('p') || "0";
-
-// 2. FUNCIÓN DE ARRANQUE
-function iniciarPresentacionVip() {
-    // Escondemos el botón de inicio
-    const btnInicie = document.querySelector('.btn-inicio') || document.querySelector('button');
-    if (btnInicie) {
-        btnInicie.style.display = 'none';
-        if(btnInicie.parentElement) btnInicie.parentElement.style.display = 'none';
-    }
-
-    // Arranca el audio
-    audioVip.play().catch(e => console.log("Clic manual requerido"));
-
-    // EL RELOJ DE 77 SEGUNDOS (Sin fallos)
-    setTimeout(() => {
-        if (overlay) {
-            overlay.style.display = 'flex';
-            overlay.style.opacity = '1';
-            overlay.style.visibility = 'visible';
-        } else {
-            // Si por error se borró el ID, este "puente" lo muestra igual
-            document.querySelector('.overlay')?.style.setProperty('display', 'flex', 'important');
         }
-    }, 77000); 
-}
 
-// 3. ENVÍO DE DATOS (Nombre, Lugar, Precio y Decisión)
-async function enviarDatosVip(decision) {
-    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-
-    const datos = new URLSearchParams();
-    datos.append('nombre', nCli);
-    datos.append('decision', (decision === 'Aceptó' ? "SI VIP" : "NO VIP"));
-    datos.append('precio', pCli + "$");
-    datos.append('ubicacion', uCli);
-
-    try {
-        fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-        
-        if (decision === 'Aceptó') {
-            window.location.href = "bienvenidos.html";
-        } else {
-            alert("Gracias por su tiempo, " + nCli);
-            location.reload();
+        function ejecutarRechazo() {
+            new Audio('rechazo.mp3').play().catch(e => {});
+            setTimeout(function(){ 
+                window.close();
+                setTimeout(() => { window.location.href = "about:blank"; }, 500);
+            }, 3000);
         }
-    } catch (e) { console.error("Error de envío"); }
-}
-
-// 4. EVENTOS DE CLIC
-document.addEventListener('click', function(e) {
-    // Botón Iniciar
-    if (e.target.innerText.includes('INICIAR')) {
-        iniciarPresentacionVip();
-    }
-
-    // Botones Finales
-    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
-    if (e.target.closest('.btn-calor')) { 
-        new Audio('rechazo.mp3').play().catch(() => {});
-        enviarDatosVip('Rechazó'); 
-    }
-});
-
-</script>
+    </script>
 </body>
 </html>
