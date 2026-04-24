@@ -190,31 +190,38 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-// --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP ---
+// --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP (CON RELOJ DE SEGURIDAD) ---
 
-// 1. Cierre de seguridad de las calculadoras superiores
+// 1. Cierre de las calculadoras superiores
 } 
 
-// 2. Configuración del audio y el cartel de botones
+// 2. Configuración
 const audioPresentacion = new Audio('audio_vip.mp3'); 
 const overlay = document.getElementById('overlay');
 
-// 3. Lógica de reproducción y visualización
+// 3. Lógica de reproducción
 window.addEventListener('load', () => {
-    // Intentamos reproducir el audio
-    audioPresentacion.play().catch(e => {
-        console.log("Toque la pantalla para activar el audio");
-    });
+    audioPresentacion.play().catch(e => console.log("Toque para sonar"));
 
-    // --- EL SENSOR CLAVE ---
-    // Cuando el audio termine de sonar (los beneficios), mostramos los botones
-    audioPresentacion.onended = function() {
-        console.log("Audio finalizado, mostrando botones...");
-        overlay.style.setProperty('display', 'flex', 'important');
-    };
+    // --- EL PUENTE DIRECTO ---
+    // Opción A: Cuando el audio termine naturalmente
+    audioPresentacion.onended = () => { mostrarBotones(); };
+
+    // Opción B: Temporizador de respaldo (Ajuste los 15000 por los milisegundos que dure su audio)
+    // Ejemplo: si dura 15 segundos, son 15000. Si dura 20, son 20000.
+    setTimeout(() => {
+        mostrarBotones();
+    }, 18000); // Lo puse en 18 segundos por ahora
 });
 
-// 4. Función de envío de datos al Excel
+function mostrarBotones() {
+    if (overlay.style.display !== 'flex') {
+        console.log("Activando botones VIP...");
+        overlay.style.setProperty('display', 'flex', 'important');
+    }
+}
+
+// 4. Función de envío al Excel
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
@@ -225,28 +232,23 @@ async function enviarDatosVip(decision) {
 
     const datos = new URLSearchParams();
     datos.append('nombre', nombre);
-    datos.append('decision', (decision === 'Aceptó') ? "SI Aceptó ser VIP" : "NO Aceptó ser VIP");
+    datos.append('decision', (decision === 'Aceptó') ? "SI Aceptó" : "NO Aceptó");
     datos.append('precio', precio + "$");
     datos.append('ubicacion', ubicacion);
 
     try {
         fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-
         if (decision === 'Aceptó') {
             window.location.href = "bienvenidos.html";
         } else {
-            alert("Respuesta registrada. ¡Muchas gracias!");
+            alert("Respuesta guardada. ¡Gracias!");
         }
-    } catch (e) {
-        console.log("Error de conexión");
-    }
+    } catch (e) { console.log("Error"); }
 }
 
-// 5. Activación de los clics en los botones
+// 5. Los botones
 document.addEventListener('click', function(e) {
-    if (e.target.closest('.btn-frio')) { 
-        enviarDatosVip('Aceptó'); 
-    }
+    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
     if (e.target.closest('.btn-calor')) { 
         new Audio('rechazo.mp3').play().catch(e => {});
         enviarDatosVip('Rechazó'); 
