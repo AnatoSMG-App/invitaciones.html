@@ -190,43 +190,46 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-// --- SISTEMA DE ARRANQUE INMEDIATO: ASISTENTE MATZZOMI ---
+// --- SISTEMA DE CONTROL: ASISTENTE MATZZOMI (RECARGADO) ---
 } 
 
 const audioPresentacion = new Audio('audio_vip.mp3'); 
 const overlay = document.getElementById('overlay');
 
-// 1. Al cargar la página, forzamos que se vea la presentación
-window.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando presentación VIP...");
+// 1. ARRANCADOR DEL BOTÓN AZUL
+function iniciarPresentacionVip() {
+    console.log("Iniciando flujo...");
     
-    // Si tienes un contenedor para la imagen de beneficios, asegúrate que se vea
-    const zonaBeneficios = document.querySelector('.zona-audio') || document.getElementById('seccionVip');
+    // Ocultar pantalla de inicio
+    const pantallaInicio = document.getElementById('pantalla-inicio') || document.querySelector('.btn-inicio');
+    if (pantallaInicio) pantallaInicio.style.display = 'none';
+
+    // Mostrar la zona de la imagen fija de beneficios
+    const zonaBeneficios = document.getElementById('seccionVip') || document.querySelector('.zona-audio');
     if (zonaBeneficios) {
         zonaBeneficios.style.display = 'block';
     }
 
-    // Intentar auto-reproducir (los navegadores suelen bloquearlo hasta que el usuario toca)
-    audioPresentacion.play().catch(() => {
-        console.log("Esperando toque del amo para sonar");
-    });
+    // Arrancar el audio de 1:17
+    audioPresentacion.play().catch(e => console.log("Permiso de audio denegado"));
+
+    // PROGRAMAR LA SALIDA DE LOS BOTONES (77 seg)
+    setTimeout(() => {
+        if (overlay) {
+            // Forzamos la visibilidad máxima
+            overlay.style.cssText = "display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important;";
+        }
+    }, 77000);
+}
+
+// 2. DETECTOR DE CLIC EN "INICIAR"
+document.addEventListener('click', function(e) {
+    if (e.target.innerText.includes('INICIAR') || e.target.id === 'btn-arranque') {
+        iniciarPresentacionVip();
+    }
 });
 
-// 2. Si el usuario toca cualquier parte, el audio arranca (por si el navegador lo bloqueó)
-document.addEventListener('click', function() {
-    if (audioPresentacion.paused) {
-        audioPresentacion.play();
-    }
-}, { once: true }); // Solo se activa con el primer toque
-
-// 3. EL RELOJ (77 segundos para que salgan los botones)
-setTimeout(() => {
-    if (overlay) {
-        overlay.style.cssText = "display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important;";
-    }
-}, 77000);
-
-// 4. Envío al Excel y Redirección
+// 3. ENVÍO AL EXCEL Y REDIRECCIÓN
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
@@ -235,18 +238,18 @@ async function enviarDatosVip(decision) {
 
     const datos = new URLSearchParams();
     datos.append('nombre', nombre);
-    datos.append('decision', decision);
+    datos.append('decision', (decision === 'Aceptó') ? "SI VIP" : "NO VIP");
 
     fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
 
     if (decision === 'Aceptó') {
         window.location.href = "bienvenidos.html";
     } else {
-        alert("Gracias por su tiempo.");
+        alert("Entendido. ¡Muchas gracias!");
     }
 }
 
-// 5. Control de los botones VIP
+// 4. CONTROL DE BOTONES 16°C Y 26°C
 document.addEventListener('click', function(e) {
     if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
     if (e.target.closest('.btn-calor')) { 
