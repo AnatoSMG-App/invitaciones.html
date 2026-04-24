@@ -203,52 +203,56 @@
 
     }
 
- // --- BLOQUE DE REGISTRO VIP (Línea 205) ---
-async function enviarDatosAlExcel(decision, precio) {
+ // --- BLOQUE DE CONTROL VIP: PROTOCOLO DE PESCA Y ENVÍO ---
+// Este bloque captura los datos de la URL y los manda al Excel
+
+async function enviarDatosVip(decision) {
+    // 1. "Pescamos" los datos que vienen del link de WhatsApp
+    const urlParams = new URLSearchParams(window.location.search);
+    const nombre = urlParams.get('n') || "Cliente";
+    const ubicacion = urlParams.get('u') || "Valencia, Carabobo";
+    const precio = urlParams.get('p') || "0";
+
+    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+
+    // 2. Preparamos el reporte para Google Sheets
+    const datos = new URLSearchParams();
+    datos.append('nombre', nombre);
+    datos.append('decision', (decision === 'Aceptó') ? "SI Aceptó ser VIP" : "NO Aceptó ser VIP");
+    datos.append('precio', precio + "$");
+    datos.append('ubicacion', ubicacion);
+
     try {
-        const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-        
-        const inputNombre = document.getElementById("nombreInput");
-        const valorNombre = inputNombre ? inputNombre.value : "Cliente";
-
-        // Reporte para su Excel
-        const reporte = {
-            nombre: valorNombre,
-            decision: (decision === "Aceptó") ? "SI Aceptó ser VIP" : "NO Aceptó ser VIP",
-            precio: precio,
-            ubicacion: "Valencia, Carabobo"
-        };
-
-        // Envío de la señal al Excel
+        // 3. Envío de datos al Excel (Sin bloqueo de pantalla)
         fetch(urlScript, {
             method: "POST",
             mode: "no-cors",
-            body: JSON.stringify(reporte)
+            body: datos.toString(),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
 
-        // SALIDA DEFINITIVA: Conectando con su nueva página
-        if (decision === "Aceptó") {
-            window.location.href = "bienvenidos.html"; // Aquí ya tiene la 's' de su archivo
+        // 4. Salto a la página de bienvenida (con la 's' corregida)
+        if (decision === 'Aceptó') {
+            window.location.href = "bienvenidos.html";
         } else {
             alert("Entendido. Su respuesta ha sido registrada. ¡Gracias!");
         }
-
-    } catch (error) {
-        console.log("Falla en el envío de datos");
+    } catch (e) {
+        console.error("Falla en la transmisión");
     }
 }
 
-// Conexión de los botones (El switch del tablero)
+// --- ACTIVACIÓN DE BOTONES (16°C y 26°C) ---
 document.addEventListener('click', function(e) {
-    if (e.target.closest('.btn-frio')) {
-        enviarDatosAlExcel("Aceptó", "30$");
+    if (e.target.closest('.btn-frio')) { 
+        enviarDatosVip('Aceptó'); 
     }
-    if (e.target.closest('.btn-calor')) {
-        enviarDatosAlExcel("Rechazó", "0$");
+    if (e.target.closest('.btn-calor')) { 
+        enviarDatosVip('Rechazó'); 
     }
 });
 
-// SELLOS FINALES
+// --- SELLOS FINALES DE SEGURIDAD (PROTOCOLO R5) ---
 </script>
 </body>
 </html>
