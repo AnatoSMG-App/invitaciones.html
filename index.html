@@ -200,7 +200,36 @@
         function ejecutarRechazo() {
             new Audio('rechazo.mp3').play().catch(e => {});
             setTimeout(() => { window.location.href = "about:blank"; }, 3000);
-        }
+            
+            <script>
+function enviarDatos(decision, precio) {
+    const urlScript = "https://script.google.com/macros/s/AKfycbyi8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNxCLqWsAkc/exec";
+    
+    // Obtenemos el nombre que el cliente escribió en el input
+    const nombreCliente = document.getElementById("nombreInput").value || "Cliente Anónimo";
+    const ubicacionCliente = "Valencia, Carabobo"; // Esto puede ser fijo o dinámico
+
+    const datos = {
+        nombre: nombreCliente,
+        decision: decision,
+        ubicacion: ubicacionCliente,
+        precio: precio
+    };
+
+    // Enviamos los datos de forma silenciosa (Fetch)
+    fetch(urlScript, {
+        method: "POST",
+        mode: "no-cors",
+        cache: "no-cache",
+        body: JSON.stringify(datos)
+    });
+
+    // Si aceptó (Botón Frío), lo mandamos a la página de bienvenida
+    if (decision === "Aceptó") {
+        window.location.href = "bienvenido.html"; 
+    } else {
+        alert("Gracias por visitarnos. ¡Hasta la próxima!");
+    }
     </script>
 </body>
 </html>
