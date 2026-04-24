@@ -190,9 +190,81 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-// --- SISTEMA DE CONTROL: ASISTENTE MATZZOMI (RECARGADO) ---
+// --- SISTEMA DE CONTROL POR SENSOR DE AUDIO ---
 } 
 
+// --- SISTEMA AUTÓNOMO: ASISTENTE MATZZOMI ---
+} 
+
+const audioVip = new Audio('audio_vip.mp3'); 
+
+// 1. FUNCIÓN DE ARRANQUE
+function iniciarPresentacionVip() {
+    // Buscamos el botón de inicio para ocultarlo
+    const inicio = document.querySelector('.btn-inicio') || document.querySelector('button');
+    if (inicio) inicio.style.display = 'none';
+
+    // BUSCAMOS LA IMAGEN DE BENEFICIOS (Asegúrate que el archivo se llame beneficios.jpg o cámbialo aquí)
+    const imagenVip = document.querySelector('img[src*="beneficios"]') || document.querySelector('.img-fluida');
+    if (imagenVip) {
+        imagenVip.style.display = 'block'; // La hacemos visible
+    }
+
+    // Arrancamos tu voz
+    audioVip.play().catch(e => console.log("Se requiere clic del usuario"));
+
+    // EL RELOJ DE PRECISIÓN (77 segundos)
+    setTimeout(() => {
+        // Buscamos el cuadro de los botones (el overlay)
+        const cartel = document.getElementById('overlay') || document.querySelector('.overlay');
+        
+        if (cartel) {
+            // FORZAMOS LA APARICIÓN
+            cartel.style.setProperty('display', 'flex', 'important');
+            cartel.style.setProperty('visibility', 'visible', 'important');
+            cartel.style.opacity = '1';
+            console.log("Ciclo completado: Botones VIP en pantalla");
+        } else {
+            // Si no encuentra el cartel, nos avisa con un mensaje para no quedar a ciegas
+            alert("Atención Amo: No se encontró el elemento 'overlay' en el HTML.");
+        }
+    }, 77000); 
+}
+
+// 2. DETECTOR DE CLIC EN EL BOTÓN AZUL (INICIAR)
+document.addEventListener('click', function(e) {
+    if (e.target.innerText.includes('INICIAR')) {
+        iniciarPresentacionVip();
+    }
+});
+
+// 3. ENVÍO AL EXCEL (REPORTE TÉCNICO)
+async function enviarDatosVip(decision) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const nombre = urlParams.get('n') || "Cliente";
+    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+    
+    const datos = new URLSearchParams();
+    datos.append('nombre', nombre);
+    datos.append('decision', decision);
+
+    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+
+    if (decision === 'Aceptó') {
+        window.location.href = "bienvenidos.html";
+    } else {
+        alert("Respuesta registrada. Gracias.");
+    }
+}
+
+// 4. CONTROL DE BOTONES 16°C / 26°C
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
+    if (e.target.closest('.btn-calor')) { 
+        new Audio('rechazo.mp3').play().catch(() => {});
+        enviarDatosVip('Rechazó'); 
+    }
+});
 
 </script>
 </body>
