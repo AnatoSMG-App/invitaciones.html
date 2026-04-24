@@ -192,27 +192,29 @@
             }
 // --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP ---
 
-// 1. Cerramos la llave que quedó abierta de las calculadoras arriba
+// 1. Cierre de seguridad de las calculadoras superiores
 } 
 
-// 2. Configuramos el audio real
+// 2. Configuración del audio y el cartel de botones
 const audioPresentacion = new Audio('audio_vip.mp3'); 
 const overlay = document.getElementById('overlay');
 
-// 3. Arrancar audio y mostrar botones al terminar
+// 3. Lógica de reproducción y visualización
 window.addEventListener('load', () => {
-    // El audio empieza apenas carga la página
+    // Intentamos reproducir el audio
     audioPresentacion.play().catch(e => {
-        console.log("Audio esperando interacción del usuario");
+        console.log("Toque la pantalla para activar el audio");
     });
 
-    // Cuando el audio termine de hablar, se muestran los botones VIP
+    // --- EL SENSOR CLAVE ---
+    // Cuando el audio termine de sonar (los beneficios), mostramos los botones
     audioPresentacion.onended = function() {
-        overlay.style.display = 'flex';
+        console.log("Audio finalizado, mostrando botones...");
+        overlay.style.setProperty('display', 'flex', 'important');
     };
 });
 
-// 4. Función de envío al Excel (Sin errores de video)
+// 4. Función de envío de datos al Excel
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
@@ -240,7 +242,7 @@ async function enviarDatosVip(decision) {
     }
 }
 
-// 5. Los interruptores de los botones
+// 5. Activación de los clics en los botones
 document.addEventListener('click', function(e) {
     if (e.target.closest('.btn-frio')) { 
         enviarDatosVip('Aceptó'); 
