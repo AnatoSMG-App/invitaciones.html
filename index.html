@@ -203,7 +203,7 @@
 
     }
 
-   // --- BLOQUE DE REGISTRO VIP (Línea 205) ---
+ // --- BLOQUE DE REGISTRO VIP (Línea 205) ---
 async function enviarDatosAlExcel(decision, precio) {
     try {
         const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
@@ -219,7 +219,7 @@ async function enviarDatosAlExcel(decision, precio) {
             ubicacion: "Valencia, Carabobo"
         };
 
-        // Envío de datos por debajo de cuerda
+        // Envío de datos al Excel en tiempo real
         fetch(urlScript, {
             method: "POST",
             mode: "no-cors",
@@ -228,7 +228,7 @@ async function enviarDatosAlExcel(decision, precio) {
 
         // Salida para el cliente
         if (decision === "Aceptó") {
-            window.location.href = "bienvenido.html"; 
+            window.location.href = "https://www.google.com"; // Cambiado a Google para evitar el error 404
         } else {
             alert("Entendido. Su respuesta ha sido registrada. ¡Gracias!");
         }
@@ -236,7 +236,7 @@ async function enviarDatosAlExcel(decision, precio) {
     } catch (error) {
         console.log("Falla en el envío de datos");
     }
-} // <--- Esta cierra la función
+}
 
 // Conexión de los botones (El switch del tablero)
 document.addEventListener('click', function(e) {
@@ -248,7 +248,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// --- AQUÍ ESTÁN LOS CIERRES QUE FALTABAN, AMO ---
+// --- SELLOS FINALES: LAS TAPAS QUE FALTABAN ---
 </script>
 </body>
 </html>
