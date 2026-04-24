@@ -51,7 +51,7 @@
         <p>Por este año 2026.</p>
         
         <div class="alerta-capture">
-            📸 POR FAVOR, TOME CAPTURA DE PANTALLA PARA RESPALDAR SU PRECIO Y SU FECHA DE MANTENIMIENTO.
+            📸 POR FAVOR, TOME CAPTURA DE PANTALLA PARA RESPALDAR SU PRECIO ANCLADO POR ESTE AñO.
         </div>
 
         <button onclick="finalizarProceso()" class="btn-salir">FINALIZAR</button>
@@ -65,9 +65,9 @@
             
             // 1. MAPEAR DATOS DEL GENERADOR
             const nombre = urlParams.get('n') || "CLIENTE EXCLUSIVO";
-            const precio = urlParams.get('p') || "30";
+            const precio = urlParams.get('p') || "100";
             const ubicacion = urlParams.get('u') || "SU SECTOR";
-
+            const citas = urlParams.get('c') || "PRÓXIMAMENTE";
             document.getElementById('nombre-cliente').innerText = `BIENVENIDO: ${nombre.toUpperCase()}`;
             document.getElementById('precio-final').innerText = `$${precio}`;
             document.getElementById('ubicacion-cliente').innerText = ubicacion.toUpperCase();
