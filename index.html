@@ -190,75 +190,68 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
-// --- SISTEMA DE CONTROL POR SENSOR DE AUDIO ---
-} 
-
-// --- SISTEMA AUTÓNOMO: ASISTENTE MATZZOMI ---
+// --- RESTAURACIÓN TÉCNICA: SOLO AUDIO Y BOTONES ---
 } 
 
 const audioVip = new Audio('audio_vip.mp3'); 
+const overlay = document.getElementById('overlay');
 
-// 1. FUNCIÓN DE ARRANQUE
-function iniciarPresentacionVip() {
-    // Buscamos el botón de inicio para ocultarlo
-    const inicio = document.querySelector('.btn-inicio') || document.querySelector('button');
-    if (inicio) inicio.style.display = 'none';
+// 1. FUNCIÓN DE ARRANQUE (Al tocar INICIAR)
+function reproducirPresentacion() {
+    // Buscamos el botón de inicio para que se quite al empezar
+    const btnInicio = document.querySelector('.btn-inicio') || document.querySelector('button');
+    if (btnInicio) btnInicio.style.display = 'none';
 
-    // BUSCAMOS LA IMAGEN DE BENEFICIOS (Asegúrate que el archivo se llame beneficios.jpg o cámbialo aquí)
-    const imagenVip = document.querySelector('img[src*="beneficios"]') || document.querySelector('.img-fluida');
-    if (imagenVip) {
-        imagenVip.style.display = 'block'; // La hacemos visible
-    }
+    // Play al audio de su voz
+    audioVip.play().catch(e => console.log("Se requiere clic manual"));
 
-    // Arrancamos tu voz
-    audioVip.play().catch(e => console.log("Se requiere clic del usuario"));
-
-    // EL RELOJ DE PRECISIÓN (77 segundos)
+    // EL RELOJ MAESTRO (77 segundos exactos)
     setTimeout(() => {
-        // Buscamos el cuadro de los botones (el overlay)
-        const cartel = document.getElementById('overlay') || document.querySelector('.overlay');
-        
-        if (cartel) {
-            // FORZAMOS LA APARICIÓN
-            cartel.style.setProperty('display', 'flex', 'important');
-            cartel.style.setProperty('visibility', 'visible', 'important');
-            cartel.style.opacity = '1';
-            console.log("Ciclo completado: Botones VIP en pantalla");
-        } else {
-            // Si no encuentra el cartel, nos avisa con un mensaje para no quedar a ciegas
-            alert("Atención Amo: No se encontró el elemento 'overlay' en el HTML.");
+        if (overlay) {
+            // Mandamos la señal para que el cuadro de botones aparezca
+            overlay.style.display = 'flex';
+            overlay.style.opacity = '1';
+            overlay.style.visibility = 'visible';
         }
     }, 77000); 
 }
 
-// 2. DETECTOR DE CLIC EN EL BOTÓN AZUL (INICIAR)
-document.addEventListener('click', function(e) {
-    if (e.target.innerText.includes('INICIAR')) {
-        iniciarPresentacionVip();
-    }
-});
-
-// 3. ENVÍO AL EXCEL (REPORTE TÉCNICO)
+// 2. ENVÍO DE DATOS AL EXCEL
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
-    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+    const ubicacion = urlParams.get('u') || "Valencia";
+    const precio = urlParams.get('p') || "0";
     
+    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+
     const datos = new URLSearchParams();
     datos.append('nombre', nombre);
     datos.append('decision', decision);
+    datos.append('precio', precio + "$");
+    datos.append('ubicacion', ubicacion);
 
-    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-
-    if (decision === 'Aceptó') {
-        window.location.href = "bienvenidos.html";
-    } else {
-        alert("Respuesta registrada. Gracias.");
+    try {
+        fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+        
+        if (decision === 'Aceptó') {
+            window.location.href = "bienvenidos.html";
+        } else {
+            alert("Gracias por su respuesta");
+        }
+    } catch (e) {
+        console.error("Error de conexión");
     }
 }
 
-// 4. CONTROL DE BOTONES 16°C / 26°C
+// 3. EVENTOS DE CLIC (Lo que hace que los botones funcionen)
 document.addEventListener('click', function(e) {
+    // Si toca el botón de INICIAR PRESENTACIÓN
+    if (e.target.innerText.includes('INICIAR')) {
+        reproducirPresentacion();
+    }
+
+    // Botones de temperatura finales
     if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
     if (e.target.closest('.btn-calor')) { 
         new Audio('rechazo.mp3').play().catch(() => {});
