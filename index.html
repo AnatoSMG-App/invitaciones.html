@@ -203,39 +203,42 @@
 
     }
 
-        // --- BLOQUE DE ENVÍO SEGURO (Línea 205) ---
-async function enviarDatosAlExcel(decision, precio) { // <--- AQUÍ ESTÁ LA LLAVE QUE FALTABA
+   // --- BLOQUE DE REGISTRO VIP (Línea 205) ---
+async function enviarDatosAlExcel(decision, precio) {
     try {
         const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
         
         const inputNombre = document.getElementById("nombreInput");
         const valorNombre = inputNombre ? inputNombre.value : "Cliente";
 
-        const paquete = {
+        // Reporte detallado para su Excel
+        const reporte = {
             nombre: valorNombre,
-            decision: decision,
+            decision: (decision === "Aceptó") ? "SI Aceptó ser VIP" : "NO Aceptó ser VIP",
             precio: precio,
             ubicacion: "Valencia, Carabobo"
         };
 
+        // Envío de datos por debajo de cuerda
         fetch(urlScript, {
             method: "POST",
             mode: "no-cors",
-            body: JSON.stringify(paquete)
+            body: JSON.stringify(reporte)
         });
 
+        // Salida para el cliente
         if (decision === "Aceptó") {
-            window.location.href = "bienvenido.html";
-        } else if (typeof ejecutarRechazo === "function") {
-            ejecutarRechazo();
+            window.location.href = "bienvenido.html"; 
+        } else {
+            alert("Entendido. Su respuesta ha sido registrada. ¡Gracias!");
         }
 
     } catch (error) {
-        console.log("Falla controlada");
+        console.log("Falla en el envío de datos");
     }
 } // <--- Esta cierra la función
 
-// CONEXIÓN DE BOTONES
+// Conexión de los botones (El switch del tablero)
 document.addEventListener('click', function(e) {
     if (e.target.closest('.btn-frio')) {
         enviarDatosAlExcel("Aceptó", "30$");
@@ -244,6 +247,8 @@ document.addEventListener('click', function(e) {
         enviarDatosAlExcel("Rechazó", "0$");
     }
 });
+
+// --- AQUÍ ESTÁN LOS CIERRES QUE FALTABAN, AMO ---
 </script>
 </body>
 </html>
