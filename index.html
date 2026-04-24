@@ -190,27 +190,33 @@
                 it.classList.add('show');
                 await new Promise(r => setTimeout(r, 400));
             }
+// --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP ---
 
-       // --- SISTEMA DE CONTROL DE VIDEO Y ENVÍO VIP ---
+// 1. Cerramos la llave que quedó abierta de las calculadoras arriba
+} 
 
-// 1. EL SENSOR: Vigila el video y muestra los botones al final
-const video = document.getElementById('miVideo');
+// 2. Configuramos el audio real
+const audioPresentacion = new Audio('audio_vip.mp3'); 
 const overlay = document.getElementById('overlay');
 
-video.addEventListener('timeupdate', function() {
-    // Cuando falten 0.5 segundos para terminar, muestra los botones
-    if (video.duration - video.currentTime < 0.5) {
+// 3. Arrancar audio y mostrar botones al terminar
+window.addEventListener('load', () => {
+    // El audio empieza apenas carga la página
+    audioPresentacion.play().catch(e => {
+        console.log("Audio esperando interacción del usuario");
+    });
+
+    // Cuando el audio termine de hablar, se muestran los botones VIP
+    audioPresentacion.onended = function() {
         overlay.style.display = 'flex';
-        // Pausamos para que el cliente elija
-        video.pause(); 
-    }
+    };
 });
 
-// 2. FUNCIÓN MAESTRA: Pesca datos y reporta al Excel
+// 4. Función de envío al Excel (Sin errores de video)
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
-    const ubicacion = urlParams.get('u') || "Valencia, Carabobo";
+    const ubicacion = urlParams.get('u') || "Valencia";
     const precio = urlParams.get('p') || "0";
 
     const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
@@ -222,26 +228,23 @@ async function enviarDatosVip(decision) {
     datos.append('ubicacion', ubicacion);
 
     try {
-        fetch(urlScript, {
-            method: "POST",
-            mode: "no-cors",
-            body: datos.toString()
-        });
+        fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
 
         if (decision === 'Aceptó') {
-            new Audio('aceptacion.mp3').play().catch(e => {});
-            setTimeout(() => { window.location.href = "bienvenidos.html"; }, 1000);
+            window.location.href = "bienvenidos.html";
         } else {
             alert("Respuesta registrada. ¡Muchas gracias!");
         }
     } catch (e) {
-        console.error("Error de red");
+        console.log("Error de conexión");
     }
 }
 
-// 3. CONEXIÓN DE CLICS
+// 5. Los interruptores de los botones
 document.addEventListener('click', function(e) {
-    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
+    if (e.target.closest('.btn-frio')) { 
+        enviarDatosVip('Aceptó'); 
+    }
     if (e.target.closest('.btn-calor')) { 
         new Audio('rechazo.mp3').play().catch(e => {});
         enviarDatosVip('Rechazó'); 
