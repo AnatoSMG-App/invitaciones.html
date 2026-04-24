@@ -193,52 +193,60 @@
 // --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP ---
 } 
 
-// --- RESTAURACIÓN DE SEGURIDAD: ESTADO ORIGINAL ---
+// --- SISTEMA DE CONTROL: IMAGEN + AUDIO VIP (CON ACTIVADOR) ---
 } 
 
 const audioPresentacion = new Audio('audio_vip.mp3'); 
 const overlay = document.getElementById('overlay');
 
-// 1. Solo arranca el audio al cargar
-window.addEventListener('load', () => {
-    audioPresentacion.play().catch(e => {
-        console.log("Esperando interacción para sonar");
-    });
+// 1. Función para activar el audio al tocar la imagen
+// Asegúrese de que su imagen en el HTML tenga el id="iconoSonido" o use la clase
+document.addEventListener('click', function(e) {
+    // Si toca la imagen del sonido o cualquier parte de la zona de beneficios
+    if (e.target.closest('#iconoSonido') || e.target.closest('.zona-audio')) {
+        console.log("Arrancando audio de beneficios...");
+        audioPresentacion.play().catch(err => console.log("Error al reproducir:", err));
+    }
 });
 
-// 2. Función base de envío (Sin redirecciones automáticas)
+// 2. Temporizador de seguridad (77 seg) para que salgan los botones
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        if (overlay) {
+            overlay.style.cssText = "display: flex !important; visibility: visible !important; opacity: 1 !important;";
+        }
+    }, 77000); 
+});
+
+// 3. Envío de datos al Excel
 async function enviarDatosVip(decision) {
     const urlParams = new URLSearchParams(window.location.search);
     const nombre = urlParams.get('n') || "Cliente";
     const ubicacion = urlParams.get('u') || "Valencia";
-    const precio = urlParams.get('p') || "0";
-
     const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
 
     const datos = new URLSearchParams();
     datos.append('nombre', nombre);
     datos.append('decision', decision);
-    datos.append('precio', precio + "$");
-    datos.append('ubicacion', ubicacion);
 
     try {
         fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-        alert("Reporte enviado: " + decision);
-    } catch (e) {
-        console.log("Error de red");
-    }
+        if (decision === 'Aceptó') {
+            window.location.href = "bienvenidos.html";
+        } else {
+            alert("Gracias por su respuesta.");
+        }
+    } catch (e) { console.log("Error de red"); }
 }
 
-// 3. Control de clics sencillo
+// 4. Control de los botones VIP
 document.addEventListener('click', function(e) {
-    if (e.target.closest('.btn-frio')) { 
-        enviarDatosVip('Aceptó'); 
-    }
+    if (e.target.closest('.btn-frio')) { enviarDatosVip('Aceptó'); }
     if (e.target.closest('.btn-calor')) { 
+        new Audio('rechazo.mp3').play().catch(e => {});
         enviarDatosVip('Rechazó'); 
     }
 });
-
 </script>
 </body>
 </html>
