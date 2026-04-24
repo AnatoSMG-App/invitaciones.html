@@ -71,7 +71,15 @@
             document.getElementById('nombre-cliente').innerText = `BIENVENIDO: ${nombre.toUpperCase()}`;
             document.getElementById('precio-final').innerText = `$${precio}`;
             document.getElementById('ubicacion').innerText = ubicacion.toUpperCase();
-
+const citasLink = urlParams.get('c');
+if (citasLink) {
+    const listaFechas = citasLink.split(',').join('<br> • ');
+    const espacioFechas = document.createElement('div');
+    espacioFechas.innerHTML = '<br>PRÓXIMAS CITAS:<br> • ' + listaFechas;
+    espacioFechas.style.color = '#00f2ff'; 
+    espacioFechas.style.fontWeight = 'bold';
+    document.getElementById('ubicacion').parentElement.appendChild(espacioFechas);
+}
             // 2. SONIDO INICIAL (OPCIONAL SEGÚN NAVEGADOR)
             var sonido = document.getElementById('aplausos');
             sonido.play().catch(e => console.log("Esperando interacción"));
