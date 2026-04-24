@@ -71,7 +71,7 @@
             document.getElementById('nombre-cliente').innerText = `BIENVENIDO: ${nombre.toUpperCase()}`;
             document.getElementById('precio-final').innerText = `$${precio}`;
             document.getElementById('ubicacion-cliente').innerText = ubicacion.toUpperCase();
-
+            document.getElementById('fecha-cita').innerText = citas;
             // 2. SONIDO INICIAL (OPCIONAL SEGÚN NAVEGADOR)
             var sonido = document.getElementById('aplausos');
             sonido.play().catch(e => console.log("Esperando interacción"));
