@@ -49,15 +49,15 @@
 .flecha-candela-flotante {
     position: fixed;       /* Se queda "pegada" al cristal del celular, no se mueve al hacer scroll */
     right: 15px;           /* Separación del borde derecho */
-    top: 50%;              /* Centrada verticalmente */
+    top: 70%;              /* Centrada verticalmente */
     transform: translateY(-50%); /* Ajuste perfecto para el centrado vertical */
     
-    font-size: 3.5rem;     /* Bien gruesa y grande */
+    font-size: 8 rem;     /* Bien gruesa y grande */
     font-weight: bold;
     color: #ff3300;        /* Color Candela Puro (Rojo-Naranja vibrante) */
     
     /* Brillo Neon Caliente (Drop Shadow) */
-    text-shadow: 0 0 10px #ff3300, 0 0 20px #ff6600, 0 0 30px #ff0000;
+    text-shadow: 0 0 20px #ff3300, 0 0 40px #ff6600, 0 0 60px #ff0000;
     
     z-index: 9999;         /* Por encima de ABSOLUTAMENTE TODO */
     
@@ -68,12 +68,12 @@
 /* 3. Definición de la Animación: Palpitar (Brillo) y Mover (Arriba-Abajo) */
 @keyframes palpitarYmover {
     0%, 100% {
-        transform: translateY(-50%) scale(1); /* Posición central, tamaño normal */
+        transform: translateY( 0%) scale(1); /* Posición central, tamaño normal */
         opacity: 1;                          /* Brillo total */
         text-shadow: 0 0 10px #ff3300, 0 0 20px #ff6600, 0 0 30px #ff0000;
     }
     50% {
-        transform: translateY(-30%) scale(1.1); /* Sube un poquito y se agranda */
+        transform: translateY( 50%) scale(1.1); /* Sube un poquito y se agranda */
         opacity: 0.6;                        /* Se "apaga" un poco */
         text-shadow: 0 0 5px #ff3300, 0 0 10px #ff6600; /* Brillo más suave */
     }
