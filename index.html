@@ -169,7 +169,7 @@
                 if(imgPath) {
                     pop.src = imgPath;
                     pop.style.transform = "translate(-50%, -50%) scale(1)";
-                    await new Promise(r => setTimeout(r, 1200));
+                    await new Promise(r => setTimeout(r, 2500));
                     pop.style.transform = "translate(-50%, -50%) scale(0)";
                     it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
                 }
