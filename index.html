@@ -105,6 +105,7 @@
         
         <div class="split">
             <div class="panel">
+                <div id="beneficios">
                 <div class="temp" style="color:var(--frio)">16°C ❄️</div>
                 <h3 style="color: var(--frio); margin-bottom: 20px;">💎 BENEFICIOS V.I.P.</h3>
                 <div id="lista-vip">
@@ -117,7 +118,7 @@
                 </div>
             </div>
             <div class="panel">
-                <div class="temp" style="color:var(--riesgo)">38°C 🔥</div>
+                <div class="temp" style="color:var(--riesgo)">35°C 🔥</div>
                 <div style="color: #ff9100; font-size: 0.8rem; font-weight: bold; animation: titilar 0.8s infinite; margin-bottom: 15px; border: 1px dashed #ff9100; padding: 5px;">
               <div id="riesgos" class="panel-riesgos" style="display: none;">  ⚠️ BAJO SU PROPIA RESPONSABILIDAD ⚠️
                     <div class="item" data-img="fuga.jpg">Fugas de Gas</div>
@@ -175,7 +176,25 @@
                 await new Promise(r => setTimeout(r, 400));
             }
         }
+function iniciarPresentacion() {
+    const bloqueBeneficios = document.getElementById('beneficios');
+    const bloqueRiesgos = document.getElementById('riesgos');
+    const bloqueBotones = document.getElementById('final-botones'); // El de los botones
 
+    // FASE 1: De Beneficios a Riesgos
+    setTimeout(() => {
+        bloqueBeneficios.style.display = 'none';
+        bloqueRiesgos.style.display = 'block';
+
+        // FASE 2: De Riesgos a Botones Finales
+        setTimeout(() => {
+            bloqueRiesgos.style.display = 'none';
+            bloqueBotones.style.display = 'block';
+        }, 23000); // <--- Aquí gradúa el tiempo de los Riesgos (8 seg)
+
+    }, 15000); // <--- Aquí gradúa el tiempo de los Beneficios (15 seg)
+}
+        
         function ejecutarRechazo() {
             new Audio('rechazo.mp3').play().catch(e => {});
             setTimeout(function(){ 
