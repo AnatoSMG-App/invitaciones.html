@@ -116,41 +116,41 @@
                     <div class="item" data-img="informe.jpg">Informe Digital</div>
                 </div>
             <script>
+// --- CONEXIÓN VIP MURACHI RECARGADA ---
 const audioVip = new Audio('audio_vip.mp3'); 
 
-// 1. CAPTURA DE DATOS (Jorge Anato, Valencia, $10)
 const urlParams = new URLSearchParams(window.location.search);
 const nCli = urlParams.get('n') || "Cliente";
 const uCli = urlParams.get('u') || "Venezuela";
 const pCli = urlParams.get('p') || "0";
 
 function iniciarPresentacionVip() {
-    // Escondemos el botón de inicio
     const btnInicie = document.querySelector('.btn-inicio') || document.querySelector('button');
     if (btnInicie) btnInicie.style.display = 'none';
 
-    audioVip.play().catch(e => console.log("Clic para audio"));
+    audioVip.play().catch(e => console.log("Audio en espera"));
 
-    // --- SECUENCIA ESCALONADA (Para que NO se monten) ---
+    // --- SECUENCIA DE IMÁGENES (UNA TRAS OTRA) ---
     
-    // Mostramos Beneficios (16°C)
-    const seccion16 = document.getElementById('beneficios') || document.querySelector('.beneficios');
-    if(seccion16) {
-        seccion16.style.display = 'block';
-        seccion16.style.position = 'relative'; // Esto evita que se monten
+    // 1. Mostrar la comparación de los dos cuartos (La imagen principal)
+    // Buscamos cualquier elemento que parezca una imagen o panel de beneficios
+    const panelPrincipal = document.querySelector('.panel') || document.getElementById('beneficios');
+    if(panelPrincipal) {
+        panelPrincipal.style.display = 'block';
+        panelPrincipal.style.position = 'relative';
     }
 
-    // Esperamos 2 segundos y mostramos Riesgos (38°C) abajo
+    // 2. A los 2 segundos, mostrar la sección de riesgos
     setTimeout(() => {
-        const seccion38 = document.getElementById('riesgos') || document.querySelector('.riesgos');
-        if(seccion38) {
-            seccion38.style.display = 'block';
-            seccion38.style.position = 'relative'; // Esto asegura que vaya debajo
-            seccion38.scrollIntoView({ behavior: 'smooth' });
+        const seccionRiesgos = document.getElementById('riesgos') || document.querySelector('.riesgos') || document.getElementById('lista-riesgos');
+        if(seccionRiesgos) {
+            seccionRiesgos.style.display = 'block';
+            seccionRiesgos.style.position = 'relative';
+            seccionRiesgos.scrollIntoView({ behavior: 'smooth' });
         }
     }, 2000); 
 
-    // Reloj maestro de 77 segundos para botones
+    // 3. Botones finales (77 segundos)
     setTimeout(() => {
         const cartel = document.getElementById('overlay');
         if (cartel) {
@@ -159,12 +159,10 @@ function iniciarPresentacionVip() {
     }, 77000); 
 }
 
-// Escuchador del clic inicial
 document.addEventListener('click', function(e) {
     if (e.target.innerText.includes('INICIAR')) iniciarPresentacionVip();
 });
 
-// Función de envío al Excel
 async function enviarDatosVip(decision) {
     const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
     const datos = new URLSearchParams();
@@ -183,7 +181,6 @@ async function enviarDatosVip(decision) {
     }
 }
 
-// Botones de acción
 document.addEventListener('click', function(e) {
     if (e.target.closest('.btn-frio')) enviarDatosVip('Aceptó');
     if (e.target.closest('.btn-calor')) { 
