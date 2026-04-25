@@ -115,79 +115,76 @@
                     <div class="item" data-img="candado.jpg">Tarifa VIP Protegida</div>
                     <div class="item" data-img="informe.jpg">Informe Digital</div>
                 </div>
-            <script>
-// --- CONEXIÓN VIP MURACHI RECARGADA ---
-const audioVip = new Audio('audio_vip.mp3'); 
+            </div>
+            <div class="panel">
+                <div class="temp" style="color:var(--riesgo)">38°C 🔥</div>
+                <div style="color: #ff9100; font-size: 0.8rem; font-weight: bold; animation: titilar 0.8s infinite; margin-bottom: 15px; border: 1px dashed #ff9100; padding: 5px;">
+                    ⚠️ BAJO SU PROPIA RESPONSABILIDAD ⚠️
+                </div>
+                <div id="lista-riesgo">
+                    <div class="item" data-img="fuga.jpg">Fugas de Gas</div>
+                    <div class="item" data-img="oxidado.jpg">Oxidación</div>
+                    <div class="item" data-img="quemado.jpg">Cortocircuitos</div>
+                    <div class="item" data-img="sucio.jpg">Suciedad</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="bienvenidos.html" id="btn-aceptar" class="btn-base btn-frio">❄️ ACEPTAR SER V.I.P</a>
+            <button class="btn-base btn-calor" onclick="ejecutarRechazo()">♨️ EN OTRO MOMENTO</button>
+        </div>
+    </div>
 
-const urlParams = new URLSearchParams(window.location.search);
-const nCli = urlParams.get('n') || "Cliente";
-const uCli = urlParams.get('u') || "Venezuela";
-const pCli = urlParams.get('p') || "0";
+    <img id="pop-img" src="">
 
-function iniciarPresentacionVip() {
-    const btnInicie = document.querySelector('.btn-inicio') || document.querySelector('button');
-    if (btnInicie) btnInicie.style.display = 'none';
+    <script>
+        function arrancarTodo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // ELIMINAR CUALQUIER REFERENCIA VISUAL DE DATOS PERO MANTENER EL PUENTE
+            document.getElementById('btn-aceptar').onclick = function(e) {
+                e.preventDefault();
+                window.location.href = "bienvenidos.html" + window.location.search;
+            };
 
-    audioVip.play().catch(e => console.log("Audio en espera"));
+            const audio = document.getElementById('snd-cuarto');
+            document.getElementById('pantalla-play').classList.remove('active');
+            document.getElementById('fase-cuarto').classList.add('active');
 
-    // --- SECUENCIA DE IMÁGENES (UNA TRAS OTRA) ---
-    
-    // 1. Mostrar la comparación de los dos cuartos (La imagen principal)
-    // Buscamos cualquier elemento que parezca una imagen o panel de beneficios
-    const panelPrincipal = document.querySelector('.panel') || document.getElementById('beneficios');
-    if(panelPrincipal) {
-        panelPrincipal.style.display = 'block';
-        panelPrincipal.style.position = 'relative';
-    }
+            audio.play().catch(e => console.log("Audio activo"));
 
-    // 2. A los 2 segundos, mostrar la sección de riesgos
-    setTimeout(() => {
-        const seccionRiesgos = document.getElementById('riesgos') || document.querySelector('.riesgos') || document.getElementById('lista-riesgos');
-        if(seccionRiesgos) {
-            seccionRiesgos.style.display = 'block';
-            seccionRiesgos.style.position = 'relative';
-            seccionRiesgos.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                document.getElementById('fase-cuarto').classList.remove('active');
+                document.getElementById('fase-panel').classList.add('active');
+                ejecutarDanza();
+            }, 77000); 
         }
-    }, 2000); 
 
-    // 3. Botones finales (77 segundos)
-    setTimeout(() => {
-        const cartel = document.getElementById('overlay');
-        if (cartel) {
-            cartel.style.cssText = "display: flex !important; visibility: visible !important; opacity: 1 !important; position: fixed !important; z-index: 9999;";
+        async function ejecutarDanza() {
+            const pop = document.getElementById('pop-img');
+            const items = document.querySelectorAll('.item');
+            for(let it of items) {
+                let imgPath = it.getAttribute('data-img');
+                if(imgPath) {
+                    pop.src = imgPath;
+                    pop.style.transform = "translate(-50%, -50%) scale(1)";
+                    await new Promise(r => setTimeout(r, 1200));
+                    pop.style.transform = "translate(-50%, -50%) scale(0)";
+                    it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
+                }
+                it.classList.add('show');
+                await new Promise(r => setTimeout(r, 400));
+            }
         }
-    }, 77000); 
-}
 
-document.addEventListener('click', function(e) {
-    if (e.target.innerText.includes('INICIAR')) iniciarPresentacionVip();
-});
-
-async function enviarDatosVip(decision) {
-    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-    const datos = new URLSearchParams();
-    datos.append('nombre', nCli);
-    datos.append('decision', (decision === 'Aceptó' ? "SI VIP" : "NO VIP"));
-    datos.append('precio', pCli + "$");
-    datos.append('ubicacion', uCli);
-
-    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-
-    if (decision === 'Aceptó') {
-        window.location.href = "bienvenidos.html";
-    } else {
-        alert("Entendido, " + nCli);
-        location.reload();
-    }
-}
-
-document.addEventListener('click', function(e) {
-    if (e.target.closest('.btn-frio')) enviarDatosVip('Aceptó');
-    if (e.target.closest('.btn-calor')) { 
-        new Audio('rechazo.mp3').play().catch(() => {});
-        enviarDatosVip('Rechazó'); 
-    }
-});
-</script>
+        function ejecutarRechazo() {
+            new Audio('rechazo.mp3').play().catch(e => {});
+            setTimeout(function(){ 
+                window.close();
+                setTimeout(() => { window.location.href = "about:blank"; }, 500);
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
