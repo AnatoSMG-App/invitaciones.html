@@ -14,11 +14,11 @@
         /* PANTALLA INICIAL - LOGO MANTENIDO */
         #pantalla-play { z-index: 5000; }
         #escudo-main { 
-            width: 85%; 
+            width: 95%; 
             max-width: 500px; 
             margin-bottom: 30px; 
             animation: latido 2s infinite; 
-            filter: drop-shadow(0 0 15px var(--frio));
+            filter: drop-shadow(0 0 30px var(--frio));
         }
         @keyframes latido { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         
@@ -32,13 +32,13 @@
         .layer > img { max-width: 85% !important; max-height: 50vh !important; object-fit: contain !important; margin: 20px auto; }
 
         #fase-cuarto { z-index: 1000; }
-        #img-cuarto { width: 90%; height: auto; border: 2px solid var(--frio); border-radius: 10px; }
+        ##img-cuarto { width: 100vw; height: auto; margin-left: -15px; border: none; }
 
         /* FASE: PANEL FINAL (SIN BLOQUE DE PRESUPUESTO) */
         #fase-panel { z-index: 500; overflow-y: auto; display: none; padding-top: 20px; }
         #fase-panel.active { display: block; }
         
-        .split { display: flex; flex-wrap: wrap; width: 100%; min-height: 60vh; }
+        .split { display: flex; flex-wrap: wrap; width: 100%; min-height: 80vh; }
         .panel { flex: 1; min-width: 300px; padding: 15px; border: 1px solid #222; }
         .temp { font-size: 1.8rem; font-weight: bold; margin-bottom: 15px; }
         
@@ -169,7 +169,7 @@
                 if(imgPath) {
                     pop.src = imgPath;
                     pop.style.transform = "translate(-50%, -50%) scale(1)";
-                    await new Promise(r => setTimeout(r, 3500));
+                    await new Promise(r => setTimeout(r, 3800));
                     pop.style.transform = "translate(-50%, -50%) scale(0)";
                     it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
                 }
