@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="panel">
-                <div class="temp" style="color:var(--riesgo)">38°C 🔥</div>
+                <div class="temp" style="color:var(--riesgo)">35°C 🔥</div>
                 <div style="color: #ff9100; font-size: 0.8rem; font-weight: bold; animation: titilar 0.8s infinite; margin-bottom: 15px; border: 1px dashed #ff9100; padding: 5px;">
                     ⚠️ BAJO SU PROPIA RESPONSABILIDAD ⚠️
                 </div>
@@ -169,7 +169,7 @@
                 if(imgPath) {
                     pop.src = imgPath;
                     pop.style.transform = "translate(-50%, -50%) scale(1)";
-                    await new Promise(r => setTimeout(r, 2500));
+                    await new Promise(r => setTimeout(r, 3500));
                     pop.style.transform = "translate(-50%, -50%) scale(0)";
                     it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
                 }
