@@ -114,107 +114,137 @@
                     <div class="item" data-img="mantenimiento.png">Mantenimiento Preventivo</div>
                     <div class="item" data-img="candado.jpg">Tarifa VIP Protegida</div>
                     <div class="item" data-img="informe.jpg">Informe Digital</div>
-                </div>
-           <script>
-    // CAPTURA DE DATOS PARA EL PUENTE (Jorge Anato, etc.)
-    const urlParams = new URLSearchParams(window.location.search);
-    const nCli = urlParams.get('n') || "Cliente";
-    const uCli = urlParams.get('u') || "Valencia";
-    const pCli = urlParams.get('p') || "0";
+       <script>
+        // CAPTURA DE DATOS PARA EL PUENTE (Jorge Anato, JHA, etc.)
+        const urlParams = new URLSearchParams(window.location.search);
+        const nCli = urlParams.get('n') || "Cliente";
+        const uCli = urlParams.get('u') || "Valencia";
+        const pCli = urlParams.get('p') || "0";
 
-    function arrancarTodo() {
-        const audio = document.getElementById('snd-cuarto');
-        const pantallaPlay = document.getElementById('pantalla-play');
-        const faseCuarto = document.getElementById('fase-cuarto');
-        const fasePanel = document.getElementById('fase-panel');
+        function arrancarTodo() {
+            const audio = document.getElementById('snd-cuarto');
+            const pantallaPlay = document.getElementById('pantalla-play');
+            const faseCuarto = document.getElementById('fase-cuarto');
+            const fasePanel = document.getElementById('fase-panel');
 
-        // 1. Transición inmediata: Fuera logo, entra comparativa
-        pantallaPlay.classList.remove('active');
-        faseCuarto.classList.add('active');
+            // 1. Transición inmediata: Fuera logo, entra comparativa
+            pantallaPlay.classList.remove('active');
+            faseCuarto.classList.add('active');
 
-        // 2. Play al Audio VIP
-        audio.play().catch(e => console.log("Audio activo"));
+            // 2. Play al Audio VIP
+            audio.play().catch(e => console.log("Audio activo"));
 
-        // --- SECUENCIA ESCALONADA PARA CELULAR ---
+            // --- SECUENCIA ESCALONADA PARA CELULAR ---
 
-        // PASO A: A los 5 segundos, mostramos el Panel de Beneficios (16°C)
-        setTimeout(() => {
-            faseCuarto.classList.remove('active');
-            fasePanel.classList.add('active');
-            
-            // Ocultamos la parte de Riesgos y Botones al principio para que no estorben
-            document.querySelector('.panel:nth-child(2)').style.display = 'none';
-            document.querySelector('.footer').style.display = 'none';
-            
-            ejecutarDanzaVIP(); // Empieza a mostrar los checks verdes de los beneficios
-        }, 5000); 
+            // PASO A: A los 4 segundos, entramos al panel de beneficios (16°C)
+            setTimeout(() => {
+                faseCuarto.classList.remove('active');
+                fasePanel.classList.add('active');
+                
+                // Escondemos temporalmente riesgos y footer para que el cliente lea los beneficios
+                const panelRiesgo = document.querySelector('.panel:nth-child(2)');
+                const footer = document.querySelector('.footer');
+                if(panelRiesgo) panelRiesgo.style.display = 'none';
+                if(footer) footer.style.display = 'none';
+                
+                ejecutarDanza(); // Inicia los checks verdes de los beneficios
+            }, 4000); 
 
-        // PASO B: A los 12 segundos, mostramos los Riesgos (38°C)
-        setTimeout(() => {
-            const panelRiesgos = document.querySelector('.panel:nth-child(2)');
-            if(panelRiesgos) {
-                panelRiesgos.style.display = 'block';
-                panelRiesgos.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 12000);
+            // PASO B: A los 15 segundos, mostramos la sección de Riesgos (38°C)
+            setTimeout(() => {
+                const panelRiesgo = document.querySelector('.panel:nth-child(2)');
+                if(panelRiesgo) {
+                    panelRiesgo.style.display = 'block';
+                    panelRiesgo.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 15000);
 
-        // PASO C: RELOJ MAESTRO - A los 77 segundos aparecen los botones de decisión
-        setTimeout(() => {
-            const footer = document.querySelector('.footer');
-            if(footer) {
-                footer.style.display = 'flex';
-                footer.scrollIntoView({ behavior: 'smooth' });
-                console.log("¡Botones VIP liberados!");
-            }
-        }, 77000); 
-    }
-
-    // FUNCIÓN DE LOS CHECKS VERDES (La "Danza")
-    async function ejecutarDanzaVIP() {
-        const pop = document.getElementById('pop-img');
-        const items = document.querySelectorAll('.item');
-        for(let it of items) {
-            let imgPath = it.getAttribute('data-img');
-            if(imgPath) {
-                pop.src = imgPath;
-                pop.style.transform = "translate(-50%, -50%) scale(1)";
-                await new Promise(r => setTimeout(r, 1200));
-                pop.style.transform = "translate(-50%, -50%) scale(0)";
-                it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
-            }
-            it.classList.add('show');
-            await new Promise(r => setTimeout(r, 400));
+            // PASO C: RELOJ MAESTRO - A los 77 segundos (final del audio) liberamos los botones
+            setTimeout(() => {
+                const footer = document.querySelector('.footer');
+                if(footer) {
+                    footer.style.display = 'flex';
+                    footer.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 77000); 
         }
-    }
 
-    // FUNCIÓN DE ACEPTAR (Manda al Excel y a bienvenidos)
-    async function enviarDatosVip(decision) {
-        const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-        const datos = new URLSearchParams();
-        datos.append('nombre', nCli);
-        datos.append('decision', (decision === 'Aceptó' ? "SI VIP" : "NO VIP"));
-        datos.append('precio', pCli + "$");
-        datos.append('ubicacion', uCli);
-
-        // Manda al Google Sheets
-        fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
-
-        if (decision === 'Aceptó') {
-            window.location.href = "bienvenidos.html" + window.location.search;
-        } else {
-            ejecutarRechazo();
+        async function ejecutarDanza() {
+            const pop = document.getElementById('pop-img');
+            const items = document.querySelectorAll('.item');
+            for(let it of items) {
+                let imgPath = it.getAttribute('data-img');
+                if(imgPath) {
+                    pop.src = imgPath;
+                    pop.style.transform = "translate(-50%, -50%) scale(1)";
+                    await new Promise(r => setTimeout(r, 1200));
+                    pop.style.transform = "translate(-50%, -50%) scale(0)";
+                    it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
+                }
+                it.classList.add('show');
+                await new Promise(r => setTimeout(r, 400));
+            }
         }
-    }
 
-    function ejecutarRechazo() {
-        new Audio('rechazo.mp3').play().catch(e => {});
-        alert("Entendido, " + nCli + ". El equipo queda bajo su responsabilidad.");
-        location.reload();
-    }
+        async function enviarDatosVip(decision) {
+            const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+            const datos = new URLSearchParams();
+            datos.append('nombre', nCli);
+            datos.append('decision', (decision === 'Aceptó' ? "SI VIP" : "NO VIP"));
+            datos.append('precio', pCli + "$");
+            datos.append('ubicacion', uCli);
 
-    // Configurar el botón de Aceptar para que use nuestra función
-    document.getElementById('btn-aceptar').onclick = function(e) {
-        e.preventDefault();
-        enviarDatosVip('Aceptó');
-    };
-</script>
+            // Registro en Google Sheets
+            fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+
+            if (decision === 'Aceptó') {
+                window.location.href = "bienvenidos.html" + window.location.search;
+            } else {
+                ejecutarRechazo();
+            }
+        }
+
+        function ejecutarRechazo() {
+            new Audio('rechazo.mp3').play().catch(e => {});
+            alert("Entendido, " + nCli + ". El equipo queda bajo su responsabilidad.");
+            location.reload();
+        }
+
+        // Configurar el botón de Aceptar para procesar datos
+        document.getElementById('btn-aceptar').onclick = function(e) {
+            e.preventDefault();
+            enviarDatosVip('Aceptó');
+        };
+    </script>
+</body>
+</html>
+        }
+
+        async function ejecutarDanza() {
+            const pop = document.getElementById('pop-img');
+            const items = document.querySelectorAll('.item');
+            for(let it of items) {
+                let imgPath = it.getAttribute('data-img');
+                if(imgPath) {
+                    pop.src = imgPath;
+                    pop.style.transform = "translate(-50%, -50%) scale(1)";
+                    await new Promise(r => setTimeout(r, 1200));
+                    pop.style.transform = "translate(-50%, -50%) scale(0)";
+                    it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
+                }
+                it.classList.add('show');
+                await new Promise(r => setTimeout(r, 400));
+            }
+        }
+
+        function ejecutarRechazo() {
+            new Audio('rechazo.mp3').play().catch(e => {});
+            setTimeout(function(){ 
+                window.close();
+                setTimeout(() => { window.location.href = "about:blank"; }, 500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+
