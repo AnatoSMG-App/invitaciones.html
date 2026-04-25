@@ -114,137 +114,83 @@
                     <div class="item" data-img="mantenimiento.png">Mantenimiento Preventivo</div>
                     <div class="item" data-img="candado.jpg">Tarifa VIP Protegida</div>
                     <div class="item" data-img="informe.jpg">Informe Digital</div>
-       <script>
-        // CAPTURA DE DATOS PARA EL PUENTE (Jorge Anato, JHA, etc.)
-        const urlParams = new URLSearchParams(window.location.search);
-        const nCli = urlParams.get('n') || "Cliente";
-        const uCli = urlParams.get('u') || "Valencia";
-        const pCli = urlParams.get('p') || "0";
+                </div>
+            <script>
+const audioVip = new Audio('audio_vip.mp3'); 
 
-        function arrancarTodo() {
-            const audio = document.getElementById('snd-cuarto');
-            const pantallaPlay = document.getElementById('pantalla-play');
-            const faseCuarto = document.getElementById('fase-cuarto');
-            const fasePanel = document.getElementById('fase-panel');
+// 1. CAPTURA DE DATOS (Jorge Anato, Valencia, $10)
+const urlParams = new URLSearchParams(window.location.search);
+const nCli = urlParams.get('n') || "Cliente";
+const uCli = urlParams.get('u') || "Venezuela";
+const pCli = urlParams.get('p') || "0";
 
-            // 1. Transición inmediata: Fuera logo, entra comparativa
-            pantallaPlay.classList.remove('active');
-            faseCuarto.classList.add('active');
+function iniciarPresentacionVip() {
+    // Escondemos el botón de inicio
+    const btnInicie = document.querySelector('.btn-inicio') || document.querySelector('button');
+    if (btnInicie) btnInicie.style.display = 'none';
 
-            // 2. Play al Audio VIP
-            audio.play().catch(e => console.log("Audio activo"));
+    audioVip.play().catch(e => console.log("Clic para audio"));
 
-            // --- SECUENCIA ESCALONADA PARA CELULAR ---
+    // --- SECUENCIA ESCALONADA (Para que NO se monten) ---
+    
+    // Mostramos Beneficios (16°C)
+    const seccion16 = document.getElementById('beneficios') || document.querySelector('.beneficios');
+    if(seccion16) {
+        seccion16.style.display = 'block';
+        seccion16.style.position = 'relative'; // Esto evita que se monten
+    }
 
-            // PASO A: A los 4 segundos, entramos al panel de beneficios (16°C)
-            setTimeout(() => {
-                faseCuarto.classList.remove('active');
-                fasePanel.classList.add('active');
-                
-                // Escondemos temporalmente riesgos y footer para que el cliente lea los beneficios
-                const panelRiesgo = document.querySelector('.panel:nth-child(2)');
-                const footer = document.querySelector('.footer');
-                if(panelRiesgo) panelRiesgo.style.display = 'none';
-                if(footer) footer.style.display = 'none';
-                
-                ejecutarDanza(); // Inicia los checks verdes de los beneficios
-            }, 4000); 
-
-            // PASO B: A los 15 segundos, mostramos la sección de Riesgos (38°C)
-            setTimeout(() => {
-                const panelRiesgo = document.querySelector('.panel:nth-child(2)');
-                if(panelRiesgo) {
-                    panelRiesgo.style.display = 'block';
-                    panelRiesgo.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 15000);
-
-            // PASO C: RELOJ MAESTRO - A los 77 segundos (final del audio) liberamos los botones
-            setTimeout(() => {
-                const footer = document.querySelector('.footer');
-                if(footer) {
-                    footer.style.display = 'flex';
-                    footer.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 77000); 
+    // Esperamos 2 segundos y mostramos Riesgos (38°C) abajo
+    setTimeout(() => {
+        const seccion38 = document.getElementById('riesgos') || document.querySelector('.riesgos');
+        if(seccion38) {
+            seccion38.style.display = 'block';
+            seccion38.style.position = 'relative'; // Esto asegura que vaya debajo
+            seccion38.scrollIntoView({ behavior: 'smooth' });
         }
+    }, 2000); 
 
-        async function ejecutarDanza() {
-            const pop = document.getElementById('pop-img');
-            const items = document.querySelectorAll('.item');
-            for(let it of items) {
-                let imgPath = it.getAttribute('data-img');
-                if(imgPath) {
-                    pop.src = imgPath;
-                    pop.style.transform = "translate(-50%, -50%) scale(1)";
-                    await new Promise(r => setTimeout(r, 1200));
-                    pop.style.transform = "translate(-50%, -50%) scale(0)";
-                    it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
-                }
-                it.classList.add('show');
-                await new Promise(r => setTimeout(r, 400));
-            }
+    // Reloj maestro de 77 segundos para botones
+    setTimeout(() => {
+        const cartel = document.getElementById('overlay');
+        if (cartel) {
+            cartel.style.cssText = "display: flex !important; visibility: visible !important; opacity: 1 !important; position: fixed !important; z-index: 9999;";
         }
+    }, 77000); 
+}
 
-        async function enviarDatosVip(decision) {
-            const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
-            const datos = new URLSearchParams();
-            datos.append('nombre', nCli);
-            datos.append('decision', (decision === 'Aceptó' ? "SI VIP" : "NO VIP"));
-            datos.append('precio', pCli + "$");
-            datos.append('ubicacion', uCli);
+// Escuchador del clic inicial
+document.addEventListener('click', function(e) {
+    if (e.target.innerText.includes('INICIAR')) iniciarPresentacionVip();
+});
 
-            // Registro en Google Sheets
-            fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
+// Función de envío al Excel
+async function enviarDatosVip(decision) {
+    const urlScript = "https://script.google.com/macros/s/AKfycbyl8kHQ3K1fGVM-mys1fu3GQEAMa2LOguLOa-OJx8Y8sYgLoURceNL4QwNx0fGvF1_b/exec";
+    const datos = new URLSearchParams();
+    datos.append('nombre', nCli);
+    datos.append('decision', (decision === 'Aceptó' ? "SI VIP" : "NO VIP"));
+    datos.append('precio', pCli + "$");
+    datos.append('ubicacion', uCli);
 
-            if (decision === 'Aceptó') {
-                window.location.href = "bienvenidos.html" + window.location.search;
-            } else {
-                ejecutarRechazo();
-            }
-        }
+    fetch(urlScript, { method: "POST", mode: "no-cors", body: datos.toString() });
 
-        function ejecutarRechazo() {
-            new Audio('rechazo.mp3').play().catch(e => {});
-            alert("Entendido, " + nCli + ". El equipo queda bajo su responsabilidad.");
-            location.reload();
-        }
+    if (decision === 'Aceptó') {
+        window.location.href = "bienvenidos.html";
+    } else {
+        alert("Entendido, " + nCli);
+        location.reload();
+    }
+}
 
-        // Configurar el botón de Aceptar para procesar datos
-        document.getElementById('btn-aceptar').onclick = function(e) {
-            e.preventDefault();
-            enviarDatosVip('Aceptó');
-        };
-    </script>
+// Botones de acción
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-frio')) enviarDatosVip('Aceptó');
+    if (e.target.closest('.btn-calor')) { 
+        new Audio('rechazo.mp3').play().catch(() => {});
+        enviarDatosVip('Rechazó'); 
+    }
+});
+</script>
 </body>
 </html>
-        }
-
-        async function ejecutarDanza() {
-            const pop = document.getElementById('pop-img');
-            const items = document.querySelectorAll('.item');
-            for(let it of items) {
-                let imgPath = it.getAttribute('data-img');
-                if(imgPath) {
-                    pop.src = imgPath;
-                    pop.style.transform = "translate(-50%, -50%) scale(1)";
-                    await new Promise(r => setTimeout(r, 1200));
-                    pop.style.transform = "translate(-50%, -50%) scale(0)";
-                    it.innerHTML = `<img src="${imgPath}"> ` + it.innerHTML + " ✅";
-                }
-                it.classList.add('show');
-                await new Promise(r => setTimeout(r, 400));
-            }
-        }
-
-        function ejecutarRechazo() {
-            new Audio('rechazo.mp3').play().catch(e => {});
-            setTimeout(function(){ 
-                window.close();
-                setTimeout(() => { window.location.href = "about:blank"; }, 500);
-            }, 3000);
-        }
-    </script>
-</body>
-</html>
-
